@@ -466,3 +466,12 @@ footer{background:rgba(3,6,11,.82)!important;border-top:1px solid rgba(70,111,14
  .top-search-panel .api-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .top-search-panel .api-info{padding:9px}
 }
+
+
+/* Episode progress slider */
+.episode-slider-wrap{padding:13px 15px 10px;border:1px solid #26364b;border-radius:14px;background:#080f1b}
+.episode-slider-values{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#9caec0;font-size:13px}
+.episode-slider-values output{font-size:16px;font-weight:800;color:#62dff7;font-variant-numeric:tabular-nums}
+.episode-range{display:block;width:100%;height:26px;margin:12px 0 3px;padding:0!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;accent-color:#20b8e6;cursor:pointer}
+.episode-range:focus{box-shadow:none!important}
+.episode-slider-scale{display:flex;justify-content:space-between;color:#8394a8;font-size:11px}
