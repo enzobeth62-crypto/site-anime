@@ -1002,7 +1002,7 @@ async function loadChat(){
  }
  try{
   await checkChatAdmin();
-  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
   if(error)throw error;
   renderChat(data||[]);
   const isBanned=await refreshChatBanState();
@@ -1025,7 +1025,7 @@ async function loadChat(){
   chatPollHandle=setInterval(async()=>{
    if(!supabase||!currentUser||el('chatView').classList.contains('hidden'))return;
    try{
-    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
     if(!error&&data)renderChat(data);
    }catch(e){console.warn('Chat refresh:',e)}
   },5000);
