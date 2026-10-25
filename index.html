@@ -640,6 +640,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 #headActions .av-nav-icon{display:block;width:18px;height:18px;flex:0 0 18px;overflow:visible;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}#headActions>.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;white-space:nowrap}
+
+@media(max-width:700px){.top>#headActions{min-width:0;flex-direction:column!important;align-items:stretch!important}body.nav-open .top>#headActions{max-height:min(70vh,420px)!important;overflow-y:auto!important}.top>#headActions>.btn{width:100%!important;flex:0 0 auto!important}.top>#headActions>div{width:100%;flex:0 0 auto!important}}
 </style>
 </head>
 <body>
