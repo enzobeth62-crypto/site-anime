@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=15">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=16">
 </head>
 <body>
 <div class="wrap">
@@ -878,7 +878,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
         <div class="form-group"><label for="rating">Ta note / 10</label><select class="field" id="rating"><option value="">Pas encore noté</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
         <div class="form-group"><label for="genres">Genres (séparés par des virgules)</label><input class="field" id="genres" placeholder="Romance, Drame, Seinen"></div>
         <div class="form-group"><label for="seasons">Saisons</label><input class="field" id="seasons" type="number" min="0" max="99" placeholder="Ex. 2"></div>
-        <div class="form-group"><label for="episodes">Épisodes vus / total</label><input class="field" id="episodes" placeholder="Ex. 12 / 24"></div>
+        <div class="form-group"><label for="episodesRange">Épisodes vus / total</label><div class="episode-slider-wrap"><div class="episode-slider-values"><span>Progression</span><output id="episodesValue" for="episodesRange">0 / 12</output></div><input class="episode-range" id="episodesRange" type="range" min="0" max="12" step="1" value="0" aria-label="Nombre d'épisodes vus"><div class="episode-slider-scale"><span>0 vu</span><span id="episodesTotalLabel">12 épisodes</span></div><input id="episodes" type="hidden" value="0 / 12"></div></div>
         <div class="form-group"><label for="year">Année</label><input class="field" id="year" type="number" min="1900" max="2100" placeholder="Ex. 2024"></div>
         <div class="form-group full"><label for="poster">Lien d'image de l'affiche (facultatif)</label><input class="field" id="poster" type="url" placeholder="https://…"></div>
         <div class="form-group full"><label for="notes">Mon avis / mes notes</label><textarea class="field" id="notes" maxlength="1500" placeholder="Personnages préférés, émotions, à revoir…"></textarea></div>
@@ -957,8 +957,24 @@ function openModal(item=null){
  $('modalTitle').textContent=item?'Modifier un anime':'Ajouter un anime';
  $('deleteBtn').classList.toggle('hidden',!item);
  if(item){$('title').value=item.title||'';$('status').value=item.status||'Vu';$('rating').value=item.rating||'';$('genres').value=(item.genres||[]).join(', ');$('seasons').value=item.seasons||'';$('episodes').value=item.episodes||'';$('year').value=item.year||'';$('poster').value=item.poster||'';$('notes').value=item.notes||''}
+ syncEpisodeSlider();
  $('modal').classList.add('open');setTimeout(()=>$('title').focus(),50)
 }
+function syncEpisodeSlider(){
+ const raw=$('episodes').value.trim();
+ const match=raw.match(/(\d+)\s*(?:\/|sur)\s*(\d+)/i);
+ const watched=match?Number(match[1]):(Number(raw.match(/\d+/)?.[0])||0);
+ const total=match?Number(match[2]):12;
+ const max=Math.max(1,Math.min(1000,total||12));
+ const range=$('episodesRange');range.max=String(max);range.value=String(Math.min(watched,max));
+ $('episodesValue').textContent=range.value+' / '+max;
+ $('episodesTotalLabel').textContent=max+' épisode'+(max>1?'s':'');
+ $('episodes').value=range.value+' / '+max;
+}
+$('episodesRange').addEventListener('input',()=>{
+ $('episodesValue').textContent=$('episodesRange').value+' / '+$('episodesRange').max;
+ $('episodes').value=$('episodesRange').value+' / '+$('episodesRange').max;
+});
 function closeModal(){$('modal').classList.remove('open')}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 ['addTop','emptyAdd'].forEach(id=>$(id).addEventListener('click',()=>openModal()));
@@ -1243,12 +1259,20 @@ async function syncCollection(){
 }
 async function saveCollectionCloud(){
  if(!supabase||!currentUser)return;
+ const userId=currentUser.id;
  try{
-  for(const a of window.__animeverse.anime){
-   const {error}=await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
+  const items=window.__animeverse.anime;
+  const keepKeys=items.map(a=>a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase());
+  for(const a of items){
+   const {error}=await supabase.from('user_anime').upsert({user_id:userId,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
    if(error)throw error;
   }
- }catch(err){console.warn(err);window.__animeverseToast('Sauvegarde cloud impossible : vérifie la configuration.')}
+  // Supprime aussi du cloud les titres retirés localement, sinon syncCollection les restaure au prochain chargement.
+  let query=supabase.from('user_anime').delete().eq('user_id',userId);
+  if(keepKeys.length)query=query.not('anime_key','in','('+keepKeys.map(k=>'"'+k.replace(/"/g,'\\"')+'"').join(',')+')');
+  const {error:deleteError}=await query;
+  if(deleteError)throw deleteError;
+ }catch(err){console.warn(err);window.__animeverseToast('Sauvegarde cloud impossible : vérifie les droits de ta collection.')}
 }
 
  // Hook collection saves without changing the original app's local-first behaviour.
