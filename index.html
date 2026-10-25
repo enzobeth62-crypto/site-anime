@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=13">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=14">
 </head>
 <body>
 <div class="wrap">
@@ -979,22 +979,48 @@ $('collection').addEventListener('click',e=>{
  if(edit){openModal(anime.find(a=>a.id===edit.dataset.edit));return}
  if(st){const a=anime.find(a=>a.id===st.dataset.status);if(a){const opts=['Vu','En cours','À voir','Abandonné'],i=opts.indexOf(a.status);a.status=opts[(i+1)%opts.length];save();toast('Statut : '+a.status)}}
 });
-let headerSearchTimer=null;
+let headerSearchTimer=null, topSearchRequest=0, topSearchItems=[];
+const topSearchPanel=document.createElement('section');
+topSearchPanel.id='topSearchPanel';
+topSearchPanel.className='top-search-panel';
+topSearchPanel.hidden=true;
+topSearchPanel.innerHTML='<div class="top-search-panel-head"><div><div class="eyebrow">RECHERCHE RAPIDE</div><h3 id="topSearchHeading">Résultats</h3></div><button type="button" class="btn" id="closeTopSearch">Fermer ✕</button></div><div id="topSearchStatus" class="api-status">Recherche…</div><div id="topSearchResults" class="api-grid"></div>';
+$('search').closest('.top').insertAdjacentElement('afterend',topSearchPanel);
+$('closeTopSearch').addEventListener('click',()=>{topSearchPanel.hidden=true});
+async function searchTopCatalogue(query){
+ const request=++topSearchRequest;
+ topSearchPanel.hidden=false;
+ $('topSearchHeading').textContent='Résultats pour « '+query+' »';
+ $('topSearchStatus').textContent='Recherche sur AniList…';
+ $('topSearchResults').innerHTML='';
+ try{
+  const response=await fetch(anilistEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query:anilistQuery,variables:{search:query,page:1}})});
+  if(!response.ok)throw new Error('Catalogue indisponible');
+  const json=await response.json();if(request!==topSearchRequest)return;
+  topSearchItems=json?.data?.Page?.media||[];
+  if(!topSearchItems.length){$('topSearchStatus').textContent='Aucun anime trouvé pour « '+query+' ». Essaie un autre titre.';return}
+  $('topSearchStatus').textContent=topSearchItems.length+' résultats trouvés';
+  $('topSearchResults').innerHTML=topSearchItems.map(m=>{
+   const title=animeTitle(m),cover=safeImageUrl(m.coverImage?.extraLarge||m.coverImage?.large||m.coverImage?.medium||''),genres=(m.genres||[]).slice(0,3).join(' · '),year=m.seasonYear||'Année inconnue',eps=m.episodes?m.episodes+' épisodes':'Épisodes inconnus',already=anime.some(a=>a.anilistId===m.id);
+   return '<article class="api-card"><div class="api-poster">'+(cover?'<img loading="lazy" decoding="async" src="'+escapeHTML(cover)+'" alt="'+escapeHTML(title)+'" onerror="this.remove()">':'')+'<span class="poster-title">'+escapeHTML(title)+'</span></div><div class="api-info"><strong>'+escapeHTML(title)+'</strong><small>'+escapeHTML(String(year))+' · '+escapeHTML(eps)+'<br>'+escapeHTML(genres)+'</small><button class="btn '+(already?'':'primary')+'" data-top-add="'+m.id+'" '+(already?'disabled':'')+'>'+(already?'✓ Déjà ajouté':'＋ Ajouter')+'</button></div></article>';
+  }).join('');
+ }catch(err){if(request===topSearchRequest)$('topSearchStatus').textContent='Impossible de contacter AniList. Réessaie dans un instant.'}
+}
+$('topSearchResults').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-top-add]');if(!btn)return;
+ const id=Number(btn.dataset.topAdd),m=topSearchItems.find(x=>x.id===id);if(!m)return;
+ if(anime.some(a=>a.anilistId===id)){toast('Cet anime est déjà dans ta collection.');return}
+ const item={id:uid(),anilistId:id,title:animeTitle(m),status:'À voir',rating:'',genres:m.genres||[],seasons:'',episodes:m.episodes?'0 / '+m.episodes:'',year:m.seasonYear||'',poster:safeImageUrl(m.coverImage?.extraLarge||m.coverImage?.large||m.coverImage?.medium||''),notes:'',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceUrl:m.siteUrl||''};
+ anime.push(item);save();btn.textContent='✓ Déjà ajouté';btn.disabled=true;btn.classList.remove('primary');toast('Anime ajouté à ta collection !');
+});
 $('search').addEventListener('input',()=>{
  const query=$('search').value.trim();
- $('catalogueQuery').value=query;
- render();
  clearTimeout(headerSearchTimer);
- if(query.length>=2){
-  $('catalogueStatus').textContent='Recherche sur AniList…';
-  headerSearchTimer=setTimeout(()=>{window.__animeverseHeaderSearch=true;searchCatalogue(1)},650);
- }else{
-  window.__animeverseHeaderSearch=false;
-  $('cataloguePages').classList.add('hidden');
-  $('catalogueStatus').textContent=query?'Écris au moins 2 caractères pour rechercher.':'Entre un titre pour rechercher dans le catalogue.';
- }
+ if(query.length>=2)headerSearchTimer=setTimeout(()=>searchTopCatalogue(query),450);
+ else{topSearchRequest++;topSearchPanel.hidden=true}
 });
-$('search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(headerSearchTimer);if($('search').value.trim().length>=2){window.__animeverseHeaderSearch=true;searchCatalogue(1)}}});
+$('search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(headerSearchTimer);const query=$('search').value.trim();if(query.length>=2)searchTopCatalogue(query)}});
+
 $('catalogueQuery').addEventListener('input',()=>{
  // Les deux moteurs restent indépendants : chaque champ conserve sa propre recherche.
 });
