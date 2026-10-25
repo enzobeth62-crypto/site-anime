@@ -463,6 +463,18 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
 
 #catalogueStatus{scroll-margin-top:90px}
 </style>
+<style id="chat-admin-styles">
+.chat-admin{margin:18px 0;padding:18px;border:1px solid #37c7e855;border-radius:20px;background:linear-gradient(140deg,#10202aee,#11131fee 65%,#20142bee);box-shadow:0 16px 38px #0003}
+.chat-admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.chat-admin-head h3{margin:3px 0;font-size:18px}.chat-admin-head p{margin:4px 0;color:var(--muted);font-size:13px}
+.chat-admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}.chat-admin-stat,.chat-admin-card{padding:13px;border:1px solid #ffffff13;border-radius:15px;background:#090d16aa}
+.chat-admin-stat strong{display:block;font-size:21px}.chat-admin-stat span,.chat-admin-card p{color:var(--muted);font-size:12px}.chat-admin-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:12px}
+.chat-admin-card h4{margin:0 0 9px}.chat-ban-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.chat-ban-form label{display:grid;gap:5px;color:var(--muted);font-size:12px}.chat-ban-form .field{min-width:0}
+.chat-bans-list,.chat-admin-logs{display:grid;gap:7px;max-height:240px;overflow:auto}.chat-admin-row,.chat-admin-log{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:9px 10px;border:1px solid #ffffff10;border-radius:11px;background:#ffffff05;font-size:12px}
+.chat-admin-row>div,.chat-admin-log>div{min-width:0}.chat-admin-row strong,.chat-admin-log strong{display:block}.chat-admin-row small,.chat-admin-log small{display:block;color:var(--muted);overflow-wrap:anywhere}
+.chat-mod-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:8px}.chat-mod-actions .btn{min-height:30px;padding:5px 9px;font-size:11px}.chat-mod-actions .danger{border:1px solid #ff688a55;background:#7e203044;color:#ffc2d0}.chat-admin-empty{padding:12px;color:var(--muted);font-size:12px}
+@media(max-width:760px){.chat-admin-grid{grid-template-columns:1fr}.chat-admin-stats{gap:6px}.chat-admin-stat{padding:10px}.chat-admin-stat strong{font-size:18px}}
+@media(max-width:460px){.chat-admin{padding:12px}.chat-admin-stats{grid-template-columns:1fr 1fr}.chat-admin-head{align-items:flex-start;flex-direction:column}.chat-ban-form{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -508,7 +520,18 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
         <input id="chatInput" class="field" maxlength="1000" placeholder="Écris ton message…" autocomplete="off" disabled>
         <button class="btn primary" id="chatSend" type="submit" disabled>Envoyer ➤</button>
       </form>
-      <p class="chat-small">Règles : reste respectueux, ne partage pas d’informations personnelles et signale les comportements abusifs aux modérateurs du site.</p>
+      <p class="chat-small">Règles : reste respectueux, ne partage pas d’informations personnelles et signale les comportements abusifs aux modérateurs du site. Les messages sont conservés 30 jours.</p>
+      <aside id="chatAdminPanel" class="chat-admin hidden" aria-labelledby="chatAdminTitle">
+        <div class="chat-admin-head"><div><div class="eyebrow">ESPACE SÉCURISÉ</div><h3 id="chatAdminTitle">Modération du chat</h3><p>Actions et journal réservés à l’administrateur.</p></div><span class="tag">Admin</span></div>
+        <div id="chatAdminStats" class="chat-admin-stats"></div>
+        <div class="chat-admin-grid">
+          <section class="chat-admin-card"><h4>Comptes exclus</h4><div class="chat-ban-form">
+            <label>Durée<select id="chatBanDuration" class="field"><option value="1h">1 heure</option><option value="24h">24 heures</option><option value="7d">7 jours</option><option value="permanent">Définitive</option></select></label>
+            <label>Motif<input id="chatBanReason" class="field" maxlength="300" placeholder="Motif (facultatif)"></label>
+          </div><p>Utilise « Bannir » sous un message pour appliquer la durée choisie.</p><div id="chatBansList" class="chat-bans-list"><div class="chat-admin-empty">Chargement…</div></div></section>
+          <section class="chat-admin-card"><h4>Journal de modération</h4><div id="chatAdminLogs" class="chat-admin-logs"><div class="chat-admin-empty">Chargement…</div></div></section>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -817,7 +840,7 @@ el('profileForm').addEventListener('submit',async e=>{
  catch(err){el('profileMessage').textContent=err.message||'Impossible de modifier le pseudo.'}
  finally{el('profileSave').disabled=false}
 });
-el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');updateAccount();});
+el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();});
 el('authClose').addEventListener('click',()=>el('authModal').classList.remove('open'));
 el('authModal').addEventListener('click',e=>{if(e.target===el('authModal'))el('authModal').classList.remove('open')});
 el('loginTab').addEventListener('click',()=>setAuthMode('login'));
@@ -877,13 +900,92 @@ async function saveCollectionCloud(){
 window.__animeverseCloudSave=()=>{if(supabase&&currentUser)saveCollectionCloud()};
 let chatCache=[];
 let chatPollHandle=null;
+let isChatAdmin=false;
+let adminCheckedForUserId=null;
+async function checkChatAdmin(){
+ if(!supabase||!currentUser)return false;
+ const userId=currentUser.id;
+ if(adminCheckedForUserId===userId)return isChatAdmin;
+ adminCheckedForUserId=userId;
+ isChatAdmin=false;
+ const panel=el('chatAdminPanel');if(panel)panel.classList.add('hidden');
+ try{
+  const {data,error}=await supabase.from('chat_moderators').select('user_id').eq('user_id',userId).maybeSingle();
+  if(error)throw error;
+  isChatAdmin=Boolean(data);
+ }catch(error){console.warn('Vérification admin du chat indisponible:',error);adminCheckedForUserId=null}
+ if(panel)panel.classList.toggle('hidden',!isChatAdmin);
+ return isChatAdmin;
+}
+async function refreshChatBanState(){
+ const input=el('chatInput'),send=el('chatSend');
+ if(!supabase||!currentUser)return false;
+ const {data,error}=await supabase.from('chat_bans').select('expires_at,reason').eq('user_id',currentUser.id).maybeSingle();
+ if(error)throw error;
+ const active=Boolean(data&&(!data.expires_at||new Date(data.expires_at).getTime()>Date.now()));
+ input.disabled=active;send.disabled=active;
+ if(active){const until=data.expires_at?new Date(data.expires_at).toLocaleString('fr-FR'):'sans date de fin';el('chatNotice').textContent=`Accès au chat suspendu jusqu’au ${until}. Motif : ${data.reason}.`;}
+ return active;
+}
+function chatLogDate(value){return value?new Date(value).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'—'}
+async function loadChatAdminPanel(){
+ if(!isChatAdmin||!supabase)return;
+ try{
+  const [banResult,logResult]=await Promise.all([
+   supabase.from('chat_bans').select('user_id,reason,created_at,expires_at').order('created_at',{ascending:false}).limit(100),
+   supabase.from('chat_moderation_logs').select('id,action,actor_user_id,target_user_id,message_id,details,created_at').order('created_at',{ascending:false}).limit(40)
+  ]);
+  if(banResult.error)throw banResult.error;if(logResult.error)throw logResult.error;
+  const bans=banResult.data||[],logs=logResult.data||[];
+  const activeBans=bans.filter(b=>!b.expires_at||new Date(b.expires_at).getTime()>Date.now());
+  el('chatAdminStats').innerHTML=`<div class="chat-admin-stat"><strong>${chatCache.length}</strong><span>messages affichés</span></div><div class="chat-admin-stat"><strong>${activeBans.length}</strong><span>exclusions actives</span></div><div class="chat-admin-stat"><strong>${logs.length}</strong><span>actions récentes</span></div>`;
+  const nameFor=id=>chatCache.find(m=>m.user_id===id)?.display_name||('Compte '+String(id||'').slice(0,8));
+  el('chatBansList').innerHTML=bans.length?bans.map(b=>{
+   const expired=b.expires_at&&new Date(b.expires_at).getTime()<=Date.now();
+   return `<div class="chat-admin-row"><div><strong>${escapeText(nameFor(b.user_id))}${expired?' · expiré':''}</strong><small>${escapeText(b.reason)} · ${b.expires_at?'Jusqu’au '+chatLogDate(b.expires_at):'Permanent'}</small></div><button class="btn" type="button" data-chat-unban="${escapeText(b.user_id)}">Réactiver</button></div>`;
+  }).join(''):'<div class="chat-admin-empty">Aucun compte banni.</div>';
+  const actionNames={delete_message:'Message supprimé',ban_user:'Compte banni',unban_user:'Compte réactivé',update_ban:'Bannissement modifié',retention_purge:'Purge automatique'};
+  el('chatAdminLogs').innerHTML=logs.length?logs.map(item=>{
+   const detail=item.details||{};
+   const extra=item.action==='delete_message'?'Message #'+item.message_id:item.action==='retention_purge'?(detail.deleted_count||0)+' message(s) supprimé(s)':(detail.reason||'');
+   return `<div class="chat-admin-log"><div><strong>${escapeText(actionNames[item.action]||item.action)}</strong><small>${escapeText(extra)} · cible ${escapeText(String(item.target_user_id||'système').slice(0,8))}</small></div><time>${escapeText(chatLogDate(item.created_at))}</time></div>`;
+  }).join(''):'<div class="chat-admin-empty">Aucune action enregistrée.</div>';
+ }catch(error){console.warn('Journal de modération indisponible:',error);el('chatAdminLogs').innerHTML='<div class="chat-admin-empty">Impossible de charger le journal pour le moment.</div>'}
+}
+async function moderateChatMessageDelete(id){
+ if(!isChatAdmin||!confirm('Supprimer ce message du chat ?'))return;
+ const {error}=await supabase.from('chat_messages').delete().eq('id',id);
+ if(error){el('chatNotice').textContent='Suppression refusée : '+error.message;return}
+ chatCache=chatCache.filter(m=>String(m.id)!==String(id));renderChat(chatCache);await loadChatAdminPanel();
+}
+async function moderateChatBan(userId,name){
+ if(!isChatAdmin||!userId||userId===currentUser?.id)return;
+ const durations={ '1h':3600000,'24h':86400000,'7d':604800000 };
+ const choice=el('chatBanDuration').value;
+ const expires_at=choice==='permanent'?null:new Date(Date.now()+durations[choice]).toISOString();
+ const reason=el('chatBanReason').value.trim()||'Non-respect des règles du chat';
+ if(!confirm(`Bannir ${name||'ce compte'} du chat ${choice==='permanent'?'définitivement':'pour '+choice.replace('h',' heure(s)').replace('d',' jour(s)')} ?`))return;
+ const {error}=await supabase.from('chat_bans').upsert({user_id:userId,banned_by:currentUser.id,reason,expires_at},{onConflict:'user_id'});
+ if(error){el('chatNotice').textContent='Bannissement refusé : '+error.message;return}
+ el('chatBanReason').value='';await loadChatAdminPanel();
+}
+async function moderateChatUnban(userId){
+ if(!isChatAdmin||!confirm('Réactiver ce compte dans le chat ?'))return;
+ const {error}=await supabase.from('chat_bans').delete().eq('user_id',userId);
+ if(error){el('chatNotice').textContent='Réactivation refusée : '+error.message;return}
+ await loadChatAdminPanel();
+}
 function renderChat(messages){
  const box=el('chatMessages');
  const previousScroll=box.scrollTop;
  const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
  chatCache=messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
  if(!chatCache.length){box.innerHTML='<div class="chat-empty">Pas encore de message. Lance la conversation ! ✨</div>';return}
- box.innerHTML=chatCache.map(m=>`<div class="chat-message ${m.user_id===currentUser?.id?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div></div>`).join('');
+ box.innerHTML=chatCache.map(m=>{
+  const mine=m.user_id===currentUser?.id;
+  const actions=isChatAdmin?`<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="${escapeText(m.id??'')}">Supprimer</button>${mine?'':`<button class="btn" type="button" data-chat-ban="${escapeText(m.user_id??'')}" data-chat-name="${escapeText(m.display_name||'Fan d’anime')}">Bannir</button>`}</div>`:'';
+  return `<div class="chat-message ${mine?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div>${actions}</div>`;
+ }).join('');
  box.scrollTop=wasNearBottom?box.scrollHeight:previousScroll;
 }
 function mergeChatMessage(message){
@@ -899,13 +1001,20 @@ async function loadChat(){
   return;
  }
  try{
-  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+  await checkChatAdmin();
+  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
   if(error)throw error;
   renderChat(data||[]);
-  el('chatNotice').textContent='Chat connecté · les nouveaux messages apparaissent automatiquement.';
+  const isBanned=await refreshChatBanState();
+  if(!isBanned)el('chatNotice').textContent='🟢 Chat en direct · messages conservés 30 jours.';
+  if(isChatAdmin)await loadChatAdminPanel();
   if(!chatChannel){
    chatChannel=supabase.channel('animeverse-chat-live-v2')
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>mergeChatMessage(payload.new))
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_messages'},payload=>{
+      chatCache=chatCache.filter(m=>String(m.id)!==String(payload.old?.id));
+      renderChat(chatCache);if(isChatAdmin)loadChatAdminPanel();
+    })
     .subscribe(status=>{
       if(status==='SUBSCRIBED')el('chatNotice').textContent='🟢 Chat en direct connecté.';
       else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')el('chatNotice').textContent='Le direct est momentanément indisponible : actualisation automatique activée.';
@@ -916,7 +1025,7 @@ async function loadChat(){
   chatPollHandle=setInterval(async()=>{
    if(!supabase||!currentUser||el('chatView').classList.contains('hidden'))return;
    try{
-    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
     if(!error&&data)renderChat(data);
    }catch(e){console.warn('Chat refresh:',e)}
   },5000);
@@ -925,10 +1034,20 @@ async function loadChat(){
   el('chatNotice').textContent='Erreur du chat : '+(err.message||'configuration de la base à vérifier');
  }
 }
+el('chatMessages').addEventListener('click',async event=>{
+ const del=event.target.closest('[data-chat-delete]'),ban=event.target.closest('[data-chat-ban]'),unban=event.target.closest('[data-chat-unban]');
+ if(del){await moderateChatMessageDelete(del.dataset.chatDelete);return}
+ if(ban){await moderateChatBan(ban.dataset.chatBan,ban.dataset.chatName);return}
+ if(unban)await moderateChatUnban(unban.dataset.chatUnban);
+});
+el('chatBansList').addEventListener('click',async event=>{
+ const button=event.target.closest('[data-chat-unban]');if(button)await moderateChatUnban(button.dataset.chatUnban);
+});
 el('chatForm').addEventListener('submit',async e=>{
  e.preventDefault();const content=el('chatInput').value.trim();if(!content||!currentUser||!supabase)return;
  el('chatSend').disabled=true;
  try{
+  const isBanned=await refreshChatBanState();if(isBanned)return;
   const display_name=(currentUser.user_metadata?.username||(currentUser.email||'Fan').split('@')[0]).slice(0,32);
   const {data,error}=await supabase.from('chat_messages').insert({user_id:currentUser.id,display_name,content}).select('id,user_id,display_name,content,created_at').single();
   if(error)throw error;
@@ -936,7 +1055,7 @@ el('chatForm').addEventListener('submit',async e=>{
   if(data)mergeChatMessage(data);else await loadChat();
  }
  catch(err){console.error('Envoi chat échoué:',err);el('chatNotice').textContent='Message non envoyé : '+(err.message||'erreur')+' — vérifie les droits SQL de chat_messages.';}
- finally{el('chatSend').disabled=false}
+ finally{try{await refreshChatBanState()}catch{el('chatInput').disabled=true}el('chatSend').disabled=el('chatInput').disabled}
 });
 
 // Video posts: users can share supported online video links; posts are stored in Supabase.
@@ -1014,7 +1133,7 @@ async function init(){
   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;
-  supabase.auth.onAuthStateChange(async(_event,session)=>{currentUser=session?.user||null;updateAccount();if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else {if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}}});
+  supabase.auth.onAuthStateChange(async(_event,session)=>{currentUser=session?.user||null;isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else {if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}}});
   updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
