@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=11">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=12">
 </head>
 <body>
 <div class="wrap">
@@ -996,15 +996,12 @@ $('search').addEventListener('input',()=>{
 });
 $('search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(headerSearchTimer);if($('search').value.trim().length>=2){window.__animeverseHeaderSearch=true;searchCatalogue(1)}}});
 $('catalogueQuery').addEventListener('input',()=>{
- const query=$('catalogueQuery').value;
- if($('search').value!==query)$('search').value=query;
+ // Les deux moteurs restent indépendants : chaque champ conserve sa propre recherche.
 });
 $('catalogueForm').addEventListener('submit',e=>{
  e.preventDefault();
- const query=$('catalogueQuery').value.trim();
- $('search').value=query;
  clearTimeout(headerSearchTimer);
- window.__animeverseHeaderSearch=true;
+ window.__animeverseHeaderSearch=false;
  searchCatalogue(1);
 });
 ['genreFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));
