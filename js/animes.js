@@ -159,17 +159,22 @@
     $("#dialog-alternate").textContent = item.alternate ? "Autre titre : " + item.alternate : "";
     $("#legal-search").href = makeJustWatchUrl(item.title);
     const seasonList = $("#season-list");
+    const seasonSelect = $("#season-select");
+    const languageSelect = $("#language-select");
+    const episodePanel = $("#episode-panel");
+    const episodeStatus = $("#episode-status");
     seasonList.replaceChildren();
-    const loading = document.createElement("p");
-    loading.className = "alternate-title";
-    loading.textContent = "Recherche des saisons disponibles…";
-    seasonList.append(loading);
+    seasonSelect.replaceChildren(new Option("Chargement des saisons…", ""));
+    seasonSelect.disabled = true;
+    episodePanel.hidden = true;
     dialog.showModal();
     try {
       const data = await api("seasons", { q: item.title });
       const seasons = Array.isArray(data) ? data : (Array.isArray(data.seasons) ? data.seasons : []);
+      seasonSelect.replaceChildren();
       seasonList.replaceChildren();
       if (!seasons.length) {
+        seasonSelect.add(new Option("Aucune saison trouvée", ""));
         const empty = document.createElement("p");
         empty.className = "alternate-title";
         empty.textContent = "Aucune saison détaillée n’a été renvoyée pour ce titre.";
@@ -177,24 +182,54 @@
         return;
       }
       seasons.forEach((season, index) => {
+        const name = safeText(season.Saison || season.season || season.title || ("Saison " + (index + 1)));
+        const value = safeText(season.Saison || season.season || season.url || ("saison" + (index + 1)));
+        seasonSelect.add(new Option(name, value));
+      });
+      seasonSelect.disabled = false;
+
+      async function showSelectedSeason() {
+        const selected = seasons[seasonSelect.selectedIndex];
+        if (!selected) return;
+        seasonList.replaceChildren();
+        episodePanel.hidden = false;
+        episodeStatus.textContent = "Vérification des informations pour " + seasonSelect.options[seasonSelect.selectedIndex].text + " (" + (languageSelect.value === "vf" ? "VF" : "VOSTFR") + ")…";
         const row = document.createElement("div");
         row.className = "season-item";
-        const textWrap = document.createElement("div");
-        const name = document.createElement("span");
-        name.textContent = safeText(season.Saison || season.season || season.title || ("Saison " + (index + 1)));
+        const wrap = document.createElement("div");
+        const title = document.createElement("span");
+        title.textContent = safeText(selected.Saison || selected.season || selected.title || "Saison sélectionnée");
         const small = document.createElement("small");
-        small.textContent = "Vérifier les offres et langues disponibles";
-        textWrap.append(name, document.createElement("br"), small);
-        const link = document.createElement("a");
-        link.href = makeJustWatchUrl(item.title);
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = "Options légales ↗";
-        row.append(textWrap, link);
+        small.textContent = "Les informations d’épisodes détaillées ne sont pas renvoyées par la route saisons.";
+        wrap.append(title, document.createElement("br"), small);
+        row.append(wrap);
         seasonList.append(row);
-      });
+        $("#episode-list").replaceChildren();
+        try {
+          const seasonKey = seasonSelect.value || "saison1";
+          const detail = await api("season", { q: item.title, s: seasonKey, v: languageSelect.value });
+          const info = Array.isArray(detail) ? detail[0] : detail;
+          const infoText = safeText(info && (info.Saison || info.title || info.url));
+          episodeStatus.textContent = infoText
+            ? infoText + " — Pour la liste des épisodes et les langues disponibles, consulte les plateformes légales."
+            : "La saison est sélectionnée. Les épisodes et lecteurs vidéo ne sont pas fournis dans cette réponse API.";
+        } catch (error) {
+          episodeStatus.textContent = "Impossible de charger le détail de cette saison : " + error.message;
+        }
+        const legal = document.createElement("a");
+        legal.href = makeJustWatchUrl(item.title);
+        legal.target = "_blank";
+        legal.rel = "noopener noreferrer";
+        legal.className = "primary-link";
+        legal.textContent = "Trouver les épisodes en " + (languageSelect.value === "vf" ? "VF" : "VOSTFR") + " ↗";
+        $("#episode-list").append(legal);
+      }
+      seasonSelect.onchange = showSelectedSeason;
+      languageSelect.onchange = showSelectedSeason;
+      await showSelectedSeason();
     } catch (error) {
       seasonList.replaceChildren();
+      seasonSelect.replaceChildren(new Option("Erreur de chargement", ""));
       const p = document.createElement("p");
       p.className = "alternate-title";
       p.textContent = "Impossible de récupérer les saisons : " + error.message;
