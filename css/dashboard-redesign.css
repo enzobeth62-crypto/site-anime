@@ -434,3 +434,9 @@ footer{background:rgba(3,6,11,.82)!important;border-top:1px solid rgba(70,111,14
 .catalogue-search{display:none!important}
 #catalogueStatus{margin-top:14px}
 #catalogueResults{scroll-margin-top:100px}
+
+
+/* Keep the two search boxes as separate entry points; remove unwanted decorative confetti */
+.catalogue-search{display:flex!important;visibility:visible!important;opacity:1!important}
+.catalogue-search input{min-width:0;flex:1}
+#catalogueStatus{margin-top:14px}
