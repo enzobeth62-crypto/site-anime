@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=10">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=11">
 </head>
 <body>
 <div class="wrap">
@@ -1054,9 +1054,11 @@ async function searchCatalogue(page=1){
   if(!response.ok)throw new Error('Le catalogue répond temporairement indisponible ('+response.status+').');
   const json=await response.json();if(requestId!==catalogueRequestId)return;const data=json?.data?.Page;
   if(!data)throw new Error('Réponse du catalogue invalide.');
-  catalogueLastPage=data.pageInfo.lastPage||1;
-  catalogueHasNextPage=Boolean(data.pageInfo.hasNextPage);
   const results=data.media||[];
+  // AniList peut annoncer un total incohérent pour certaines recherches.
+  // On se base sur la page réellement renvoyée pour éviter « 1 / 500 » puis « 3 / 3 ».
+  catalogueHasNextPage=Boolean(data.pageInfo.hasNextPage) && results.length >= 10;
+  catalogueLastPage=catalogueHasNextPage ? Math.max(page+1, data.pageInfo.lastPage||page+1) : page;
   if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';finishHeaderSearch();return}
   $('catalogueStatus').textContent=`${results.length} résultats pour « ${query} » · page ${page}`;
   $('catalogueResults').innerHTML=results.map(m=>{
@@ -1066,9 +1068,9 @@ async function searchCatalogue(page=1){
    const already=anime.some(a=>a.anilistId===m.id);
    return `<article class="api-card"><div class="api-poster">${cover?`<img loading="lazy" decoding="async" width="220" height="310" src="${escapeHTML(cover)}" alt="${escapeHTML(title)}" onerror="this.remove()">`:''}<span class="poster-title">${escapeHTML(title)}</span></div><div class="api-info"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(String(year))} · ${escapeHTML(eps)}<br>${escapeHTML(genres||'Genres non renseignés')}</small><button class="btn ${already?'':'primary'}" data-catalog-add="${m.id}" ${already?'disabled':''}>${already?'✓ Déjà ajouté':'＋ Ajouter'}</button></div></article>`;
   }).join('');
-  $('cataloguePages').classList.toggle('hidden',catalogueLastPage<=1);
-  $('pageLabel').textContent=`Page ${page} / ${catalogueLastPage}`;
-  $('prevPage').disabled=page<=1;$('nextPage').disabled=page>=catalogueLastPage;
+  $('cataloguePages').classList.toggle('hidden',page<=1&&!catalogueHasNextPage);
+  $('pageLabel').textContent=catalogueHasNextPage ? `Page ${page} · autres résultats disponibles` : `Page ${page} · dernière page`;
+  $('prevPage').disabled=page<=1;$('nextPage').disabled=!catalogueHasNextPage;
   window.__animeverseSearchResults=results;finishHeaderSearch();
  }catch(err){
   if(requestId===catalogueRequestId){$('catalogueStatus').textContent='Impossible de contacter le catalogue. Vérifie ta connexion et réessaie.';console.error(err);finishHeaderSearch()}
