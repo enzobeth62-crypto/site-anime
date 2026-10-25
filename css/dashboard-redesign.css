@@ -428,3 +428,9 @@ footer{background:rgba(3,6,11,.82)!important;border-top:1px solid rgba(70,111,14
  .section-head{margin-top:24px!important}
  .card,.api-card,.video-card{border-radius:15px!important}
 }
+
+
+/* Use one primary search field in the sticky header; results remain in the catalogue panel */
+.catalogue-search{display:none!important}
+#catalogueStatus{margin-top:14px}
+#catalogueResults{scroll-margin-top:100px}
