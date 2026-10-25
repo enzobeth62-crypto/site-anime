@@ -1414,7 +1414,7 @@ async function loadVideos(){
   const {data,error}=await supabase.from('video_posts').select('id,user_id,display_name,title,video_url,description,created_at').order('created_at',{ascending:false}).limit(60);
   if(error)throw error;renderVideos(data||[]);
   el('videoNotice').textContent=currentUser?'Tu peux publier un lien vidéo. Les publications sont partagées avec la communauté.':'Connecte-toi pour publier une vidéo.';
- }catch(err){console.warn('Videos:',err);el('videoNotice').textContent='La catégorie vidéo doit être activée avec le script SQL fourni.'}
+ }catch(err){console.error('Video listing failed:',err);el('videoNotice').textContent='Impossible de charger les vidéos, réessaie dans un instant.'}
 }
 const menuToggle=el('menuToggle'),menuActions=el('headActions');function closeAnimeverseMenu(){document.body.classList.remove('nav-open');menuToggle?.setAttribute('aria-expanded','false')}menuToggle?.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');menuToggle.setAttribute('aria-expanded',String(open))});menuActions?.addEventListener('click',e=>{if(e.target.closest('button'))closeAnimeverseMenu()});document.addEventListener('click',e=>{if(document.body.classList.contains('nav-open')&&!e.target.closest('.top'))closeAnimeverseMenu()});el('navVideos').addEventListener('click',()=>showView('videos'));
 el('videoRefresh').addEventListener('click',loadVideos);
@@ -1430,7 +1430,7 @@ el('videoForm').addEventListener('submit',async e=>{
   const {error}=await supabase.from('video_posts').insert({user_id:currentUser.id,display_name,title,video_url,description});
   if(error)throw error;
   el('videoForm').reset();await loadVideos();el('videoNotice').textContent='🎉 Vidéo publiée !';
- }catch(err){console.error(err);el('videoNotice').textContent='Publication impossible : '+(err.message||'vérifie le script SQL vidéo.')}
+ }catch(err){console.error('Video publication failed:',err);el('videoNotice').textContent='Impossible de publier la vidéo, réessaie dans un instant.'}
  finally{el('videoSubmit').disabled=false}
 });
 // Upload a round avatar to the public Supabase Storage bucket and save its URL to profile metadata.
