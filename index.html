@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=8">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=9">
 </head>
 <body>
 <div class="wrap">
@@ -987,7 +987,7 @@ $('search').addEventListener('input',()=>{
  clearTimeout(headerSearchTimer);
  if(query.length>=2){
   $('catalogueStatus').textContent='Recherche sur AniList…';
-  headerSearchTimer=setTimeout(()=>{window.__animeverseHeaderSearch=true;searchCatalogue(1)},700);
+  headerSearchTimer=setTimeout(()=>{window.__animeverseHeaderSearch=true;searchCatalogue(1)},650);
  }else{
   window.__animeverseHeaderSearch=false;
   $('cataloguePages').classList.add('hidden');
@@ -995,6 +995,18 @@ $('search').addEventListener('input',()=>{
  }
 });
 $('search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(headerSearchTimer);if($('search').value.trim().length>=2){window.__animeverseHeaderSearch=true;searchCatalogue(1)}}});
+$('catalogueQuery').addEventListener('input',()=>{
+ const query=$('catalogueQuery').value;
+ if($('search').value!==query)$('search').value=query;
+});
+$('catalogueForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const query=$('catalogueQuery').value.trim();
+ $('search').value=query;
+ clearTimeout(headerSearchTimer);
+ window.__animeverseHeaderSearch=true;
+ searchCatalogue(1);
+});
 ['genreFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));
 $('resetFilters').onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
 function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
@@ -1028,7 +1040,7 @@ const anilistQuery=`query ($search: String, $page: Int) {
 }`;
 function safeImageUrl(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
 function animeTitle(m){return m.title?.english||m.title?.romaji||m.title?.native||'Anime sans titre'}
-function finishHeaderSearch(){if(!window.__animeverseHeaderSearch)return;window.__animeverseHeaderSearch=false;$('catalogueStatus').scrollIntoView({behavior:'smooth',block:'center'})}
+function finishHeaderSearch(){if(!window.__animeverseHeaderSearch)return;window.__animeverseHeaderSearch=false;}
 let catalogueRequestId=0;
 async function searchCatalogue(page=1){
  const requestId=++catalogueRequestId;
