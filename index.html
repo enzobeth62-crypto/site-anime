@@ -424,36 +424,56 @@ footer{padding:20px 0 4px;border-top:1px solid rgba(196,198,231,.09);letter-spac
  html{scroll-behavior:auto}
  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Animeverse streaming-inspired home */
+:root{--bg:#05070a;--panel:#0a1016;--panel2:#101820;--line:#1b2a33;--text:#f4f8fb;--muted:#9aa8b1;--accent:#18bfe8;--accent2:#2b78d2;--good:#6ee7b7}
+body{background:#05070a;color:#f4f8fb;background-image:radial-gradient(ellipse at 54% -25%,#142e3b 0,transparent 46%);background-attachment:fixed}.wrap{max-width:1440px;padding:10px clamp(10px,2vw,24px) 55px}
+.top{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:46px minmax(180px,1fr) auto;gap:18px;align-items:center;margin:0 -8px 18px;padding:12px 18px;background:#05070af2;border:0;border-bottom:1px solid #1d2b32;border-radius:0;box-shadow:0 10px 24px #0006;backdrop-filter:blur(14px)}
+.menu-toggle{width:42px;height:42px;border:0;border-radius:10px;background:transparent;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:10px;cursor:pointer}.menu-toggle span{height:2px;width:100%;border-radius:3px;background:#32d4f4;transition:transform .2s,opacity .2s}
+body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45deg)}body.nav-open .menu-toggle span:nth-child(2){opacity:0}body.nav-open .menu-toggle span:last-child{transform:translateY(-7px) rotate(-45deg)}
+.top-search{display:flex;align-items:center;gap:10px;max-width:560px;width:100%;padding:0 14px;border:1px solid #17252d;border-radius:12px;background:#0b1116;color:#28c9ec}.top-search>span{font-size:25px}.top-search .field{min-height:42px;padding:8px 0;border:0;background:transparent;box-shadow:none;color:#f5fbff}.top-search .field::placeholder{color:#738792}
+.brand{gap:10px;margin-left:0;justify-self:end;flex-direction:row-reverse;text-align:right}.brand h1{font-size:18px;letter-spacing:.12em}.brand small{font-size:10px;color:#8095a0}.logo{width:42px;height:42px;border-radius:12px;background:#080d12;border:1px solid #253740;box-shadow:0 0 16px #18bfe826}
+.head-actions{display:none;position:absolute;left:18px;top:calc(100% + 8px);width:min(320px,calc(100vw - 28px));padding:9px;flex-direction:column;align-items:stretch;gap:3px;background:#080c10f7;border:1px solid #24343d;border-radius:13px;box-shadow:0 20px 60px #000b;backdrop-filter:blur(18px)}body.nav-open .head-actions{display:flex}
+.head-actions .btn,.head-actions .btn:not(.primary){width:100%;justify-content:flex-start;text-align:left;background:transparent;border:0;color:#d8e4e8;padding:11px 13px;border-radius:9px;box-shadow:none}.head-actions .btn:hover,.head-actions .btn.primary{background:#10232b;color:#49d9f3;border-color:transparent;box-shadow:none}.head-actions .btn.primary{color:#071116;background:linear-gradient(110deg,#25cce8,#3e91dd)}
+.hero{display:block;position:relative;margin:0 0 22px}.hero-main{position:relative;display:flex;align-items:center;min-height:clamp(360px,44vw,560px);padding:clamp(24px,5vw,68px);overflow:hidden;isolation:isolate;border:1px solid #1e343e;border-radius:18px;background:radial-gradient(ellipse at 80% 50%,#16485b 0,transparent 35%),linear-gradient(110deg,#0c171e,#080b10 72%)}
+.spotlight-poster{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;opacity:.77}.hero-main:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,#05080df5 0%,#05080dd9 35%,#05080d55 72%,#05080d30 100%),linear-gradient(0deg,#05080dcc,transparent 52%);pointer-events:none}
+.hero-main:after{content:"";position:absolute;z-index:-1;inset:auto 0 0;height:3px;width:28%;background:linear-gradient(90deg,#23cbed,transparent);filter:drop-shadow(0 0 8px #23cbed);pointer-events:none}.spotlight-copy{position:relative;z-index:2;width:min(650px,70%)}
+.hero h2{font-size:clamp(36px,6vw,72px);line-height:.99;letter-spacing:-.045em;margin:12px 0 15px;text-wrap:balance;text-shadow:0 4px 24px #000b}.hero p{color:#c0cdd3;max-width:610px;margin:12px 0 20px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.eyebrow{color:#44d2ef;letter-spacing:.16em}.spotlight-meta .tag{background:#17252eaa;border-color:#69808c55;color:#e6f1f5}
+.hero-side{position:absolute;right:18px;bottom:17px;width:min(420px,42%);padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;background:transparent;border:0;box-shadow:none;z-index:3}.stat{padding:10px 12px;border-color:#d5f2ff22;background:#071016b8;backdrop-filter:blur(12px);border-radius:10px}.stat b{font-size:23px;color:#fff}.stat span{font-size:10px;color:#c1cdd2}
+.home-rail{margin:22px 0 28px}.home-rail-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.home-rail-head h3{font-size:clamp(18px,2.5vw,23px);margin:3px 0 0}.home-rail-head .eyebrow{font-size:10px}
+.media-rail{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 13px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#126c83 #0a1116}.media-rail::-webkit-scrollbar{height:6px}.media-rail::-webkit-scrollbar-thumb{background:#126c83;border-radius:99px}
+.rail-card{flex:0 0 clamp(220px,28vw,330px);scroll-snap-align:start;min-width:0;overflow:hidden;border:1px solid #1b303b;border-radius:13px;background:#080e13;transition:transform .2s,border-color .2s}.rail-card:hover{transform:translateY(-3px);border-color:#2ac8e9}
+.rail-poster{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#123342,#1d2550)}.rail-poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}.rail-card:hover .rail-poster img{transform:scale(1.04)}.rail-scrim{position:absolute;inset:28% 0 0;background:linear-gradient(transparent,#05080be8)}
+.rail-status{position:absolute;z-index:1;top:9px;left:9px;padding:4px 7px;border-radius:6px;background:#081117c9;color:#dff8ff;font-size:10px;text-transform:uppercase}.rail-fallback{height:100%;display:grid;place-items:center;color:#46d4ed;font-size:42px}
+.rail-info{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px}.rail-info strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.rail-info small{flex:none;color:#8ba1ac;font-size:11px}
+.toolbar{grid-template-columns:repeat(3,minmax(130px,1fr));padding:10px;background:#080e13;border-color:#182b34;border-radius:12px}.field{background:#080d12;border-color:#1b303b;color:#edfaff}.field:focus{border-color:#25c8e8;box-shadow:0 0 0 3px #25c8e81c}
+.section-head{border-bottom:1px solid #1b2c35;padding-bottom:9px}.section-head h3{font-size:21px}
+.grid{display:flex;gap:13px;overflow-x:auto;padding:2px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#126c83 #0a1116}.grid::-webkit-scrollbar{height:6px}.grid::-webkit-scrollbar-thumb{background:#126c83;border-radius:99px}
+.card{flex:0 0 clamp(210px,22vw,265px);scroll-snap-align:start;border-radius:13px;background:#080e13;border-color:#1a2d36;box-shadow:none}.card:hover{transform:translateY(-3px);border-color:#26c9e9;box-shadow:0 12px 30px #0008}
+.poster{height:auto;aspect-ratio:16/9;background:linear-gradient(135deg,#103441,#1e2853)}.poster img{transition:transform .35s}.card:hover .poster img{transform:scale(1.04)}.poster:after{content:"";position:absolute;inset:42% 0 0;background:linear-gradient(transparent,#05080be8)}.poster .poster-title{position:absolute;z-index:1;left:13px;right:13px;bottom:11px;text-align:left;font-size:17px;background:none;text-shadow:0 2px 12px #000c}
+.card-body{padding:12px}.card h4{font-size:14px}.card-actions .btn{font-size:11px;padding:7px}.catalogue{background:#080e13;border-color:#1a2d36;border-radius:15px;padding:16px}.catalogue h3{font-size:20px}
+.api-grid{display:flex;overflow-x:auto;gap:12px}.api-card{flex:0 0 165px;border-color:#1a2d36;background:#070c10}.api-poster{height:210px}.video-grid{display:flex;overflow-x:auto;gap:13px}.video-card{flex:0 0 clamp(250px,32vw,360px);background:#080e13;border-color:#1a2d36}
+.chat-shell,.modal-card,.auth-card{border-color:#1b333e;background:linear-gradient(145deg,#0c151b,#070b0f)}.tag{background:#0d2029;border-color:#1c4553;color:#bceefa}
+@media(max-width:720px){.wrap{padding:0 10px 38px}.top{grid-template-columns:42px 1fr auto;gap:9px;margin:0 -10px 14px;padding:9px 11px}.top-search{grid-column:1/-1;grid-row:2;max-width:none}.top-search .field{min-height:38px}.brand{grid-column:3;grid-row:1}.brand small{display:none}.brand h1{font-size:15px}.logo{width:38px;height:38px}.logo svg{width:27px;height:27px}.menu-toggle{grid-column:1;grid-row:1}.head-actions{left:10px;top:calc(100% + 6px)}
+.hero-main{min-height:clamp(390px,112vw,530px);padding:24px 18px;align-items:flex-end}.spotlight-copy{width:100%;padding-bottom:95px}.hero-main:before{background:linear-gradient(0deg,#05080df5 0%,#05080dc9 42%,#05080d35 100%)}.hero h2{font-size:clamp(34px,10vw,52px)}.hero p{-webkit-line-clamp:3;font-size:13px}
+.hero-side{position:relative;right:auto;bottom:auto;width:100%;margin-top:-82px;padding:0 10px;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.stat{padding:8px 7px;text-align:center}.stat b{font-size:18px}.stat span{font-size:9px;line-height:1.2}
+.home-rail{margin:18px 0 24px}.rail-card{flex-basis:74vw}.rail-info{padding:9px}.rail-info small{font-size:10px}.toolbar{grid-template-columns:1fr 1fr}.toolbar #genreFilter{grid-column:1}.toolbar #statusFilter{grid-column:2}.toolbar #resetFilters{grid-column:1/-1}.card{flex-basis:72vw}.api-card{flex-basis:43vw}.api-poster{height:190px}.video-card{flex-basis:82vw}}
+@media(prefers-reduced-motion:reduce){.rail-card,.rail-poster img,.card{transition:none!important}.rail-card:hover,.card:hover{transform:none!important}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
-    <div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div>
-    <div class="head-actions">
+  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Rechercher un titre, un studio, une note…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat">💬 Chat en direct</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button>
       <button class="btn primary" id="authOpen">👤 Connexion</button>
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
-    </div>
-  </header>
-  <div id="libraryView">\n  <section class="hero">
-    <div class="hero-main">
-      <div class="eyebrow">Ton univers, tes règles</div>
-      <h2>Chaque anime a<br>son histoire.</h2>
-      <p>Garde une trace de tout ce que tu as regardé : genres, notes, saisons, coups de cœur et prochaines découvertes. Avec un compte, retrouve ta collection sur tes appareils.</p>
-      <button class="btn primary" id="addHero">＋ Ajouter à ma collection</button>
-    </div>
-    <div class="hero-side">
-      <div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div>
-      <div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div>
-      <div class="stat"><b id="watchingStat">0</b><span>En cours</span></div>
-      <div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div>
-    </div>
-  </section>
-  <section class="toolbar">
-    <input class="field" id="search" placeholder="🔎 Rechercher un titre, un studio, une note…">
+    </div></header>
+  <div id="libraryView">\n  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">＋ Ajouter à ma collection</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
+<section class="toolbar">
+    
     <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
     <select class="field" id="statusFilter"><option value="">Tous les statuts</option><option>Vu</option><option>En cours</option><option>À voir</option><option>Abandonné</option></select>
     <button class="btn" id="resetFilters">Réinitialiser</button>
@@ -471,7 +491,7 @@ footer{padding:20px 0 4px;border-top:1px solid rgba(196,198,231,.09);letter-spac
     <div id="catalogueResults" class="api-grid"></div>
     <div class="api-pages hidden" id="cataloguePages"><button class="btn" id="prevPage">← Précédent</button><span id="pageLabel" class="meta"></span><button class="btn" id="nextPage">Suivant →</button></div>
   </section>
-  <div class="section-head"><h3>Ma collection</h3><span class="count" id="resultsCount">0 anime</span></div>
+  <section class="home-rail" id="recentSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">RÉCEMMENT AJOUTÉS</div><h3>Les dernières entrées</h3></div><span class="count" id="recentCount"></span></div><div class="media-rail" id="recentRail"></div></section><div class="section-head"><h3>Ma collection</h3><span class="count" id="resultsCount">0 anime</span></div>
   <main id="collection" class="grid"></main>
   <div id="empty" class="empty"><div class="emoji">📚</div><h3>Ton aventure commence ici</h3><p>Ajoute ton premier anime pour commencer ta bibliothèque.</p><button class="btn primary" id="emptyAdd">＋ Ajouter mon premier anime</button></div>
   </div>\n
@@ -583,7 +603,11 @@ function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';
 function statusClass(s){return {'Vu':'vu','En cours':'encours','À voir':'a-voir','Abandonné':'abandonne'}[s]||'a-voir'}
 function allGenres(){return [...new Set(anime.flatMap(a=>a.genres||[]).map(g=>g.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'))}
 function updateGenreOptions(){const sel=$('genreFilter'),old=sel.value;sel.innerHTML='<option value="">Tous les genres</option>'+allGenres().map(g=>`<option>${escapeHTML(g)}</option>`).join('');sel.value=old}
+function homeImageUrl(value){try{const u=new URL(String(value||''));return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
+function homeRailCard(a){const url=homeImageUrl(a.poster);return '<article class="rail-card"><div class="rail-poster">'+(url?'<img loading="lazy" src="'+escapeHTML(url)+'" alt="" onerror="this.remove()">':'<div class="rail-fallback">✦</div>')+'<span class="rail-status">'+escapeHTML(a.status||'À voir')+'</span><div class="rail-scrim"></div></div><div class="rail-info"><strong>'+escapeHTML(a.title)+'</strong><small>'+escapeHTML(a.episodes||a.year||'À découvrir')+'</small></div></article>'}
+function renderHomeSpotlight(){const featured=anime.find(a=>a.status==='En cours'&&homeImageUrl(a.poster))||anime.find(a=>homeImageUrl(a.poster));const image=$('spotlightPoster'),url=homeImageUrl(featured?.poster);if(url){image.src=url;image.classList.remove('hidden')}else{image.removeAttribute('src');image.classList.add('hidden')}$('spotlightKicker').textContent=featured?(featured.status||'Dans ta collection').toLocaleUpperCase('fr')+' · ANIME À LA UNE':'ANIMEVERSE · À LA UNE';$('spotlightTitle').textContent=featured?.title||'Chaque anime a son histoire.';const detail=featured?[featured.year,(featured.genres||[]).slice(0,3).join(' · ')].filter(Boolean).join(' · '):'Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.';$('spotlightDescription').textContent=featured?.notes||detail;$('spotlightStatus').textContent=featured?((featured.status||'À voir')+(featured.rating?' · ★ '+featured.rating+'/10':'')):'Ta bibliothèque personnelle';const active=anime.filter(a=>a.status==='En cours');$('resumeRail').innerHTML=active.slice(0,12).map(homeRailCard).join('');$('resumeCount').textContent=active.length+(active.length>1?' titres':' titre');$('resumeSection').style.display=active.length?'block':'none';const recent=anime.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0)).slice(0,12);$('recentRail').innerHTML=recent.map(homeRailCard).join('');$('recentCount').textContent=recent.length+(recent.length>1?' titres':' titre');$('recentSection').style.display=recent.length?'block':'none'}
 function render(){
+ renderHomeSpotlight();
  updateGenreOptions();
  $('totalStat').textContent=anime.length;
  $('watchedStat').textContent=anime.filter(a=>a.status==='Vu').length;
@@ -602,7 +626,7 @@ function render(){
   <div class="card-actions"><button class="btn" data-edit="${escapeHTML(a.id)}">✎ Modifier</button><button class="btn" data-status="${escapeHTML(a.id)}">⇄ Statut</button></div></div></article>`).join('');
  $('empty').style.display=anime.length?'none':'block';
  $('empty').innerHTML=anime.length?'<div class="emoji">🔎</div><h3>Aucun résultat</h3><p>Essaie de modifier ta recherche ou tes filtres.</p><button class="btn" id="clearEmpty">Effacer les filtres</button>':$('empty').innerHTML;
- $('collection').style.display=list.length?'grid':'none';
+ $('collection').style.display=list.length?'flex':'none';
  const clear=$('clearEmpty');if(clear)clear.onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
 }
 function openModal(item=null){
@@ -925,7 +949,7 @@ async function loadVideos(){
   el('videoNotice').textContent=currentUser?'Tu peux publier un lien vidéo. Les publications sont partagées avec la communauté.':'Connecte-toi pour publier une vidéo.';
  }catch(err){console.warn('Videos:',err);el('videoNotice').textContent='La catégorie vidéo doit être activée avec le script SQL fourni.'}
 }
-el('navVideos').addEventListener('click',()=>showView('videos'));
+const menuToggle=el('menuToggle'),menuActions=el('headActions');function closeAnimeverseMenu(){document.body.classList.remove('nav-open');menuToggle?.setAttribute('aria-expanded','false')}menuToggle?.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');menuToggle.setAttribute('aria-expanded',String(open))});menuActions?.addEventListener('click',e=>{if(e.target.closest('button'))closeAnimeverseMenu()});document.addEventListener('click',e=>{if(document.body.classList.contains('nav-open')&&!e.target.closest('.top'))closeAnimeverseMenu()});el('navVideos').addEventListener('click',()=>showView('videos'));
 el('videoRefresh').addEventListener('click',loadVideos);
 el('videoForm').addEventListener('submit',async e=>{
  e.preventDefault();
