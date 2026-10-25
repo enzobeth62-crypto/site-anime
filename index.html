@@ -1053,12 +1053,14 @@ function renderChat(messages){
  const previousScroll=box.scrollTop;
  const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
  chatCache=messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
- if(!chatCache.length){box.innerHTML='<div class="chat-empty"><span>🌸</span><strong>Le salon est tout calme…</strong><small>Envoie le premier message et fais vivre la discussion ✨</small></div>';return}
- box.innerHTML=chatCache.map(m=>{
+ if(!chatCache.length){const empty='<div class="chat-empty"><span>🌸</span><strong>Le salon est tout calme…</strong><small>Envoie le premier message et fais vivre la discussion ✨</small></div>';if(box.innerHTML!==empty)box.innerHTML=empty;return}
+ const html=chatCache.map(m=>{
   const mine=m.user_id===currentUser?.id;
   const actions=isChatAdmin?`<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="${escapeText(m.id??'')}">Supprimer</button>${mine?'':`<button class="btn" type="button" data-chat-ban="${escapeText(m.user_id??'')}" data-chat-name="${escapeText(m.display_name||'Fan d’anime')}">Bannir</button>`}</div>`:'';
   return `<div class="chat-message ${mine?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">${escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())}</span><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div>${actions}</div>`;
  }).join('');
+ if(box.innerHTML===html)return;
+ box.innerHTML=html;
  box.scrollTop=wasNearBottom?box.scrollHeight:previousScroll;
 }
 function mergeChatMessage(message){
