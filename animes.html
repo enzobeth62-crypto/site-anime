@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11111b">
+  <meta name="description" content="Explore les animes, recherche les saisons disponibles et trouve où les regarder légalement.">
+  <title>Découvrir les animes — Animeverse</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/css/animes.css">
+  <script src="/js/animes.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Retour à Animeverse">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span><strong>ANIMEVERSE</strong><small>Explorer l’univers anime</small></span>
+      </a>
+      <a class="back-link" href="/">← Ma bibliothèque</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> EXPLORATION ANIME</div>
+        <h1>Trouve ton <span>prochain anime.</span></h1>
+        <p>Recherche des titres, explore les saisons disponibles et consulte les options de visionnage légal.</p>
+        <form id="search-form" class="searchbar" role="search">
+          <span aria-hidden="true">⌕</span>
+          <label class="sr-only" for="search-input">Nom de l’anime</label>
+          <input id="search-input" name="q" type="search" maxlength="120" placeholder="Ex. : Frieren, One Piece, Demon Slayer…" autocomplete="off" required>
+          <button type="submit">Rechercher</button>
+        </form>
+        <div class="quick-searches" aria-label="Recherches populaires">
+          <span>Essayer :</span>
+          <button type="button" data-query="Frieren">Frieren</button>
+          <button type="button" data-query="One Piece">One Piece</button>
+          <button type="button" data-query="Demon Slayer">Demon Slayer</button>
+          <button type="button" data-query="Solo Leveling">Solo Leveling</button>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Filtres du catalogue">
+        <div>
+          <h2 id="results-heading">À découvrir</h2>
+          <p id="results-summary">Lance une recherche ou charge le catalogue disponible.</p>
+        </div>
+        <div class="toolbar-actions">
+          <label class="sr-only" for="sort-select">Trier les résultats</label>
+          <select id="sort-select">
+            <option value="relevance">Pertinence</option>
+            <option value="title">Titre A–Z</option>
+          </select>
+          <button id="load-catalog" class="button-secondary" type="button">Charger le catalogue</button>
+        </div>
+      </section>
+
+      <div id="status" class="status" role="status" aria-live="polite">Prêt à explorer.</div>
+      <section id="results" class="anime-grid" aria-label="Résultats de recherche"></section>
+      <nav id="pagination" class="pagination" aria-label="Pagination" hidden>
+        <button id="previous-page" class="button-secondary" type="button">← Précédent</button>
+        <span id="page-label"></span>
+        <button id="next-page" class="button-secondary" type="button">Suivant →</button>
+      </nav>
+
+      <section class="notice">
+        <span aria-hidden="true">ⓘ</span>
+        <p>Les données de catalogue et de saisons dépendent de la disponibilité du service externe. Les boutons de visionnage recherchent les plateformes légales via JustWatch ; Animeverse ne lit ni n’héberge de vidéos.</p>
+      </section>
+    </main>
+
+    <footer>Animeverse · Page indépendante · Les comptes et la bibliothèque existants ne sont pas modifiés.</footer>
+  </div>
+
+  <dialog id="anime-dialog" class="anime-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-head">
+      <div><p class="eyebrow">FICHE ANIME</p><h2 id="dialog-title">Détails</h2></div>
+      <button id="close-dialog" class="close-button" type="button" aria-label="Fermer">×</button>
+    </div>
+    <p id="dialog-alternate" class="alternate-title"></p>
+    <div class="dialog-actions">
+      <a id="legal-search" class="primary-link" target="_blank" rel="noopener noreferrer">Trouver où regarder légalement ↗</a>
+    </div>
+    <h3>Saisons détectées</h3>
+    <div id="season-list" class="season-list"></div>
+    <p class="dialog-footnote">La disponibilité varie selon le pays et peut changer. Vérifie les offres et les langues directement sur la plateforme.</p>
+  </dialog>
+</body>
+</html>
