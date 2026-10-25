@@ -475,6 +475,35 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
 @media(max-width:760px){.chat-admin-grid{grid-template-columns:1fr}.chat-admin-stats{gap:6px}.chat-admin-stat{padding:10px}.chat-admin-stat strong{font-size:18px}}
 @media(max-width:460px){.chat-admin{padding:12px}.chat-admin-stats{grid-template-columns:1fr 1fr}.chat-admin-head{align-items:flex-start;flex-direction:column}.chat-ban-form{grid-template-columns:1fr}}
 </style>
+<style id="modern-chat-styles">
+.chat-shell{position:relative;overflow:hidden;border:1px solid #38cce833;border-radius:26px;background:linear-gradient(155deg,#121c29 0%,#0b1019 52%,#11101b 100%);box-shadow:0 24px 70px #0005,inset 0 1px #ffffff0b}
+.chat-shell:before{content:"";position:absolute;inset:-120px -80px auto auto;width:340px;height:280px;border-radius:50%;background:radial-gradient(circle,#a24dff1e,transparent 70%);pointer-events:none}
+.chat-title,.chat-notice,.chat-messages,.chat-compose,.chat-small,.chat-admin{position:relative}
+.chat-title{align-items:center}.chat-title h2{letter-spacing:-.04em}.chat-title .tag{border-color:#38cce855;background:#0d2933;color:#aaf4ff;box-shadow:0 0 24px #33c5e91d}
+.chat-messages{scrollbar-width:thin;scrollbar-color:#59617a transparent;background:radial-gradient(ellipse at 16% 0%,#6244a517,transparent 50%),linear-gradient(180deg,#0a1018,#0a0d15);border-color:#ffffff12}
+.chat-message{position:relative;border-radius:18px 18px 18px 5px;background:linear-gradient(145deg,#202839,#141b27);border-color:#ffffff14;box-shadow:0 10px 28px #0003;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.chat-message:hover{transform:translateY(-1px);border-color:#53d6e544;box-shadow:0 12px 28px #0005}
+.chat-message.mine{background:linear-gradient(135deg,#37306d,#5b2870 68%,#6c285d);border-color:#cf87ff55;border-radius:18px 18px 5px 18px}
+.chat-message .chat-meta{gap:8px;margin-bottom:7px;color:#d6c7ff}
+.chat-message .chat-meta time{margin-left:auto;font-size:10px}
+.chat-avatar{display:inline-grid;place-items:center;width:25px;height:25px;flex:0 0 25px;border-radius:9px;background:linear-gradient(135deg,#27d9dc,#8c62ff 65%,#e35eb0);color:#07101a;font-size:11px;font-weight:900;box-shadow:0 0 14px #53c9e633}
+.chat-message.mine .chat-avatar{background:linear-gradient(135deg,#ffe09a,#ff8ac2 56%,#a877ff)}
+.chat-empty{display:grid;place-content:center;justify-items:center;gap:7px;min-height:160px;color:#e9e9f7;text-align:center}
+.chat-empty>span{display:grid;place-items:center;width:54px;height:54px;border:1px solid #61dce944;border-radius:18px;background:#162735;color:#8cf4ff;font-size:26px;box-shadow:0 0 35px #45c5df1b}
+.chat-empty small{color:var(--muted)}
+.chat-compose{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;padding:9px!important;border:1px solid #ffffff18!important;border-radius:20px!important;background:linear-gradient(120deg,#131c28,#11111d)!important;box-shadow:0 12px 36px #0003}
+.chat-composer-row{display:flex;align-items:center;gap:8px;min-width:0}
+.chat-composer-row .field{min-width:0;flex:1;padding:12px 8px}
+.chat-composer-row .btn{width:auto!important;min-width:112px!important;border-radius:14px;padding:11px 16px;box-shadow:0 6px 18px #b437e833}
+.chat-emoji-toggle{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border:1px solid #ffffff17;border-radius:13px;background:#1a2030;color:#fff;font-size:20px;cursor:pointer;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.chat-emoji-toggle:hover{transform:translateY(-2px);border-color:#b77aff88;background:#2a2140}
+.chat-emoji-picker{display:flex;flex-wrap:wrap;gap:6px;padding:9px 2px 1px;border-top:1px solid #ffffff10}
+.chat-emoji-picker button{display:grid;place-items:center;width:38px;height:38px;border:1px solid #ffffff12;border-radius:12px;background:#ffffff08;font-size:20px;cursor:pointer;transition:transform .14s ease,background .14s ease}
+.chat-emoji-picker button:hover,.chat-emoji-picker button:focus-visible{transform:scale(1.1);outline:none;background:#a855f733}
+.chat-compose :disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:650px){.chat-composer-row{gap:5px}.chat-composer-row .btn{min-width:88px!important;padding:10px 12px}.chat-composer-row .field{padding:11px 4px}.chat-emoji-toggle{width:39px;height:39px;flex-basis:39px}}
+@media(prefers-reduced-motion:reduce){.chat-message,.chat-emoji-toggle,.chat-emoji-picker button{transition:none}.chat-message:hover,.chat-emoji-picker button:hover{transform:none}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -513,12 +542,16 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
 
   <section id="chatView" class="chat-view hidden">
     <div class="chat-shell">
-      <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">Connexion requise</span></div>
+      <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">🔒 Connexion requise</span></div>
       <div id="chatNotice" class="chat-notice">Pour utiliser le chat en direct et retrouver tes messages, configure d’abord le service gratuit Supabase. Les étapes sont expliquées dans le guide fourni avec le fichier.</div>
-      <div id="chatMessages" class="chat-messages"><div class="chat-empty">Les messages apparaîtront ici après connexion.</div></div>
+      <div id="chatMessages" class="chat-messages"><div class="chat-empty"><span>🌙</span><strong>Le salon attend ses premiers messages</strong><small>Connecte-toi et lance la conversation ✨</small></div></div>
       <form id="chatForm" class="chat-compose">
-        <input id="chatInput" class="field" maxlength="1000" placeholder="Écris ton message…" autocomplete="off" disabled>
-        <button class="btn primary" id="chatSend" type="submit" disabled>Envoyer ➤</button>
+        <div class="chat-composer-row">
+          <button id="chatEmojiToggle" class="chat-emoji-toggle" type="button" aria-label="Ouvrir le sélecteur d’emojis" aria-expanded="false" aria-controls="chatEmojiPicker" disabled>😊</button>
+          <input id="chatInput" class="field" maxlength="1000" placeholder="Écris ton message…" autocomplete="off" disabled>
+          <button class="btn primary" id="chatSend" type="submit" disabled>💌 Envoyer</button>
+        </div>
+        <div id="chatEmojiPicker" class="chat-emoji-picker hidden" role="group" aria-label="Choisir un emoji"></div>
       </form>
       <p class="chat-small">Règles : reste respectueux, ne partage pas d’informations personnelles et signale les comportements abusifs aux modérateurs du site. Les messages sont conservés 30 jours.</p>
       <aside id="chatAdminPanel" class="chat-admin hidden" aria-labelledby="chatAdminTitle">
@@ -810,9 +843,10 @@ function showView(view){
 function updateAccount(){
   const avatar=currentUser?.user_metadata?.avatar_url;
   el('authOpen').innerHTML=currentUser ? (avatar?'<img class="account-avatar" src="'+escapeText(avatar)+'" alt="">':'👤 ')+escapeText((currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'Mon compte').split('@')[0]))+' · Mon profil' : '👤 Connexion';
-  el('chatConnection').textContent=currentUser ? 'Connecté' : 'Connexion requise';
+  el('chatConnection').textContent=currentUser ? '🟢 Connecté' : '🔒 Connexion requise';
   el('chatInput').disabled=!currentUser || !supabase;
   el('chatSend').disabled=!currentUser || !supabase;
+  el('chatEmojiToggle').disabled=!currentUser || !supabase;
 }
 el('navLibrary').addEventListener('click',()=>showView('library'));
 el('navChat').addEventListener('click',()=>{showView('chat');if(currentUser)loadChat();});
@@ -898,6 +932,21 @@ async function saveCollectionCloud(){
 
  // Hook collection saves without changing the original app's local-first behaviour.
 window.__animeverseCloudSave=()=>{if(supabase&&currentUser)saveCollectionCloud()};
+const chatEmojiChoices=['✨','🌸','💖','🔥','😂','😭','👀','🎬','🍜','🥹','🎉','🤍','👏','😎','⚡','💜','🫶','🌙'];
+el('chatEmojiPicker').innerHTML=chatEmojiChoices.map(emoji=>`<button type="button" data-chat-emoji="${emoji}" aria-label="Ajouter ${emoji}">${emoji}</button>`).join('');
+el('chatEmojiToggle').addEventListener('click',()=>{
+ const picker=el('chatEmojiPicker'),opened=picker.classList.contains('hidden');
+ picker.classList.toggle('hidden',!opened);el('chatEmojiToggle').setAttribute('aria-expanded',String(opened));
+ if(opened)el('chatInput').focus();
+});
+el('chatEmojiPicker').addEventListener('click',event=>{
+ const button=event.target.closest('[data-chat-emoji]');if(!button)return;
+ const input=el('chatInput'),emoji=button.dataset.chatEmoji,start=input.selectionStart??input.value.length,end=input.selectionEnd??start;
+ input.setRangeText(emoji,start,end,'end');input.focus();
+});
+document.addEventListener('click',event=>{
+ if(!event.target.closest('.chat-compose')){el('chatEmojiPicker').classList.add('hidden');el('chatEmojiToggle').setAttribute('aria-expanded','false')}
+});
 let chatCache=[];
 let chatPollHandle=null;
 let isChatAdmin=false;
@@ -923,7 +972,7 @@ async function refreshChatBanState(){
  const {data,error}=await supabase.from('chat_bans').select('expires_at,reason').eq('user_id',currentUser.id).maybeSingle();
  if(error)throw error;
  const active=Boolean(data&&(!data.expires_at||new Date(data.expires_at).getTime()>Date.now()));
- input.disabled=active;send.disabled=active;
+ input.disabled=active;send.disabled=active;el('chatEmojiToggle').disabled=active;
  if(active){const until=data.expires_at?new Date(data.expires_at).toLocaleString('fr-FR'):'sans date de fin';el('chatNotice').textContent=`Accès au chat suspendu jusqu’au ${until}. Motif : ${data.reason}.`;}
  return active;
 }
@@ -980,11 +1029,11 @@ function renderChat(messages){
  const previousScroll=box.scrollTop;
  const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
  chatCache=messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
- if(!chatCache.length){box.innerHTML='<div class="chat-empty">Pas encore de message. Lance la conversation ! ✨</div>';return}
+ if(!chatCache.length){box.innerHTML='<div class="chat-empty"><span>🌸</span><strong>Le salon est tout calme…</strong><small>Envoie le premier message et fais vivre la discussion ✨</small></div>';return}
  box.innerHTML=chatCache.map(m=>{
   const mine=m.user_id===currentUser?.id;
   const actions=isChatAdmin?`<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="${escapeText(m.id??'')}">Supprimer</button>${mine?'':`<button class="btn" type="button" data-chat-ban="${escapeText(m.user_id??'')}" data-chat-name="${escapeText(m.display_name||'Fan d’anime')}">Bannir</button>`}</div>`:'';
-  return `<div class="chat-message ${mine?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div>${actions}</div>`;
+  return `<div class="chat-message ${mine?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">${escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())}</span><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div>${actions}</div>`;
  }).join('');
  box.scrollTop=wasNearBottom?box.scrollHeight:previousScroll;
 }
