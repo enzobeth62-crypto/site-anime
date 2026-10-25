@@ -848,6 +848,53 @@ html{scroll-behavior:smooth}
 @media(max-width:600px){.av-status-chip{min-height:44px;padding:8px 10px;font-size:11px}.av-catalog-suggestions{gap:6px}.av-catalog-suggestions button{min-height:40px}}
 </style>
 
+
+<style id="animeverse-sidebar-v2">
+:root{--av-side-w:76px;--av-side-open:248px}
+#avLeftSidebar{position:fixed!important;z-index:1000;left:0;top:0;bottom:0;width:var(--av-side-w)!important;min-height:100dvh;display:flex!important;flex-direction:column!important;gap:12px!important;overflow:hidden!important;padding:18px 10px calc(14px + env(safe-area-inset-bottom))!important;background:rgba(10,12,22,.86)!important;backdrop-filter:blur(18px)!important;border:0!important;border-right:1px solid transparent!important;box-shadow:12px 0 32px #0002!important;transition:width .24s ease,padding .24s ease,background .2s!important}
+#avLeftSidebar:after{content:"";position:absolute;pointer-events:none;top:0;right:0;bottom:0;width:1px;background:linear-gradient(180deg,#a78bfa,#67e8f9 52%,#f472b6);opacity:.72}
+#avLeftSidebar .brand{position:relative;z-index:1;display:flex!important;justify-content:center!important;align-items:center;gap:12px;min-height:48px;margin:0 0 5px!important;padding:2px!important;flex:0 0 auto}
+#avLeftSidebar .brand .logo{width:43px;height:43px;flex:0 0 43px;animation:avLogoGlow 6s ease-in-out infinite}
+#avLeftSidebar .brand .logo:after{content:"";position:absolute;width:5px;height:5px;right:7px;top:5px;border-radius:50%;background:#f9b8ff;box-shadow:0 0 10px #f9b8ff;animation:avSparkle 6s ease-in-out infinite}
+#avLeftSidebar .brand>div:last-child{display:none!important}
+@keyframes avLogoGlow{0%,88%,100%{filter:drop-shadow(0 0 0 #67e8f900)}92%{filter:drop-shadow(0 0 8px #67e8f9)}96%{filter:drop-shadow(0 0 3px #f472b6)}}
+@keyframes avSparkle{0%,87%,100%{opacity:.25;transform:scale(.7)}91%,96%{opacity:1;transform:scale(1.2)}}
+#avSideToggle{width:44px;height:44px;min-height:44px;align-self:center;display:grid;place-items:center;flex:0 0 auto;border:1px solid #ffffff14;border-radius:14px;background:#ffffff06;color:#9daec8;cursor:pointer}
+#avSideToggle:hover{color:white;border-color:#67e8f96b;background:#67e8f910}
+#avSideToggle svg{width:19px;height:19px}
+#avLeftSidebar .av-nav-group{position:relative;z-index:1;display:flex!important;flex-direction:column;gap:5px!important;min-height:0}
+#avLeftSidebar .av-nav-group:first-of-type{overflow-y:auto;overflow-x:hidden;flex:1 1 auto;scrollbar-width:thin;scrollbar-color:#38435b transparent;padding:0 0 8px}
+#avLeftSidebar .av-nav-label{display:none!important}
+#avLeftSidebar .btn,#avLeftSidebar .av-side-link{position:relative;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:5px!important;width:100%!important;min-width:0;min-height:54px!important;padding:7px 3px!important;margin:0!important;border:1px solid transparent!important;border-radius:15px!important;background:transparent!important;color:#aab6ca!important;box-shadow:none!important;text-align:center!important;text-decoration:none!important;overflow:visible!important;transition:background .18s,color .18s,transform .18s,border-color .18s!important}
+#avLeftSidebar .av-side-icon{display:grid!important;place-items:center;width:24px!important;height:24px!important;flex:0 0 24px;font-size:0!important;line-height:1;color:currentColor}
+#avLeftSidebar .av-side-icon svg{width:23px;height:23px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#avLeftSidebar .av-side-text{display:block!important;max-width:100%;font-size:10px!important;line-height:1.15!important;white-space:normal!important;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+#avLeftSidebar .btn:hover,#avLeftSidebar .av-side-link:hover{transform:translateX(2px);background:#ffffff0b!important;color:#f7f8ff!important;border-color:#ffffff12!important}
+#avLeftSidebar [aria-current="page"]{background:linear-gradient(135deg,#8b5cf62b,#f472b622)!important;color:#fff!important;border-color:#c4b5fd36!important;box-shadow:inset 0 0 20px #8b5cf612,0 7px 22px #0002!important}
+#avLeftSidebar [aria-current="page"]:before{content:"";position:absolute;left:-10px;top:10px;bottom:10px;width:3px;border-radius:0 4px 4px 0;background:linear-gradient(#a78bfa,#f472b6);box-shadow:0 0 11px #a78bfa}
+#avLeftSidebar .btn:focus-visible,#avLeftSidebar .av-side-link:focus-visible,#avSideToggle:focus-visible{outline:2px solid #67e8f9!important;outline-offset:2px!important}
+#avLeftSidebar .av-sidebar-spacer{display:none!important}
+#avLeftSidebar .av-side-badge{position:absolute;top:4px;right:8px;min-width:7px;height:7px;border-radius:99px;background:#fb7185;box-shadow:0 0 0 3px #fb71851c;animation:avBadgePulse 2.4s ease-in-out infinite}
+@keyframes avBadgePulse{50%{box-shadow:0 0 0 6px #fb718500}}
+#avLeftSidebar .av-side-group-title{display:none}
+#avLeftSidebar .av-account-card{position:relative;z-index:2;display:flex;flex:0 0 auto;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:7px 4px;border:1px solid #ffffff14;border-radius:16px;background:linear-gradient(145deg,#ffffff0a,#ffffff03);color:#f4f7ff;cursor:pointer}
+#avLeftSidebar .av-account-avatar{width:35px;height:35px;flex:0 0 35px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(140deg,#8b5cf6,#ec4899);font-weight:800;color:white}
+#avLeftSidebar .av-account-copy{display:none;min-width:0;text-align:left}
+#avLeftSidebar .av-account-copy strong{display:block;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+#avLeftSidebar .av-account-copy small{display:block;color:#aab8cd;font-size:10px}
+#avLeftSidebar #installAppButton{display:none!important}
+#avLeftSidebar #installAppButton:not([hidden]){display:flex!important}
+#avLeftSidebar #authOpen{display:none!important}
+#avSideAccountMenu{position:absolute;left:calc(100% + 8px);bottom:12px;z-index:2000;width:200px;padding:7px;border:1px solid #ffffff1c;border-radius:16px;background:#111522;box-shadow:0 16px 42px #0008}
+#avSideAccountMenu[hidden]{display:none!important}
+#avSideAccountMenu button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:9px 11px;border:0;border-radius:10px;background:transparent;color:#e7edf9;text-align:left}
+#avSideAccountMenu button:hover{background:#ffffff0c}
+#avSideAccountMenu .av-logout{color:#fda4af}
+#avSideMobileBar,#avSideMobileDrawer{display:none}
+@media(min-width:1101px){#avLeftSidebar{width:var(--av-side-open)!important;padding:18px 13px calc(14px + env(safe-area-inset-bottom))!important}#avLeftSidebar .brand{justify-content:flex-start!important;padding:2px 5px!important}#avLeftSidebar .brand>div:last-child{display:block!important}#avLeftSidebar .brand h1{font-size:14px;letter-spacing:.14em}#avLeftSidebar .brand small{font-size:10px}#avSideToggle{align-self:flex-end;margin-right:4px}#avLeftSidebar .av-nav-group{gap:4px!important}#avLeftSidebar .av-side-group-title{display:block;margin:10px 10px 3px;color:#6e7d98;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}#avLeftSidebar .btn,#avLeftSidebar .av-side-link{flex-direction:row!important;justify-content:flex-start!important;gap:13px!important;min-height:46px!important;padding:9px 12px!important;text-align:left!important}#avLeftSidebar .av-side-icon{flex:0 0 24px}#avLeftSidebar .av-side-text{font-size:14px!important;white-space:nowrap!important}#avLeftSidebar .av-account-card{justify-content:flex-start;padding:8px}#avLeftSidebar .av-account-copy{display:block}#avLeftSidebar .av-side-badge{top:10px;right:13px}}
+@media(max-width:767px){#avLeftSidebar{display:none!important}.wrap{padding-left:12px!important;padding-right:12px!important;padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}.top{padding-top:6px}.menu-toggle{display:none!important}#avSideMobileBar{position:fixed;z-index:1500;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:7px;border:1px solid #ffffff1b;border-radius:22px;background:rgba(10,12,22,.84);backdrop-filter:blur(20px);box-shadow:0 12px 36px #0008}#avSideMobileBar button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:54px;padding:5px 2px;border:1px solid transparent;border-radius:15px;background:transparent;color:#aab6ca;font-size:10px;font-weight:650}#avSideMobileBar button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none}#avSideMobileBar button[aria-current="page"]{background:linear-gradient(135deg,#8b5cf62e,#f472b626);border-color:#c4b5fd3b;color:white}#avSideMobileBar button:focus-visible{outline:2px solid #67e8f9;outline-offset:2px}#avSideMobileDrawer{position:fixed;z-index:1499;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));display:none;max-height:min(58dvh,480px);overflow:auto;padding:12px;border:1px solid #ffffff1c;border-radius:20px;background:rgba(10,12,22,.96);backdrop-filter:blur(20px);box-shadow:0 18px 42px #0009}#avSideMobileDrawer.open{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}#avSideMobileDrawer button{display:flex;align-items:center;gap:10px;min-height:48px;padding:10px;border:1px solid #ffffff12;border-radius:13px;background:#ffffff06;color:#f0f4ff;text-align:left}#avSideMobileDrawer button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none}#avSideAccountMenu{position:fixed;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));width:auto}#avSideAssistant,#aiAssistantButton{bottom:calc(105px + env(safe-area-inset-bottom))!important}}
+@media(prefers-reduced-motion:reduce){#avLeftSidebar *,#avSideMobileBar *,#avSideMobileDrawer *,#avLeftSidebar:before,#avLeftSidebar:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -1919,6 +1966,88 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  }
  const detail=$('#avHeroDetail');
  detail?.addEventListener('click',()=>{const title=$('#spotlightTitle')?.textContent?.trim();const items=window.__animeverse?.anime||[];const item=items.find(a=>a.title===title);if(item){const edit=document.querySelector('[data-edit="'+CSS.escape(item.id)+'"]');if(edit)edit.click();else window.dispatchEvent(new CustomEvent('animeverse:open-detail',{detail:item}))}else $('#addHero')?.click()});
+})();
+</script>
+
+<script id="animeverse-sidebar-v2-script">
+(()=>{"use strict";
+const $=(s,r=document)=>r.querySelector(s),$=(s,r=document)=>[...r.querySelectorAll(s)];
+const icons={
+home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/>',
+books:'<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21Z"/><path d="M4 4.5V21M8 6h8M8 10h8M8 14h6"/>',
+video:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4Z"/>',
+chat:'<path d="M21 11.5a8 8 0 0 1-8 8H7l-4 2v-7.5a8 8 0 1 1 18-2.5Z"/><path d="M8 10h8M8 14h5"/>',
+live:'<path d="M21 11.5a8 8 0 0 1-8 8H7l-4 2v-7.5A8 8 0 0 1 17 6"/><path d="m14 2-2 6h4l-3 6 1-5h-4Z"/>',
+forum:'<path d="M4 5h16v12H9l-5 4Z"/><path d="M8 9h8M8 13h5"/>',
+calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/>',
+compass:'<circle cx="12" cy="12" r="9"/><path d="m15.8 8.2-2.4 5.2-5.2 2.4 2.4-5.2Z"/>',
+chart:'<path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 6-7"/>',
+sparkles:'<path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="m19 15 1.2 2.8L23 19l-2.8 1.2L19 23l-1.2-2.8L15 19l2.8-1.2Z"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+logout:'<path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>',
+menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+chevron:'<path d="m9 18 6-6-6-6"/>',
+settings:'<circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.9l-1.4-1.1 1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1-.1 1.8Z"/>'
+};
+const svg=name=>'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+(icons[name]||icons.sparkles)+'</svg>';
+function setup(){
+const sidebar=$("#avLeftSidebar");if(!sidebar||sidebar.dataset.polished==="1")return;
+sidebar.dataset.polished="1";sidebar.setAttribute("role","navigation");sidebar.setAttribute("aria-label","Navigation principale");
+const brand=$(".brand",sidebar);if(brand){brand.setAttribute("role","link");brand.setAttribute("tabindex","0");brand.setAttribute("aria-label","Animeverse — Accueil");brand.addEventListener("click",()=>$("#navLibrary")?.click());brand.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("#navLibrary")?.click()}})}
+const specs=[
+["navLibrary","Accueil","home","Explorer"],["avDiscover","Bibliothèque","books","Explorer"],["navVideos","Vidéos","video","Explorer"],["navCalendar","Calendrier","calendar","Explorer"],
+["navChat","Communauté","chat","Communauté"],["avLive","Chat en direct","live","Communauté"],["avForum","Forum","forum","Communauté"],
+["avSearch","Découvrir","compass","Explorer"],["avStats","Statistiques","chart","Moi"],["avAI","Assistant IA","sparkles","Moi"],["avProfile","Profil","user","Moi"]
+];
+const primary=sidebar.querySelector(".av-nav-group:first-of-type"),secondary=sidebar.querySelector(".av-nav-group:nth-of-type(2)");
+const oldButtons=new Map($("button",sidebar).map(b=>[b.id,b]));
+function setButton(el,label,icon){
+ if(!el)return;el.classList.remove("primary");el.innerHTML='<span class="av-side-icon">'+svg(icon)+'</span><span class="av-side-text">'+label+'</span>';el.setAttribute("aria-label",label);el.title=label;
+}
+const addNav=(id,label,icon,group,action,href)=>{
+ let el=$("#"+id,sidebar);
+ if(!el){el=href?document.createElement("a"):document.createElement("button");if(!href)el.type="button";el.id=id;if(href)el.href=href;el.className=href?"av-side-link":"btn";(group==="Moi"?secondary:primary).append(el)}
+ setButton(el,label,icon);el.dataset.avNav="1";
+ if(action)el.addEventListener("click",action);
+ return el;
+};
+const titleGroups=()=>{if(!primary||!secondary)return;const all=[...primary.children,...secondary.children];all.forEach(e=>{if(e.classList.contains("av-side-group-title"))e.remove()});let current="";[...primary.children].forEach(e=>{const spec=specs.find(s=>s[0]===e.id);if(spec&&spec[3]!==current){current=spec[3];const h=document.createElement("div");h.className="av-side-group-title";h.textContent=current;primary.insertBefore(h,e)}})};
+const original={navLibrary:$("#navLibrary",sidebar),navChat:$("#navChat",sidebar),navVideos:$("#navVideos",sidebar),navCalendar:$("#navCalendar",sidebar)};
+setButton(original.navLibrary,"Accueil","home");setButton(original.navChat,"Communauté","chat");setButton(original.navVideos,"Vidéos","video");setButton(original.navCalendar,"Calendrier","calendar");
+addNav("avDiscover","Bibliothèque","books","Explorer",()=>{$("#navLibrary")?.click();$("#search")?.focus()});
+addNav("avSearch","Découvrir","compass","Explorer",null,"/animes.html");
+addNav("avLive","Chat en direct","live","Communauté",()=>$("#navChat")?.click());
+addNav("avForum","Forum","forum","Communauté",()=>$("#navChat")?.click());
+addNav("avStats","Statistiques","chart","Moi",()=>{$("#navLibrary")?.click();$("#totalStat")?.scrollIntoView({behavior:"smooth",block:"center"})});
+addNav("avAI","Assistant IA","sparkles","Moi",()=>$("#aiAssistantButton,#assistantButton,.ai-assistant-fab")?.click());
+addNav("avProfile","Profil","user","Moi",()=>$("#authOpen")?.click());
+if(secondary){const recent=secondary.querySelector("button:not([id])");if(recent){setButton(recent,"Récemment vus","calendar");recent.dataset.avNav="1"}}
+titleGroups();
+const account=document.createElement("button");account.type="button";account.id="avSideAccount";account.className="av-account-card";account.innerHTML='<span class="av-account-avatar">A</span><span class="av-account-copy"><strong>Mon compte</strong><small>Membre</small></span>';sidebar.append(account);
+const menu=document.createElement("div");menu.id="avSideAccountMenu";menu.hidden=true;menu.innerHTML='<button type="button" data-action="profile">'+svg("user")+' Mon profil</button><button type="button" data-action="settings">'+svg("settings")+' Réglages</button><button type="button" class="av-logout" data-action="logout">'+svg("logout")+' Se déconnecter</button>';sidebar.append(menu);
+account.addEventListener("click",()=>{menu.hidden=!menu.hidden});
+menu.addEventListener("click",e=>{const a=e.target.closest("[data-action]")?.dataset.action;if(!a)return;menu.hidden=true;if(a==="profile")$("#authOpen")?.click();else if(a==="settings")$("#authOpen")?.click();else $("#authOpen")?.click()});
+const install=$("#installAppButton");if(install){const mo=new MutationObserver(()=>{if(!install.hidden&&install.parentElement!==sidebar)secondary?.append(install)});mo.observe(install,{attributes:true,attributeFilter:["hidden"]});if(!install.hidden)secondary?.append(install)}
+const toggle=document.createElement("button");toggle.id="avSideToggle";toggle.type="button";toggle.setAttribute("aria-label","Déplier le menu");toggle.innerHTML=svg("menu");sidebar.insertBefore(toggle,primary);
+const media=matchMedia("(min-width:1101px)");let expanded=media.matches;try{const saved=localStorage.getItem("animeverseSidebarExpanded");if(saved!==null)expanded=saved==="1"}catch{}
+function applyExpanded(){sidebar.classList.toggle("av-expanded",expanded);toggle.setAttribute("aria-expanded",String(expanded));toggle.setAttribute("aria-label",expanded?"Replier le menu":"Déplier le menu");toggle.innerHTML=svg(expanded?"chevron":"menu");}
+toggle.addEventListener("click",()=>{expanded=!expanded;try{localStorage.setItem("animeverseSidebarExpanded",expanded?"1":"0")}catch{}applyExpanded()});applyExpanded();
+function markActive(){const ids=["libraryView","chatView","videosView","calendarView"];const visible=ids.find(id=>{const el=$("#"+id);return el&&!el.classList.contains("hidden")});const active=visible==="chatView"?"navChat":visible==="videosView"?"navVideos":visible==="calendarView"?"navCalendar":"navLibrary";$("[data-av-nav]",sidebar).forEach(el=>{el.removeAttribute("aria-current");if(el.id===active)el.setAttribute("aria-current","page")});$("[data-av-mobile]",mobile).forEach(el=>{el.removeAttribute("aria-current");if(el.dataset.avMobile===active)el.setAttribute("aria-current","page")})}
+const mobile=document.createElement("nav");mobile.id="avSideMobileBar";mobile.setAttribute("aria-label","Navigation mobile");
+const mobileItems=[["navLibrary","Accueil","home"],["avDiscover","Bibliothèque","books"],["navChat","Communauté","chat"],["navVideos","Vidéos","video"]];
+mobileItems.forEach(([id,label,ic])=>{const b=document.createElement("button");b.type="button";b.dataset.avMobile=id;b.innerHTML=svg(ic)+"<span>"+label+"</span>";b.addEventListener("click",()=>$("#"+id)?.click());mobile.append(b)});
+const more=document.createElement("button");more.type="button";more.innerHTML=svg("menu")+"<span>Plus</span>";more.setAttribute("aria-expanded","false");mobile.append(more);document.body.append(mobile);
+const drawer=document.createElement("div");drawer.id="avSideMobileDrawer";drawer.setAttribute("aria-label","Autres destinations");
+const mobileMore=[["navCalendar","Calendrier","calendar"],["avLive","Chat en direct","live"],["avForum","Forum","forum"],["avSearch","Découvrir","compass"],["avStats","Statistiques","chart"],["avAI","Assistant IA","sparkles"],["avProfile","Profil","user"]];
+mobileMore.forEach(([id,label,ic])=>{const b=document.createElement("button");b.type="button";b.innerHTML=svg(ic)+"<span>"+label+"</span>";b.addEventListener("click",()=>{$("#"+id)?.click();drawer.classList.remove("open");more.setAttribute("aria-expanded","false")});drawer.append(b)});
+document.body.append(drawer);more.addEventListener("click",()=>{drawer.classList.toggle("open");more.setAttribute("aria-expanded",String(drawer.classList.contains("open")))});
+document.addEventListener("click",e=>{if(!e.target.closest("#avSideAccountMenu,#avSideAccount"))menu.hidden=true;if(!e.target.closest("#avSideMobileBar,#avSideMobileDrawer")){drawer.classList.remove("open");more.setAttribute("aria-expanded","false")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){drawer.classList.remove("open");menu.hidden=true;more.setAttribute("aria-expanded","false")}if(!sidebar.contains(e.target)||!["ArrowDown","ArrowUp"].includes(e.key))return;const links=$('[data-av-nav="1"]',sidebar).filter(el=>el.offsetParent!==null);const i=links.indexOf(e.target);if(i>=0){e.preventDefault();links[Math.max(0,Math.min(links.length-1,i+(e.key==="ArrowDown"?1:-1)))].focus()}});
+document.addEventListener("click",e=>{if(e.target.closest("#navLibrary,#navChat,#navVideos,#navCalendar"))setTimeout(markActive,50)});
+new MutationObserver(markActive).observe($("#libraryView")?.parentElement||document.body,{subtree:true,attributes:true,attributeFilter:["class"]});
+markActive();
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(setup,0),{once:true});else setTimeout(setup,0);
 })();
 </script>
 </body>
