@@ -816,10 +816,23 @@ html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
+
+<style id="animeverse-home-controls">
+.top-search>span{font-size:0!important;width:18px;height:18px;display:block;flex:0 0 18px;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.8' cy='10.8' r='7'/%3E%3Cpath d='m16 16 4.5 4.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.top-search input::placeholder{color:#8290a8}
+.av-hero-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.av-hero-actions svg,.catalogue-search button svg{width:18px;height:18px;flex:0 0 18px}
+.av-hero-detail{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:12px 18px;border:1px solid #ffffff35;border-radius:15px;background:rgba(8,10,18,.55);backdrop-filter:blur(12px);color:#f7f8ff;font-weight:700;box-shadow:inset 0 1px #ffffff12}
+.av-hero-detail:hover{background:#ffffff14;border-color:#ffffff55}
+.catalogue-search .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.catalogue-search .btn:before,#addHero:before{display:none!important}
+@media(max-width:420px){.av-hero-actions{align-items:stretch;flex-direction:column}.av-hero-actions>*{width:100%}}
+</style>
+
 </head>
 <body>
 <div class="wrap">
-  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Recherche AniList + bibliothèque : Re:Zero, Naruto…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
+  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="Recherche AniList + bibliothèque : Re:Zero, Naruto…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg> Communauté</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button><button class="btn" id="navCalendar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg> Calendrier</button><button class="btn" id="installAppButton" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/></svg> Installer l’appli</button>
@@ -827,7 +840,7 @@ html{scroll-behavior:smooth}
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
     </div></header>
   <div id="libraryView">
-  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
+  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><div class="av-hero-actions"><button class="btn primary" id="addHero"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="7"/><path d="m16 16 4.5 4.5"/></svg>Ajouter un anime</button><button class="av-hero-detail" id="avHeroDetail" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z"/><circle cx="12" cy="12" r="3"/></svg>Voir la fiche</button></div></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
 <section class="toolbar">
     
     <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
@@ -841,7 +854,7 @@ html{scroll-behavior:smooth}
     </div>
     <form id="catalogueForm" class="catalogue-search">
       <input class="field" id="catalogueQuery" minlength="2" placeholder="Ex. Re:Zero, Blue Box, Naruto…" autocomplete="off">
-      <button class="btn primary" type="submit">🔎 Rechercher</button>
+      <button class="btn primary" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="7"/><path d="m16 16 4.5 4.5"/></svg>Rechercher</button>
     </form>
     <div class="api-status" id="catalogueStatus">Entre un titre pour rechercher dans le catalogue.</div>
     <div id="catalogueResults" class="api-grid"></div>
@@ -1862,5 +1875,32 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
   <script src="/js/dashboard-redesign.js?v=2" defer></script>
+
+<script id="animeverse-home-interactions">
+(()=> {
+ const $=s=>document.querySelector(s);
+ const status=$('#statusFilter'),genre=$('#genreFilter'),reset=$('#resetFilters');
+ if(status&&reset&&!$('#avStatusChips')){
+  const bar=document.createElement('div');bar.id='avStatusChips';bar.className='av-status-chips';bar.setAttribute('aria-label','Filtrer par statut');
+  const options=[['','Tous'],['À voir','À voir'],['En cours','En cours'],['Vu','Vu'],['Abandonné','Abandonné']];
+  options.forEach(([value,label])=>{const b=document.createElement('button');b.type='button';b.className='av-status-chip';b.dataset.value=value;b.textContent=label;b.addEventListener('click',()=>{status.value=value;status.dispatchEvent(new Event('change',{bubbles:true}));sync();});bar.append(b)});
+  $('.toolbar')?.prepend(bar);
+  function sync(){bar.querySelectorAll('button').forEach(b=>{const active=b.dataset.value===status.value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
+  status.addEventListener('change',sync);reset.addEventListener('click',()=>setTimeout(sync,0));bar.addEventListener('click',e=>{if(e.target.closest('button'))sync()});sync();
+ }
+ const form=$('#catalogueForm'),query=$('#catalogueQuery');
+ if(form&&query&&!$('#avCatalogSuggestions')){
+  const suggestions=document.createElement('div');suggestions.id='avCatalogSuggestions';suggestions.className='av-catalog-suggestions';
+  [['Populaires','popular'],['Cette saison','season'],['Les mieux notés','top'],['Action','Action'],['Romance','Romance']].forEach(([label,value])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{query.value=value==='popular'?'Popular':value==='season'?'This season':value==='top'?'Top rated':value;form.requestSubmit()});suggestions.append(b)});
+  form.insertAdjacentElement('afterend',suggestions);
+ }
+ const empty=$('#catalogueStatus');
+ if(empty&&empty.textContent.toLowerCase().includes('entre un titre')){
+  empty.innerHTML='<div class="av-catalog-empty"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="21" cy="21" r="12"/><path d="m30 30 9 9M16 21h10M21 16v10"/></svg><span>Recherche un titre, un genre ou explore les suggestions.</span></div>';
+ }
+ const detail=$('#avHeroDetail');
+ detail?.addEventListener('click',()=>{const title=$('#spotlightTitle')?.textContent?.trim();const items=window.__animeverse?.anime||[];const item=items.find(a=>a.title===title);if(item){const edit=document.querySelector('[data-edit="'+CSS.escape(item.id)+'"]');if(edit)edit.click();else window.dispatchEvent(new CustomEvent('animeverse:open-detail',{detail:item}))}else $('#addHero')?.click()});
+})();
+</script>
 </body>
 </html>
