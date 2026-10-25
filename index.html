@@ -135,6 +135,40 @@ body{background:radial-gradient(ellipse at 8% -8%,#5330a84a 0,transparent 38%),r
 @media(max-width:800px){.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.video-grid,.video-form{grid-template-columns:1fr}.video-form textarea{grid-column:auto}.video-list-head h3{font-size:20px}.avatar-editor{align-items:flex-start}.avatar-preview{width:68px;height:68px}}
 
+
+
+/* Animeverse anime-inspired streaming look */
+:root{--bg:#06090d;--panel:#0d131a;--panel2:#121d27;--line:#18313d;--text:#f5fbff;--muted:#98aab5;--accent:#36d9ff;--accent2:#7c7dff;--good:#5fe0b2}
+html{background:#06090d}
+body{background:radial-gradient(ellipse at 50% -20%,#123344 0,transparent 44%),radial-gradient(ellipse at 100% 35%,#111b32 0,transparent 38%),#06090d;background-attachment:fixed;color:#f5fbff}
+.wrap{max-width:1320px;padding-top:15px}
+.top{position:sticky;top:10px;z-index:25;padding:11px 14px;margin-bottom:22px;background:#080c11eF;border:1px solid #183440;border-radius:18px;box-shadow:0 12px 40px #0008;backdrop-filter:blur(18px)}
+.brand{gap:11px}.logo{width:46px;height:46px;border-radius:15px;background:radial-gradient(circle at 35% 20%,#1c4052,#101722 70%);border:1px solid #39cce866;display:grid;place-items:center;box-shadow:0 0 26px #22d3ee24,inset 0 0 16px #22d3ee12;font-size:0;flex:none}.logo svg{display:block;width:31px;height:31px;filter:drop-shadow(0 0 7px #48ddff80)}
+.brand h1{font-size:19px;letter-spacing:.15em}.brand small{color:#7e9ba9;font-size:11px;letter-spacing:.04em}
+.head-actions{gap:5px}.head-actions .btn:not(.primary){background:transparent;border-color:transparent;color:#b9ccd7}.head-actions .btn:not(.primary):hover,.head-actions .btn.primary{border-color:#40dafa55;color:#ecfbff;background:#10212b;box-shadow:0 0 18px #35d8ff15}.head-actions .btn.primary{background:linear-gradient(135deg,#13bdda,#398dff);border:0;color:#041016;text-shadow:none}.head-actions .btn.primary:hover{filter:brightness(1.12)}
+.btn{border-radius:12px;backdrop-filter:blur(12px)}.btn.primary{background:linear-gradient(120deg,#13bdda,#398dff);box-shadow:0 7px 24px #28c9ed24}.btn:hover{border-color:#39d8fa;color:#fff}
+.hero{grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);gap:14px;margin-bottom:18px}
+.hero-main,.hero-side,.toolbar,.empty,.card,.modal-card,.chat-shell{background:linear-gradient(145deg,#101923f2,#0a1017f5);border-color:#1b3744;box-shadow:0 18px 50px #0005}
+.hero-main{min-height:290px;padding:clamp(24px,4vw,42px);border-radius:22px;isolation:isolate}
+.hero-main:before{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 78% 50%,#19bfe22a 0,transparent 33%),radial-gradient(circle at 86% 35%,#7c7dff1e 0,transparent 24%),linear-gradient(105deg,transparent 50%,#0b121780);pointer-events:none}
+.hero-main:after{width:min(28vw,250px);height:min(28vw,250px);right:5%;top:50%;transform:translateY(-50%);border:1px solid #44ddff22;box-shadow:0 0 0 18px #44ddff08,0 0 0 42px #44ddff05;filter:none;background:radial-gradient(circle at 45% 40%,#8cf4ff26,transparent 65%);pointer-events:none}
+.hero-main>*{position:relative;z-index:1}.hero h2{max-width:650px;text-shadow:0 5px 28px #0009}.eyebrow{color:#56dcf5;letter-spacing:.18em}.hero p{color:#b0c2cc}
+.hero-side{border-radius:22px}.stat{background:linear-gradient(145deg,#13232d,#0d171f);border-color:#21404b}.stat b{color:#eafaff}.stat span{color:#94aab5}
+.toolbar{border-radius:17px;background:#0b1119eF}.field{background:#070d12;border-color:#1a3642;color:#edfaff}.field:focus{border-color:#37d8f4;box-shadow:0 0 0 4px #37d8f41c}
+.section-head{border-bottom:1px solid #18313d;padding-bottom:10px}.section-head h3,.video-list-head h3{letter-spacing:.015em}.count,.meta{color:#8fa6b1}
+.grid,.api-grid,.video-grid{display:flex;overflow-x:auto;overflow-y:hidden;gap:14px;padding:3px 2px 13px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#16758a #0a1117}
+.grid::-webkit-scrollbar,.api-grid::-webkit-scrollbar,.video-grid::-webkit-scrollbar{height:7px}.grid::-webkit-scrollbar-thumb,.api-grid::-webkit-scrollbar-thumb,.video-grid::-webkit-scrollbar-thumb{background:#16758a;border-radius:99px}
+.card{flex:0 0 clamp(215px,23vw,270px);scroll-snap-align:start;border-radius:17px}.card:hover,.video-card:hover{border-color:#35dafa;box-shadow:0 16px 38px #0007,0 0 20px #20c6e811}
+.poster{background:linear-gradient(135deg,#102e42,#1c1e48 58%,#123948)}.poster:after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#05080be0);pointer-events:none}.poster img{transition:transform .35s ease}.card:hover .poster img{transform:scale(1.045)}
+.tag{background:#0e2029;border-color:#204653;color:#b7eefa}.status.vu{background:#14532d55}.status.encours{background:#713f1255}
+.catalogue{border:1px solid #183642;background:linear-gradient(145deg,#0d151d,#0a1017);border-radius:20px}.catalogue h3{color:#f2fbff}.catalogue p{color:#91a7b3}.api-card{flex:0 0 clamp(155px,17vw,195px);scroll-snap-align:start;border-color:#183541;background:#091118}.api-poster{height:220px;background:linear-gradient(145deg,#10384a,#24234c)}.api-info strong{color:#effaff}
+.video-card{flex:0 0 clamp(260px,30vw,360px);scroll-snap-align:start;border-color:#193744;background:linear-gradient(145deg,#101923,#0a1017)}.video-frame{background:#030609}
+.chat-shell{border-radius:22px}.chat-messages{background:#080d13;border-color:#18313d}.chat-message{background:linear-gradient(145deg,#13222d,#0d171f);border-color:#23404d}.chat-message.mine{background:linear-gradient(135deg,#075d73,#2453a6);border-color:#38cde8}.chat-notice{background:#0e202a;border-color:#1d4554;color:#bdeffc}
+.auth-card{background:linear-gradient(145deg,#111c25,#091117);border-color:#21404d}.auth-modal{backdrop-filter:blur(12px)}
+.empty{color:#9db0bb}.empty h3{color:#f5fbff}footer{color:#79909d}
+@media(max-width:700px){.top{position:static;border-radius:15px;padding:10px}.head-actions{gap:5px}.head-actions .btn{font-size:12px;padding:8px 10px;min-height:38px}.hero{grid-template-columns:1fr}.hero-main{min-height:250px}.hero-main:after{width:170px;height:170px;right:-15px;opacity:.7}.hero-side{grid-template-columns:1fr 1fr}.card{flex-basis:min(72vw,260px)}.api-card{flex-basis:42vw}.video-card{flex-basis:78vw}}
+@media(max-width:450px){.brand h1{font-size:17px}.brand small{font-size:10px}.logo{width:42px;height:42px}.logo svg{width:28px;height:28px}.head-actions{justify-content:flex-start}.head-actions .btn{font-size:11px}.hero-main{padding:22px 19px}.hero-main:after{right:-45px;opacity:.45}.hero-side{gap:8px}.stat{padding:12px}.stat b{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.poster img,.card,.video-card{transition:none!important}.card:hover,.video-card:hover{transform:none!important}}
 </style>
 <style id="animeverse-neotokyo-refresh">
 :root{
@@ -395,7 +429,7 @@ footer{padding:20px 0 4px;border-top:1px solid rgba(196,198,231,.09);letter-spac
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><div class="logo">✦</div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div>
+    <div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div>
     <div class="head-actions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat">💬 Chat en direct</button>
