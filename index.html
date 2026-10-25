@@ -4,9 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#11111b">
+<meta name="color-scheme" content="dark">
 <title>Animeverse — Ma bibliothèque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.gstatic.com/s/dmsans/v17/rP2Yp2ywxg089UriI5-g4vlH9VoD8Cmcqbu0-K4.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="https://fonts.gstatic.com/s/sora/v17/xMQ9uFFYT72X5wkB_18qmnndmSdSnh2BAfO5mnuyOo1lfiQwV6-x.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-:root{--bg:#0c0d14;--panel:#151723;--panel2:#1b1e2e;--line:#2b2e42;--text:#f6f6fb;--muted:#a5a8bd;--accent:#a78bfa;--accent2:#f472b6;--good:#86efac;--warn:#fcd34d;--danger:#fda4af}
+ :root{color-scheme:dark;--bg:#0c0d14;--panel:#151723;--panel2:#1b1e2e;--line:#2b2e42;--text:#f6f6fb;--muted:#a5a8bd;--accent:#a78bfa;--accent2:#f472b6;--good:#86efac;--warn:#fcd34d;--danger:#fda4af}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#252044 0,transparent 35%),radial-gradient(ellipse at 100% 10%,#321b36 0,transparent 25%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
 button,input,select,textarea{font:inherit}button{cursor:pointer}
 .wrap{max-width:1180px;margin:auto;padding:24px 18px 60px}
@@ -66,7 +71,7 @@ body{background:radial-gradient(ellipse at 8% -8%,#5330a84a 0,transparent 38%),r
 .wrap{max-width:1240px;padding-top:22px}
 .logo{background:linear-gradient(135deg,#8b5cf6,#ec4899);box-shadow:0 0 35px #a855f74a}
 .brand h1{letter-spacing:.11em}
-.btn{border-radius:14px;min-height:42px;backdrop-filter:blur(12px)}
+.btn{border-radius:14px;min-height:42px}
 .btn.primary{background:linear-gradient(115deg,#8557f6,#bf35d7 58%,#e34dba);box-shadow:0 8px 24px #a83ce52b}
 .btn.primary:hover{filter:brightness(1.1);box-shadow:0 10px 30px #a83ce54a}
 .hero-main,.hero-side,.toolbar,.empty,.card,.modal-card,.chat-shell{background:linear-gradient(145deg,#171827ed,#11121def);border-color:#34364d;box-shadow:0 16px 48px #0002}
@@ -87,7 +92,7 @@ body{background:radial-gradient(ellipse at 8% -8%,#5330a84a 0,transparent 38%),r
 .chat-title p{color:var(--muted);margin:0;max-width:620px}
 .chat-notice{padding:11px 14px;border-radius:13px;background:#24213a;border:1px solid #40375f;color:#d9d2ff;font-size:13px;margin-bottom:14px}
 .chat-messages{height:min(58vh,620px);min-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:16px;background:radial-gradient(ellipse at 10% 0%,#2b235522,transparent 45%),#0b0c15;border:1px solid #292c40;border-radius:18px;scroll-behavior:smooth}
-.chat-message{max-width:min(82%,680px);align-self:flex-start;padding:11px 14px;border-radius:17px 17px 17px 5px;background:linear-gradient(145deg,#22253a,#191b2b);border:1px solid #343750;box-shadow:0 6px 18px #0002;overflow-wrap:anywhere;animation:chatIn .18s ease-out}
+.chat-message{max-width:min(82%,680px);align-self:flex-start;padding:11px 14px;border-radius:17px 17px 17px 5px;background:linear-gradient(145deg,#22253a,#191b2b);border:1px solid #343750;box-shadow:0 6px 18px #0002;overflow-wrap:anywhere;animation:none}
 .chat-message.mine{align-self:flex-end;background:linear-gradient(135deg,#6339b8,#9d32ae);border-color:#b26de0;border-radius:17px 17px 5px 17px}
 .chat-meta{display:flex;gap:12px;justify-content:space-between;align-items:center;color:#d9d5f6;font-size:12px;margin-bottom:5px}
 .chat-meta span{font-weight:800}
@@ -879,37 +884,59 @@ let anime=[];
 window.__animeverseCalendarEntries=()=>anime.filter(a=>['En cours','À voir'].includes(a.status||'À voir')&&a.anilistId).map(a=>({title:a.title,anilistId:a.anilistId,status:a.status,poster:a.poster}));
 const genresKnown=['Action','Aventure','Comédie','Drame','Fantasy','Isekai','Mystère','Psychologique','Romance','Science-fiction','Seinen','Shōjo','Shōnen','Slice of life','Sport','Surnaturel','Thriller','Horreur','Musique','École'];
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'[]');anime=Array.isArray(d)?d:[]}catch{anime=[]}}
-function save(){localStorage.setItem(KEY,JSON.stringify(anime));render();if(window.__animeverseCloudSave)window.__animeverseCloudSave()}
+function save(){localStorage.setItem(KEY,JSON.stringify(anime));render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated'));if(window.__animeverseCloudSave)window.__animeverseCloudSave()}
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2400)}
 function statusClass(s){return {'Vu':'vu','En cours':'encours','À voir':'a-voir','Abandonné':'abandonne'}[s]||'a-voir'}
 function allGenres(){return [...new Set(anime.flatMap(a=>a.genres||[]).map(g=>g.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'))}
-function updateGenreOptions(){const sel=$('genreFilter'),old=sel.value;sel.innerHTML='<option value="">Tous les genres</option>'+allGenres().map(g=>`<option>${escapeHTML(g)}</option>`).join('');sel.value=old}
+function updateGenreOptions(){const sel=$('genreFilter'),old=sel.value,html='<option value="">Tous les genres</option>'+allGenres().map(g=>`<option>${escapeHTML(g)}</option>`).join('');if(sel.innerHTML!==html){sel.innerHTML=html;sel.value=old}}
 function homeImageUrl(value){try{const u=new URL(String(value||''));return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
 function homeRailCard(a){const url=homeImageUrl(a.poster);return '<article class="rail-card"><div class="rail-poster">'+(url?'<img loading="lazy" src="'+escapeHTML(url)+'" alt="" onerror="this.remove()">':'<div class="rail-fallback">✦</div>')+'<span class="rail-status">'+escapeHTML(a.status||'À voir')+'</span><div class="rail-scrim"></div></div><div class="rail-info"><strong>'+escapeHTML(a.title)+'</strong><small>'+escapeHTML(a.episodes||a.year||'À découvrir')+'</small></div></article>'}
-function renderHomeSpotlight(){const featured=anime.find(a=>a.status==='En cours'&&homeImageUrl(a.poster))||anime.find(a=>homeImageUrl(a.poster));const image=$('spotlightPoster'),url=homeImageUrl(featured?.poster);if(url){image.src=url;image.classList.remove('hidden')}else{image.removeAttribute('src');image.classList.add('hidden')}$('spotlightKicker').textContent=featured?(featured.status||'Dans ta collection').toLocaleUpperCase('fr')+' · ANIME À LA UNE':'ANIMEVERSE · À LA UNE';$('spotlightTitle').textContent=featured?.title||'Chaque anime a son histoire.';const detail=featured?[featured.year,(featured.genres||[]).slice(0,3).join(' · ')].filter(Boolean).join(' · '):'Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.';$('spotlightDescription').textContent=featured?.notes||detail;$('spotlightStatus').textContent=featured?((featured.status||'À voir')+(featured.rating?' · ★ '+featured.rating+'/10':'')):'Ta bibliothèque personnelle';const active=anime.filter(a=>a.status==='En cours');$('resumeRail').innerHTML=active.slice(0,12).map(homeRailCard).join('');$('resumeCount').textContent=active.length+(active.length>1?' titres':' titre');$('resumeSection').style.display=active.length?'block':'none';const recent=anime.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0)).slice(0,12);$('recentRail').innerHTML=recent.map(homeRailCard).join('');$('recentCount').textContent=recent.length+(recent.length>1?' titres':' titre');$('recentSection').style.display=recent.length?'block':'none'}
+function setTextIfChanged(node,value){if(node&&node.textContent!==String(value??''))node.textContent=String(value??'')}
+function setHtmlIfChanged(node,value){if(node&&node.innerHTML!==value)node.innerHTML=value}
+function renderHomeSpotlight(){
+ const featured=anime.find(a=>a.status==='En cours'&&homeImageUrl(a.poster))||anime.find(a=>homeImageUrl(a.poster));
+ const image=$('spotlightPoster'),url=homeImageUrl(featured?.poster);
+ if(url){if(image.getAttribute('src')!==url)image.src=url;if(image.classList.contains('hidden'))image.classList.remove('hidden')}
+ else{if(image.hasAttribute('src'))image.removeAttribute('src');if(!image.classList.contains('hidden'))image.classList.add('hidden')}
+ setTextIfChanged($('spotlightKicker'),featured?(featured.status||'Dans ta collection').toLocaleUpperCase('fr')+' · ANIME À LA UNE':'ANIMEVERSE · À LA UNE');
+ setTextIfChanged($('spotlightTitle'),featured?.title||'Chaque anime a son histoire.');
+ const detail=featured?[featured.year,(featured.genres||[]).slice(0,3).join(' · ')].filter(Boolean).join(' · '):'Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.';
+ setTextIfChanged($('spotlightDescription'),featured?.notes||detail);
+ setTextIfChanged($('spotlightStatus'),featured?((featured.status||'À voir')+(featured.rating?' · ★ '+featured.rating+'/10':'')):'Ta bibliothèque personnelle');
+ const active=anime.filter(a=>a.status==='En cours');
+ const resume=active.slice(0,12).map(homeRailCard).join('');
+ setHtmlIfChanged($('resumeRail'),resume);
+ setTextIfChanged($('resumeCount'),active.length+(active.length>1?' titres':' titre'));
+ const resumeDisplay=active.length?'block':'none';if($('resumeSection').style.display!==resumeDisplay)$('resumeSection').style.display=resumeDisplay;
+ const recent=anime.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0)).slice(0,12);
+ setHtmlIfChanged($('recentRail'),recent.map(homeRailCard).join(''));
+ setTextIfChanged($('recentCount'),recent.length+(recent.length>1?' titres':' titre'));
+ const recentDisplay=recent.length?'block':'none';if($('recentSection').style.display!==recentDisplay)$('recentSection').style.display=recentDisplay
+}
 function render(){
  renderHomeSpotlight();
  updateGenreOptions();
- $('totalStat').textContent=anime.length;
- $('watchedStat').textContent=anime.filter(a=>a.status==='Vu').length;
- $('watchingStat').textContent=anime.filter(a=>a.status==='En cours').length;
+ setTextIfChanged($('totalStat'),anime.length);
+ setTextIfChanged($('watchedStat'),anime.filter(a=>a.status==='Vu').length);
+ setTextIfChanged($('watchingStat'),anime.filter(a=>a.status==='En cours').length);
  const ratings=anime.map(a=>Number(a.rating)).filter(n=>n>0);
- $('avgStat').textContent=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—';
+ setTextIfChanged($('avgStat'),ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—');
  const q=$('search').value.trim().toLocaleLowerCase('fr'),g=$('genreFilter').value,s=$('statusFilter').value;
  const list=anime.filter(a=>(!q||[a.title,a.notes,a.year,...(a.genres||[])].join(' ').toLocaleLowerCase('fr').includes(q))&&(!g||(a.genres||[]).includes(g))&&(!s||a.status===s)).sort((a,b)=>a.title.localeCompare(b.title,'fr'));
- $('resultsCount').textContent=`${list.length} anime`;
- $('collection').innerHTML=list.map(a=>`<article class="card">
-  <div class="poster">${a.poster?`<img src="${escapeHTML(a.poster)}" alt="" onerror="this.remove()">`:''}<div class="poster-title">${escapeHTML(a.title)}</div></div>
+ setTextIfChanged($('resultsCount'),`${list.length} anime`);
+ const collectionHTML=list.map(a=>`<article class="card">
+  <div class="poster">${a.poster?`<img src="${escapeHTML(a.poster)}" alt="" width="220" height="310" loading="lazy" decoding="async" onerror="this.remove()">`:''}<div class="poster-title">${escapeHTML(a.title)}</div></div>
   <div class="card-body"><h4>${escapeHTML(a.title)}</h4><div class="meta">${a.year?escapeHTML(a.year)+' · ':''}${a.seasons?escapeHTML(a.seasons)+' saison(s) · ':''}${a.episodes?escapeHTML(a.episodes)+' épisodes':''}</div>
   <div class="tags">${(a.genres||[]).slice(0,4).map(g=>`<span class="tag">${escapeHTML(g)}</span>`).join('')}</div>
   <span class="status ${statusClass(a.status)}">${escapeHTML(a.status||'À voir')}</span> ${a.rating?`<span class="rating">★ ${escapeHTML(a.rating)}/10</span>`:''}
   ${a.notes?`<p class="meta">${escapeHTML(a.notes.slice(0,115))}${a.notes.length>115?'…':''}</p>`:''}
   <div class="card-actions"><button class="btn" data-edit="${escapeHTML(a.id)}">✎ Modifier</button><button class="btn" data-status="${escapeHTML(a.id)}">⇄ Statut</button></div></div></article>`).join('');
- document.dispatchEvent(new CustomEvent('animeverse:collection-updated'));
+ if($('collection').innerHTML!==collectionHTML)$('collection').innerHTML=collectionHTML;
+
  $('empty').style.display=anime.length?'none':'block';
- $('empty').innerHTML=anime.length?'<div class="emoji">🔎</div><h3>Aucun résultat</h3><p>Essaie de modifier ta recherche ou tes filtres.</p><button class="btn" id="clearEmpty">Effacer les filtres</button>':$('empty').innerHTML;
- $('collection').style.display=list.length?'flex':'none';
+ const emptyHtml=anime.length?'<div class="emoji">🔎</div><h3>Aucun résultat</h3><p>Essaie de modifier ta recherche ou tes filtres.</p><button class="btn" id="clearEmpty">Effacer les filtres</button>':$('empty').innerHTML;setHtmlIfChanged($('empty'),emptyHtml);
+ const collectionDisplay=list.length?'flex':'none';if($('collection').style.display!==collectionDisplay)$('collection').style.display=collectionDisplay;
  const clear=$('clearEmpty');if(clear)clear.onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
 }
 function openModal(item=null){
@@ -950,7 +977,7 @@ $('search').addEventListener('input',()=>{
   headerSearchTimer=setTimeout(()=>{window.__animeverseHeaderSearch=true;searchCatalogue(1)},700);
  }else{
   window.__animeverseHeaderSearch=false;
-  $('catalogueResults').innerHTML='';$('cataloguePages').classList.add('hidden');
+  $('cataloguePages').classList.add('hidden');
   $('catalogueStatus').textContent=query?'Écris au moins 2 caractères pour rechercher.':'Entre un titre pour rechercher dans le catalogue.';
  }
 });
@@ -989,16 +1016,18 @@ const anilistQuery=`query ($search: String, $page: Int) {
 function safeImageUrl(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
 function animeTitle(m){return m.title?.english||m.title?.romaji||m.title?.native||'Anime sans titre'}
 function finishHeaderSearch(){if(!window.__animeverseHeaderSearch)return;window.__animeverseHeaderSearch=false;$('catalogueStatus').scrollIntoView({behavior:'smooth',block:'center'})}
+let catalogueRequestId=0;
 async function searchCatalogue(page=1){
+ const requestId=++catalogueRequestId;
  const query=$('catalogueQuery').value.trim();
  if(query.length<2){$('catalogueStatus').textContent='Écris au moins 2 caractères pour rechercher.';return}
  catalogueQuery=query;cataloguePage=page;catalogueBusy=true;
  $('catalogueStatus').textContent='Recherche des anime et de leurs affiches…';
- $('catalogueResults').innerHTML='';$('cataloguePages').classList.add('hidden');
+ $('cataloguePages').classList.add('hidden');
  try{
   const response=await fetch(anilistEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query:anilistQuery,variables:{search:query,page}})});
   if(!response.ok)throw new Error('Le catalogue répond temporairement indisponible ('+response.status+').');
-  const json=await response.json();const data=json?.data?.Page;
+  const json=await response.json();if(requestId!==catalogueRequestId)return;const data=json?.data?.Page;
   if(!data)throw new Error('Réponse du catalogue invalide.');
   catalogueLastPage=data.pageInfo.lastPage||1;
   const results=data.media||[];
@@ -1009,20 +1038,15 @@ async function searchCatalogue(page=1){
    const genres=(m.genres||[]).slice(0,3).join(' · ');
    const year=m.seasonYear||'Année inconnue',eps=m.episodes?`${m.episodes} épisodes`:'Épisodes inconnus';
    const already=anime.some(a=>a.anilistId===m.id);
-   return `<article class="api-card">
-    <div class="api-poster">${cover?`<img loading="lazy" src="${escapeHTML(cover)}" alt="${escapeHTML(title)}" onerror="this.remove()">`:''}<span class="poster-title">${escapeHTML(title)}</span></div>
-    <div class="api-info"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(String(year))} · ${escapeHTML(eps)}<br>${escapeHTML(genres||'Genres non renseignés')}</small>
-    <button class="btn ${already?'':'primary'}" data-catalog-add="${m.id}" ${already?'disabled':''}>${already?'✓ Déjà ajouté':'＋ Ajouter'}</button>
-    </div></article>`;
+   return `<article class="api-card"><div class="api-poster">${cover?`<img loading="lazy" decoding="async" width="220" height="310" src="${escapeHTML(cover)}" alt="${escapeHTML(title)}" onerror="this.remove()">`:''}<span class="poster-title">${escapeHTML(title)}</span></div><div class="api-info"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(String(year))} · ${escapeHTML(eps)}<br>${escapeHTML(genres||'Genres non renseignés')}</small><button class="btn ${already?'':'primary'}" data-catalog-add="${m.id}" ${already?'disabled':''}>${already?'✓ Déjà ajouté':'＋ Ajouter'}</button></div></article>`;
   }).join('');
   $('cataloguePages').classList.toggle('hidden',catalogueLastPage<=1);
   $('pageLabel').textContent=`Page ${page} / ${catalogueLastPage}`;
   $('prevPage').disabled=page<=1;$('nextPage').disabled=page>=catalogueLastPage;
   window.__animeverseSearchResults=results;finishHeaderSearch();
  }catch(err){
-  $('catalogueStatus').textContent='Impossible de contacter le catalogue. Vérifie ta connexion et réessaie.';
-  console.error(err);finishHeaderSearch();
- }finally{catalogueBusy=false}
+  if(requestId===catalogueRequestId){$('catalogueStatus').textContent='Impossible de contacter le catalogue. Vérifie ta connexion et réessaie.';console.error(err);finishHeaderSearch()}
+ }finally{if(requestId===catalogueRequestId)catalogueBusy=false}
 }
 $('catalogueForm').addEventListener('submit',e=>{e.preventDefault();searchCatalogue(1)});
 $('prevPage').addEventListener('click',()=>{if(cataloguePage>1)searchCatalogue(cataloguePage-1)});
@@ -1035,7 +1059,7 @@ $('catalogueResults').addEventListener('click',e=>{
  anime.push(item);save();searchCatalogue(cataloguePage);toast('Anime ajouté avec son affiche !');
 });
 
-window.__animeverse={get anime(){return anime},set anime(v){anime=v;localStorage.setItem(KEY,JSON.stringify(anime));render()},render,uid};
+window.__animeverse={get anime(){return anime},set anime(v){const next=JSON.stringify(v);if(next===JSON.stringify(anime))return;anime=v;localStorage.setItem(KEY,next);render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated'))},render,uid};
 load();render();
 })();
 </script>
@@ -1049,6 +1073,13 @@ const SUPABASE_URL = 'https://beuoqfqqdsegfnkgqsol.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_dgDx61Y2dbAt5DAs9OOZ3g_bH-lEVbJ';
 const configured = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('COLLE_ICI') && !SUPABASE_ANON_KEY.includes('COLLE_ICI');
 let supabase = null, currentUser = null, chatChannel = null, authMode = 'login';
+let chatChannelUserId=null,chatLoadPromise=null,chatEventTimer=null,chatAdminTimer=null,chatReactionTimer=null,pendingChatMessages=new Map(),authUserId=null;
+function setChatNotice(value){const n=document.getElementById('chatNotice');if(n&&n.textContent!==value)n.textContent=value}
+function setChatHtmlIfChanged(node,value){if(node&&node.innerHTML!==value)node.innerHTML=value}
+function queueChatMessage(message){if(!message?.id)return;pendingChatMessages.set(String(message.id),message);if(chatEventTimer)clearTimeout(chatEventTimer);chatEventTimer=setTimeout(()=>{const batch=[...pendingChatMessages.values()];pendingChatMessages.clear();batch.forEach(mergeChatMessage)},150)}
+function removeChatMessage(id){if(!id)return;pendingChatMessages.delete(String(id));chatCache=chatCache.filter(m=>String(m.id)!==String(id));const node=[...el('chatMessages').querySelectorAll('[data-message-id]')].find(n=>n.dataset.messageId===String(id));node?.remove();if(!chatCache.length)renderChat([]);if(isChatAdmin)scheduleChatAdminPanel()}
+function scheduleChatAdminPanel(){if(chatAdminTimer)clearTimeout(chatAdminTimer);chatAdminTimer=setTimeout(()=>loadChatAdminPanel(),150)}
+function scheduleChatReactions(){if(chatReactionTimer)clearTimeout(chatReactionTimer);chatReactionTimer=setTimeout(()=>loadChatReactions().catch(e=>console.warn('Actualisation réactions:',e)),150)}
 const el = id => document.getElementById(id);
 const escapeText = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function authMessage(s){el('authMessage').textContent=s}
@@ -1072,15 +1103,19 @@ function showView(view){
 }
 function updateAccount(){
   const avatar=currentUser?.user_metadata?.avatar_url;
-  el('authOpen').innerHTML=currentUser ? (avatar?'<img class="account-avatar" src="'+escapeText(avatar)+'" alt="">':'👤 ')+escapeText((currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'Mon compte').split('@')[0]))+' · Mon profil' : '👤 Connexion';
-  el('chatConnection').textContent=currentUser ? '🟢 Connecté' : '🔒 Connexion requise';
-  el('chatInput').disabled=!currentUser || !supabase;
-  el('chatSend').disabled=!currentUser || !supabase;
-  el('chatEmojiToggle').disabled=!currentUser || !supabase;
+  const label=currentUser ? (currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'Mon compte').split('@')[0])+' · Mon profil' : '👤 Connexion';
+  const key=JSON.stringify([currentUser?.id||null,label,avatar||null]);
+  if(el('authOpen').dataset.accountKey!==key){
+   el('authOpen').dataset.accountKey=key;
+   el('authOpen').innerHTML=currentUser ? (avatar?'<img class="account-avatar" src="'+escapeText(avatar)+'" alt="" width="32" height="32" loading="lazy" decoding="async">':'👤 ')+escapeText(label) : '👤 Connexion';
+  }
+  const status=currentUser?'🟢 Connecté':'🔒 Connexion requise';
+  if(el('chatConnection').textContent!==status)el('chatConnection').textContent=status;
+  el('chatInput').disabled=!currentUser||!supabase;el('chatSend').disabled=!currentUser||!supabase;el('chatEmojiToggle').disabled=!currentUser||!supabase;
 }
 el('navLibrary').addEventListener('click',()=>showView('library'));
 el('navCalendar').addEventListener('click',()=>showView('calendar'));
-el('navChat').addEventListener('click',()=>{showView('chat');if(currentUser)loadChat();});
+el('navChat').addEventListener('click',()=>showView('chat'));
 document.addEventListener('animeverse:show-view',event=>{if(['chat','forum'].includes(event.detail))showView(event.detail)});
 el('authOpen').addEventListener('click',()=>{
  if(currentUser){
@@ -1132,23 +1167,26 @@ el('authForm').addEventListener('submit',async e=>{
   if(result.error)throw result.error;
   if(authMode==='signup'&&!result.data.session){authMessage('Compte créé ! Vérifie ta boîte e-mail pour confirmer ton adresse, puis connecte-toi.');return}
   currentUser=result.data.user;el('authModal').classList.remove('open');updateAccount();
-  await syncCollection();await loadChat();authMessage('Connexion réussie !');
+  authMessage('Connexion réussie !');
  }catch(err){authMessage(err.message||'Connexion impossible. Vérifie tes informations.')}
  finally{el('authSubmit').disabled=false}
 });
 async function syncCollection(){
  if(!supabase||!currentUser)return;
+ const userId=currentUser.id;
  try{
-  const {data,error}=await supabase.from('user_anime').select('anime_data').eq('user_id',currentUser.id);
+  const {data,error}=await supabase.from('user_anime').select('anime_data').eq('user_id',userId);
   if(error)throw error;
+  if(currentUser?.id!==userId)return;
   const cloud=(data||[]).map(row=>row.anime_data).filter(Boolean);
   if(cloud.length){
-   // Cloud data is the source of truth after the first sync; merge locally added records without duplicates.
+   const local=window.__animeverse.anime;
    const cloudIds=new Set(cloud.map(a=>a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
-   const localOnly=window.__animeverse.anime.filter(a=>!cloudIds.has(a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
-   window.__animeverse.anime=[...cloud,...localOnly];localStorage.setItem('animeverse-library-v1',JSON.stringify(window.__animeverse.anime));window.__animeverse.render();
+   const localOnly=local.filter(a=>!cloudIds.has(a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
+   const merged=[...cloud,...localOnly];
+   if(JSON.stringify(merged)!==JSON.stringify(local))window.__animeverse.anime=merged;
   }else if(window.__animeverse.anime.length){
-   for(const a of window.__animeverse.anime)await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
+   for(const a of window.__animeverse.anime)await supabase.from('user_anime').upsert({user_id:userId,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
   }
  }catch(err){console.warn('Sync collection:',err);}
 }
@@ -1251,19 +1289,19 @@ async function loadChatAdminPanel(){
   if(banResult.error)throw banResult.error;if(logResult.error)throw logResult.error;
   const bans=banResult.data||[],logs=logResult.data||[];
   const activeBans=bans.filter(b=>!b.expires_at||new Date(b.expires_at).getTime()>Date.now());
-  el('chatAdminStats').innerHTML=`<div class="chat-admin-stat"><strong>${chatCache.length}</strong><span>messages affichés</span></div><div class="chat-admin-stat"><strong>${activeBans.length}</strong><span>exclusions actives</span></div><div class="chat-admin-stat"><strong>${logs.length}</strong><span>actions récentes</span></div>`;
+  setChatHtmlIfChanged(el('chatAdminStats'),`<div class="chat-admin-stat"><strong>${chatCache.length}</strong><span>messages affichés</span></div><div class="chat-admin-stat"><strong>${activeBans.length}</strong><span>exclusions actives</span></div><div class="chat-admin-stat"><strong>${logs.length}</strong><span>actions récentes</span></div>`);
   const nameFor=id=>chatCache.find(m=>m.user_id===id)?.display_name||('Compte '+String(id||'').slice(0,8));
-  el('chatBansList').innerHTML=bans.length?bans.map(b=>{
+  setChatHtmlIfChanged(el('chatBansList'),bans.length?bans.map(b=>{
    const expired=b.expires_at&&new Date(b.expires_at).getTime()<=Date.now();
    return `<div class="chat-admin-row"><div><strong>${escapeText(nameFor(b.user_id))}${expired?' · expiré':''}</strong><small>${escapeText(b.reason)} · ${b.expires_at?'Jusqu’au '+chatLogDate(b.expires_at):'Permanent'}</small></div><button class="btn" type="button" data-chat-unban="${escapeText(b.user_id)}">Débannir</button></div>`;
-  }).join(''):'<div class="chat-admin-empty">Aucun compte banni.</div>';
+  }).join('') :'<div class="chat-admin-empty">Aucun compte banni.</div>');
   const actionNames={delete_message:'Message supprimé',ban_user:'Compte banni',unban_user:'Compte réactivé',update_ban:'Bannissement modifié',retention_purge:'Purge automatique'};
-  el('chatAdminLogs').innerHTML=logs.length?logs.map(item=>{
+  setChatHtmlIfChanged(el('chatAdminLogs'),logs.length?logs.map(item=>{
    const detail=item.details||{};
    const extra=item.action==='delete_message'?'Message #'+item.message_id:item.action==='retention_purge'?(detail.deleted_count||0)+' message(s) supprimé(s)':(detail.reason||'');
    return `<div class="chat-admin-log"><div><strong>${escapeText(actionNames[item.action]||item.action)}</strong><small>${escapeText(extra)} · cible ${escapeText(String(item.target_user_id||'système').slice(0,8))}</small></div><time>${escapeText(chatLogDate(item.created_at))}</time></div>`;
-  }).join(''):'<div class="chat-admin-empty">Aucune action enregistrée.</div>';
- }catch(error){console.warn('Journal de modération indisponible:',error);el('chatAdminLogs').innerHTML='<div class="chat-admin-empty">Impossible de charger le journal pour le moment.</div>'}
+  }).join('') :'<div class="chat-admin-empty">Aucune action enregistrée.</div>');
+ }catch(error){console.warn('Journal de modération indisponible:',error);setChatHtmlIfChanged(el('chatAdminLogs'),'<div class="chat-admin-empty">Impossible de charger le journal pour le moment.</div>')}
 }
 async function moderateChatMessageDelete(id){
  if(!isChatAdmin||!confirm('Supprimer ce message du chat ?'))return;
@@ -1292,72 +1330,77 @@ async function loadChatReactions(){if(!supabase||!currentUser)return;const ids=c
 window.__animeverseToggleChatReaction=async(messageId,emoji)=>{if(!supabase||!currentUser)throw Error('Connexion requise');if(!['👍','❤️','😂','😮','😢','🔥'].includes(emoji))throw Error('Réaction invalide');if(await refreshChatBanState())throw Error('Accès suspendu');let {data,error}=await supabase.from('chat_reactions').select('id').eq('message_id',messageId).eq('user_id',currentUser.id).eq('emoji',emoji).maybeSingle();if(error)throw error;let r=data?await supabase.from('chat_reactions').delete().eq('id',data.id).eq('user_id',currentUser.id):await supabase.from('chat_reactions').insert({message_id:messageId,user_id:currentUser.id,emoji});if(r.error)throw r.error;await loadChatReactions()};
 function renderChat(messages){
  const box=el('chatMessages');
- const previousScroll=box.scrollTop;
- const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
- chatCache=messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
- if(!chatCache.length){const empty='<div class="chat-empty"><span>🌸</span><strong>Le salon est tout calme…</strong><small>Envoie le premier message et fais vivre la discussion ✨</small></div>';if(box.innerHTML!==empty)box.innerHTML=empty;return}
- const html=chatCache.map(m=>{
+ const previousScroll=box.scrollTop,wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
+ const sorted=(messages||[]).slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0)).slice(-100);
+ const empty=box.querySelector('.chat-empty');
+ if(!sorted.length){
+  if(!empty)box.innerHTML='<div class="chat-empty"><span>🌸</span><strong>Le salon est tout calme…</strong><small>Envoie le premier message et fais vivre la discussion ✨</small></div>';
+  return;
+ }
+ empty?.remove();
+ const keep=new Set();
+ sorted.forEach(m=>{
+  const id=String(m.id??''); if(!id)return; keep.add(id);
   const mine=m.user_id===currentUser?.id;
-  const actions=isChatAdmin?`<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="${escapeText(m.id??'')}">Supprimer</button>${mine?'':`<button class="btn" type="button" data-chat-ban="${escapeText(m.user_id??'')}" data-chat-name="${escapeText(m.display_name||'Fan d’anime')}">Bannir</button>`}</div>`:'';
-  return `<div class="chat-message ${mine?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">${escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())}</span><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div>${actions}</div>`;
- }).join('');
- if(box.innerHTML===html)return;
- box.innerHTML=html;
- box.scrollTop=wasNearBottom?box.scrollHeight:previousScroll;
+  const actions=isChatAdmin?'<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="'+escapeText(id)+'">Supprimer</button>'+(mine?'':'<button class="btn" type="button" data-chat-ban="'+escapeText(m.user_id??'')+'" data-chat-name="'+escapeText(m.display_name||'Fan d’anime')+'">Bannir</button>')+'</div>':'';
+  const signature=JSON.stringify([m.user_id,m.display_name,m.content,m.created_at,mine,isChatAdmin]);
+  let row=[...box.querySelectorAll('[data-message-id]')].find(n=>n.dataset.messageId===id);
+  if(row&&row.dataset.chatSignature===signature)return;
+  const holder=document.createElement('div');
+  holder.innerHTML='<div class="chat-message '+(mine?'mine':'')+'" data-message-id="'+escapeText(id)+'"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">'+escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())+'</span><span>'+escapeText(m.display_name||'Fan d’anime')+'</span><time datetime="'+escapeText(m.created_at||'')+'">'+escapeText(m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant')+'</time></div><div class="chat-text">'+escapeText(m.content)+'</div>'+actions+'</div>';
+  const next=holder.firstElementChild; next.dataset.chatSignature=signature; next.classList.add('fx-chat-enter');
+  if(row){next.classList.remove('fx-chat-enter');row.replaceWith(next);return;}
+  const later=[...box.querySelectorAll('[data-message-id]')].find(n=>new Date(n.querySelector('time')?.dateTime||0)>new Date(m.created_at||0));
+  if(later)box.insertBefore(next,later);else box.appendChild(next);
+ });
+ [...box.querySelectorAll('[data-message-id]')].forEach(row=>{if(!keep.has(row.dataset.messageId))row.remove()});
+ if(wasNearBottom)box.scrollTop=box.scrollHeight;else box.scrollTop=previousScroll;
+ chatCache=sorted;
 }
 function mergeChatMessage(message){
  if(!message)return;
- const id=String(message.id??'');
- if(id && chatCache.some(m=>String(m.id??'')===id))return;
- chatCache.push(message);
- renderChat(chatCache.slice(-100));
+ const id=String(message.id??''); if(!id)return;
+ const index=chatCache.findIndex(m=>String(m.id??'')===id);
+ if(index>=0){if(JSON.stringify(chatCache[index])===JSON.stringify(message))return;chatCache[index]={...chatCache[index],...message};}
+ else chatCache.push(message);
+ renderChat(chatCache);
+ if(isChatAdmin)scheduleChatAdminPanel();
 }
 async function loadChat(){
- if(!supabase||!currentUser){
-  el('chatNotice').textContent='Connecte-toi pour participer au chat.';
-  return;
- }
- try{
-  await checkChatAdmin();
-  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
-  if(error)throw error;
-  renderChat(data||[]);
-  await loadChatReactions();
-  const isBanned=await refreshChatBanState();
-  if(!isBanned)el('chatNotice').textContent='🟢 Chat en direct · messages conservés 30 jours.';
-  if(isChatAdmin)await loadChatAdminPanel();
-  if(!chatChannel){
-   chatChannel=supabase.channel('animeverse-chat-live-v2')
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>mergeChatMessage(payload.new))
-    .on('postgres_changes',{event:'*',schema:'public',table:'chat_reactions'},()=>loadChatReactions().catch(e=>console.warn('Actualisation réactions:',e)))
-    .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_messages'},payload=>{
-      chatCache=chatCache.filter(m=>String(m.id)!==String(payload.old?.id));
-      renderChat(chatCache);if(isChatAdmin)loadChatAdminPanel();
-    })
+ if(!supabase||!currentUser){el('chatNotice').textContent='Connecte-toi pour participer au chat.';return}
+ const requestedUserId=currentUser.id;
+ if(chatChannel&&chatChannelUserId===requestedUserId)return;
+ if(chatLoadPromise)return chatLoadPromise;
+ chatLoadPromise=(async()=>{
+  try{
+   if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}
+   await checkChatAdmin();
+   const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
+   if(error)throw error;
+   if(currentUser?.id!==requestedUserId)return;
+   renderChat(data||[]);
+   await loadChatReactions();
+   const banned=await refreshChatBanState();
+   if(!banned&&el('chatNotice').textContent!=='🟢 Chat en direct connecté.')el('chatNotice').textContent='🟢 Chat en direct · messages conservés 30 jours.';
+   if(isChatAdmin)await loadChatAdminPanel();
+   chatChannelUserId=requestedUserId;
+   chatChannel=supabase.channel('animeverse-chat-live-v2-'+requestedUserId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>queueChatMessage(payload.new))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'chat_messages'},payload=>queueChatMessage(payload.new))
+    .on('postgres_changes',{event:'*',schema:'public',table:'chat_reactions'},()=>scheduleChatReactions())
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_messages'},payload=>removeChatMessage(payload.old?.id))
     .on('postgres_changes',{event:'*',schema:'public',table:'chat_bans'},payload=>{
       const changed=payload.new?.user_id||payload.old?.user_id;
       if(changed===currentUser?.id)refreshChatBanState().catch(e=>console.warn('Actualisation du ban:',e));
-      if(isChatAdmin)loadChatAdminPanel();
+      if(isChatAdmin)scheduleChatAdminPanel();
     })
     .subscribe(status=>{
-      if(status==='SUBSCRIBED')el('chatNotice').textContent='🟢 Chat en direct connecté.';
-      else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')el('chatNotice').textContent='Le direct est momentanément indisponible : actualisation automatique activée.';
+      if(status==='SUBSCRIBED')setChatNotice('🟢 Chat en direct connecté.');
+      else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setChatNotice('Le direct est momentanément indisponible. Réessaie en rouvrant le chat.');chatChannelUserId=null;}
     });
-  }
-  // Fallback poll in case Supabase Realtime is not enabled or the mobile connection drops.
-  if(chatPollHandle)clearInterval(chatPollHandle);
-  chatPollHandle=setInterval(async()=>{
-   if(!supabase||!currentUser||el('chatView').classList.contains('hidden'))return;
-   try{
-    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
-    if(!error&&data)renderChat(data);
-    await refreshChatBanState();
-   }catch(e){console.warn('Chat refresh:',e)}
-  },5000);
- }catch(err){
-  console.error('Chargement chat échoué:',err);
-  el('chatNotice').textContent='Erreur du chat : '+(err.message||'configuration de la base à vérifier');
- }
+  }catch(err){console.error('Chargement chat échoué:',err);setChatNotice('Erreur du chat : '+(err.message||'configuration de la base à vérifier'))}
+ })();
+ try{await chatLoadPromise}finally{chatLoadPromise=null}
 }
 el('chatMessages').addEventListener('click',async event=>{
  const del=event.target.closest('[data-chat-delete]'),ban=event.target.closest('[data-chat-ban]'),unban=event.target.closest('[data-chat-unban]');
@@ -1398,15 +1441,18 @@ function videoEmbed(url){
  }catch(e){return null}
 }
 function renderVideos(posts){
- const grid=el('videoGrid');el('videoCount').textContent=posts.length+' vidéo'+(posts.length>1?'s':'');
- if(!posts.length){grid.innerHTML='<div class="chat-empty">Aucune vidéo pour le moment. Sois le premier à publier ✨</div>';return}
- grid.innerHTML=posts.map(p=>{
+ const grid=el('videoGrid'),count=posts.length+' vidéo'+(posts.length>1?'s':'');
+ if(el('videoCount').textContent!==count)el('videoCount').textContent=count;
+ let next;
+ if(!posts.length)next='<div class="chat-empty">Aucune vidéo pour le moment. Sois le premier à publier ✨</div>';
+ else next=posts.map(p=>{
   const embed=videoEmbed(p.video_url);let frame='';
-  if(embed?.type==='iframe')frame='<iframe src="'+escapeText(embed.src)+'" title="'+escapeText(p.title)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+  if(embed?.type==='iframe')frame='<iframe src="'+escapeText(embed.src)+'" title="'+escapeText(p.title)+'" loading="lazy" decoding="async" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
   else if(embed?.type==='video')frame='<video controls preload="metadata" src="'+escapeText(embed.src)+'"></video>';
   else frame='<a class="video-link-preview" href="'+escapeText(p.video_url)+'" target="_blank" rel="noopener noreferrer"><span>▶</span><b>Ouvrir la vidéo</b></a>';
   return '<article class="video-card"><div class="video-frame">'+frame+'</div><div class="video-card-body"><h4>'+escapeText(p.title)+'</h4><p>'+escapeText(p.description||'')+'</p><div class="video-card-meta"><span>👤 '+escapeText(p.display_name||'Fan d’anime')+'</span><span>'+escapeText(p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):'')+'</span></div></div></article>';
  }).join('');
+ if(grid.innerHTML!==next)grid.innerHTML=next;
 }
 async function loadVideos(){
  if(!supabase){el('videoNotice').textContent='Le service vidéo nécessite une connexion Supabase.';return}
@@ -1457,8 +1503,8 @@ async function init(){
  try{
   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-  const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
-  supabase.auth.onAuthStateChange(async(_event,session)=>{currentUser=session?.user||null;isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else {if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}}});
+  const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;authUserId=currentUser?.id||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
+  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
   updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
@@ -1601,7 +1647,7 @@ nav?.addEventListener('click',()=>{document.querySelectorAll('#libraryView,#chat
 document.addEventListener('animeverse:collection-updated',()=>{if(!cal.classList.contains('hidden'))load()});
 document.addEventListener('animeverse:chat-reactions',e=>{rows=e.detail?.items||[];uid=e.detail?.userId||null;draw()});
 function draw(){queued=false;let box=$('chatMessages');if(!box)return;box.querySelectorAll('.chat-message[data-message-id]').forEach(m=>{let id=m.dataset.messageId;if(!id)return;let w=m.querySelector('.av-reaction-wrap');if(!w){w=document.createElement('div');w.className='av-reaction-wrap';m.append(w)}if(!w.querySelector('.av-reaction-toolbar')){let t=document.createElement('div');t.className='av-reaction-toolbar';t.setAttribute('role','group');t.setAttribute('aria-label','Ajouter une réaction');t.innerHTML=['👍','❤️','😂','😮','😢','🔥'].map(e=>'<button type="button" data-av-react="'+esc(e)+'" aria-label="Réagir '+esc(e)+'">'+e+'</button>').join('');w.append(t)}let counts=new Map();rows.filter(r=>String(r.message_id)===id).forEach(r=>{let c=counts.get(r.emoji)||{n:0,mine:false};c.n++;c.mine=c.mine||r.user_id===uid;counts.set(r.emoji,c)});let sig=JSON.stringify([...counts]);if(w.dataset.sig!==sig){w.dataset.sig=sig;let p=w.querySelector('.av-reaction-pills');if(!p){p=document.createElement('div');p.className='av-reaction-pills';w.append(p)}p.innerHTML=[...counts].map(([e,c])=>'<button type="button" class="'+(c.mine?'mine ':'')+'av-reaction-pop" data-av-react="'+esc(e)+'">'+esc(e)+' '+c.n+'</button>').join('')}})}
-let box=$('chatMessages');if(box)new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(draw)}}).observe(box,{childList:true,subtree:true});draw();
+let box=$('chatMessages');if(box)new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(draw)}}).observe(box,{childList:true});draw();
 let lp;document.addEventListener('pointerdown',e=>{let m=e.target.closest('#chatMessages .chat-message');if(m&&e.pointerType==='touch')lp=setTimeout(()=>m.classList.add('av-reaction-tools-open'),450)});['pointerup','pointercancel','pointerleave'].forEach(x=>document.addEventListener(x,()=>{clearTimeout(lp);lp=null}));document.addEventListener('contextmenu',e=>{if(e.target.closest('#chatMessages .chat-message'))e.preventDefault()});
 document.addEventListener('click',async e=>{let b=e.target.closest('[data-av-react]');if(!b)return;let m=b.closest('.chat-message');b.disabled=true;try{await window.__animeverseToggleChatReaction?.(m?.dataset.messageId,b.dataset.avReact)}catch(x){console.warn('Réaction indisponible',x)}finally{b.disabled=false;m?.classList.remove('av-reaction-tools-open')}});
 const install=$('installAppButton');let deferred=null;function toast(msg){let t=$('avInstallToast');if(!t){t=document.createElement('div');t.id='avInstallToast';t.className='av-install-toast';t.setAttribute('role','status');document.body.append(t)}t.textContent=msg;t.hidden=false;setTimeout(()=>t.hidden=true,3600)}
@@ -1652,7 +1698,7 @@ function tilt(){if(economy||isOff('tilt')||mobile.matches||!matchMedia('(hover:h
 function counters(){if(isOff('counters'))return;const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target;io.unobserve(el);const value=Number(String(el.textContent).replace(/[^\d.]/g,''));if(!Number.isFinite(value)||!value)return;const decimals=String(value).includes('.')?1:0,start=performance.now(),dur=reduced.matches?1:850;function step(now){const p=Math.min(1,(now-start)/dur),n=value*(1-Math.pow(1-p,3));el.textContent=n.toFixed(decimals);if(p<1)requestAnimationFrame(step)}requestAnimationFrame(step)}),{threshold:.4});$$('.stat b').forEach(e=>io.observe(e));new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){if(n.matches?.('.stat b'))io.observe(n);n.querySelectorAll?.('.stat b').forEach(x=>io.observe(x))}}))).observe(document.body,{childList:true,subtree:true})}
 function confetti(){if(reduced.matches||economy||isOff('confetti'))return;confettiCanvas=document.createElement('canvas');confettiCanvas.className='fx-confetti';confettiCanvas.width=innerWidth*devicePixelRatio;confettiCanvas.height=innerHeight*devicePixelRatio;confettiCanvas.style.width='100%';confettiCanvas.style.height='100%';document.body.append(confettiCanvas);confettiCtx=confettiCanvas.getContext('2d');const colors=['#a78bfa','#f472b6','#72e5f5','#fff'];const bits=Array.from({length:65},()=>({x:innerWidth*.5,y:innerHeight*.5,vx:(Math.random()-.5)*8,vy:-Math.random()*8-2,g:.18,s:2+Math.random()*3,c:colors[Math.random()*colors.length|0],a:1}));const t0=performance.now();function frame(t){confettiCtx.clearRect(0,0,innerWidth*devicePixelRatio,innerHeight*devicePixelRatio);bits.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.a*=.985;confettiCtx.globalAlpha=p.a;confettiCtx.fillStyle=p.c;confettiCtx.fillRect(p.x*devicePixelRatio,p.y*devicePixelRatio,p.s*devicePixelRatio,p.s*devicePixelRatio)});if(t-t0<1000)requestAnimationFrame(frame);else confettiCanvas.remove()}requestAnimationFrame(frame)}
 function observeAdded(){const grid=$('#animeGrid')||$('#collectionGrid')||$('.grid');if(grid){new MutationObserver(ms=>{if(ms.some(m=>m.addedNodes.length))confetti()}).observe(grid,{childList:true})}document.addEventListener('animeverse:collection-updated',confetti)}
-function uiEffects(){let replayNav=false;document.addEventListener('pointerdown',e=>{if(isOff('buttons'))return;const b=e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect();b.style.setProperty('--fx-x',(e.clientX-r.left)+'px');b.style.setProperty('--fx-y',(e.clientY-r.top)+'px');b.classList.remove('fx-ripple','fx-press');void b.offsetWidth;b.classList.add('fx-ripple','fx-press');setTimeout(()=>b.classList.remove('fx-press'),150)},{passive:true});document.addEventListener('pointerover',e=>{if(e.target.closest('button,a,[role=button]'))cursor?.classList.add('is-large')});document.addEventListener('pointerout',e=>{if(e.target.closest('button,a,[role=button]'))cursor?.classList.remove('is-large')});const top=$('.top');const progress=document.createElement('div');progress.className='fx-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;root.style.setProperty('--fx-progress',max>0?String(scrollY/max):'0');document.body.classList.toggle('fx-scrolled',scrollY>16)};addEventListener('scroll',scroll,{passive:true});scroll();document.addEventListener('click',e=>{const b=e.target.closest('#navLibrary,#navChat,#navVideos,#navCalendar');if(!b||replayNav||isOff('transitions'))return;if(document.startViewTransition&&!reduced.matches){e.preventDefault();e.stopImmediatePropagation();document.startViewTransition(()=>{replayNav=true;b.click();replayNav=false})}else{const views=$('#libraryView,#chatView,#videosView,#calendarView');views.forEach(v=>{if(!v.classList.contains('hidden')){v.classList.remove('fx-page-transition');void v.offsetWidth;v.classList.add('fx-page-transition')}})}},true);const chat=$('#chatMessages');if(chat&&!isOff('chat'))new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.matches?.('.chat-message'))n.classList.add('fx-chat-enter')}))).observe(chat,{childList:true})}
+function uiEffects(){let replayNav=false;document.addEventListener('pointerdown',e=>{if(isOff('buttons'))return;const b=e.target.closest('.btn');if(!b)return;const r=b.getBoundingClientRect();b.style.setProperty('--fx-x',(e.clientX-r.left)+'px');b.style.setProperty('--fx-y',(e.clientY-r.top)+'px');b.classList.remove('fx-ripple','fx-press');void b.offsetWidth;b.classList.add('fx-ripple','fx-press');setTimeout(()=>b.classList.remove('fx-press'),150)},{passive:true});document.addEventListener('pointerover',e=>{if(e.target.closest('button,a,[role=button]'))cursor?.classList.add('is-large')});document.addEventListener('pointerout',e=>{if(e.target.closest('button,a,[role=button]'))cursor?.classList.remove('is-large')});const top=$('.top');const progress=document.createElement('div');progress.className='fx-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);const scroll=()=>{const max=document.documentElement.scrollHeight-innerHeight;root.style.setProperty('--fx-progress',max>0?String(scrollY/max):'0');document.body.classList.toggle('fx-scrolled',scrollY>16)};addEventListener('scroll',scroll,{passive:true});scroll();document.addEventListener('click',e=>{const b=e.target.closest('#navLibrary,#navChat,#navVideos,#navCalendar');if(!b||replayNav||isOff('transitions'))return;if(document.startViewTransition&&!reduced.matches){e.preventDefault();e.stopImmediatePropagation();document.startViewTransition(()=>{replayNav=true;b.click();replayNav=false})}else{const views=$('#libraryView,#chatView,#videosView,#calendarView');views.forEach(v=>{if(!v.classList.contains('hidden')){v.classList.remove('fx-page-transition');void v.offsetWidth;v.classList.add('fx-page-transition')}})}},true);}
 let cursor=null;function customCursor(){if(economy||isOff('cursor')||mobile.matches||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;cursor=document.createElement('div');cursor.className='fx-cursor';cursor.setAttribute('aria-hidden','true');document.body.append(cursor);document.body.classList.add('fx-cursor-active');document.addEventListener('pointermove',e=>{cursor.style.transform='translate('+e.clientX+'px,'+e.clientY+'px) translate(-50%,-50%)';cursor.style.opacity='1'},{passive:true})}
 function applySkeletons(){const nodes=$$('.av-fiche-loading,.chat-admin-empty,#avCountdownText');nodes.forEach(n=>{if(/chargement/i.test(n.textContent||'')){n.classList.add('fx-skeleton');n.setAttribute('aria-label',n.textContent.trim())}else n.classList.remove('fx-skeleton')});if(!applySkeletons.observer){applySkeletons.observer=new MutationObserver(()=>nodesRefresh());const nodesRefresh=()=>applySkeletons();applySkeletons.observer.observe(document.body,{childList:true,subtree:true,characterData:true})}}
 function installGlass(){if(isOff('glass'))return;['.hero-main','.hero-side','.toolbar','.catalogue','.chat-shell','.modal-card','.auth-card','.card','.api-card','.video-card'].forEach(s=>$$(s).forEach(e=>e.classList.add('fx-glass')))}
