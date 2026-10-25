@@ -460,18 +460,20 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
 .home-rail{margin:18px 0 24px}.rail-card{flex-basis:74vw}.rail-info{padding:9px}.rail-info small{font-size:10px}.toolbar{grid-template-columns:1fr 1fr}.toolbar #genreFilter{grid-column:1}.toolbar #statusFilter{grid-column:2}.toolbar #resetFilters{grid-column:1/-1}.card{flex-basis:72vw}.api-card{flex-basis:43vw}.api-poster{height:190px}.video-card{flex-basis:82vw}}
 @media(prefers-reduced-motion:reduce){.rail-card,.rail-poster img,.card{transition:none!important}.rail-card:hover,.card:hover{transform:none!important}}
 
+
+#catalogueStatus{scroll-margin-top:90px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Rechercher un titre, un studio, une note…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
+  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Recherche AniList + bibliothèque : Re:Zero, Naruto…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat">💬 Chat en direct</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button>
       <button class="btn primary" id="authOpen">👤 Connexion</button>
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
     </div></header>
-  <div id="libraryView">\n  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">＋ Ajouter à ma collection</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
+  <div id="libraryView">\n  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
 <section class="toolbar">
     
     <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
@@ -638,7 +640,8 @@ function openModal(item=null){
 }
 function closeModal(){$('modal').classList.remove('open')}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
-['addTop','addHero','emptyAdd'].forEach(id=>$(id).addEventListener('click',()=>openModal()));
+['addTop','emptyAdd'].forEach(id=>$(id).addEventListener('click',()=>openModal()));
+$('addHero').addEventListener('click',()=>{$('search').scrollIntoView({behavior:'smooth',block:'center'});$('search').focus()});
 $('closeModal').onclick=closeModal;$('cancelBtn').onclick=closeModal;
 $('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
@@ -655,7 +658,23 @@ $('collection').addEventListener('click',e=>{
  if(edit){openModal(anime.find(a=>a.id===edit.dataset.edit));return}
  if(st){const a=anime.find(a=>a.id===st.dataset.status);if(a){const opts=['Vu','En cours','À voir','Abandonné'],i=opts.indexOf(a.status);a.status=opts[(i+1)%opts.length];save();toast('Statut : '+a.status)}}
 });
-['search','genreFilter','statusFilter'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
+let headerSearchTimer=null;
+$('search').addEventListener('input',()=>{
+ const query=$('search').value.trim();
+ $('catalogueQuery').value=query;
+ render();
+ clearTimeout(headerSearchTimer);
+ if(query.length>=2){
+  $('catalogueStatus').textContent='Recherche sur AniList…';
+  headerSearchTimer=setTimeout(()=>{window.__animeverseHeaderSearch=true;searchCatalogue(1)},700);
+ }else{
+  window.__animeverseHeaderSearch=false;
+  $('catalogueResults').innerHTML='';$('cataloguePages').classList.add('hidden');
+  $('catalogueStatus').textContent=query?'Écris au moins 2 caractères pour rechercher.':'Entre un titre pour rechercher dans le catalogue.';
+ }
+});
+$('search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(headerSearchTimer);if($('search').value.trim().length>=2){window.__animeverseHeaderSearch=true;searchCatalogue(1)}}});
+['genreFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));
 $('resetFilters').onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
 function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 // Add backup tools to the header without requiring a server.
@@ -688,6 +707,7 @@ const anilistQuery=`query ($search: String, $page: Int) {
 }`;
 function safeImageUrl(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
 function animeTitle(m){return m.title?.english||m.title?.romaji||m.title?.native||'Anime sans titre'}
+function finishHeaderSearch(){if(!window.__animeverseHeaderSearch)return;window.__animeverseHeaderSearch=false;$('catalogueStatus').scrollIntoView({behavior:'smooth',block:'center'})}
 async function searchCatalogue(page=1){
  const query=$('catalogueQuery').value.trim();
  if(query.length<2){$('catalogueStatus').textContent='Écris au moins 2 caractères pour rechercher.';return}
@@ -701,7 +721,7 @@ async function searchCatalogue(page=1){
   if(!data)throw new Error('Réponse du catalogue invalide.');
   catalogueLastPage=data.pageInfo.lastPage||1;
   const results=data.media||[];
-  if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';return}
+  if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';finishHeaderSearch();return}
   $('catalogueStatus').textContent=`${results.length} résultats pour « ${query} » · page ${page}`;
   $('catalogueResults').innerHTML=results.map(m=>{
    const title=animeTitle(m),cover=safeImageUrl(m.coverImage?.extraLarge||m.coverImage?.large||m.coverImage?.medium||'');
@@ -717,10 +737,10 @@ async function searchCatalogue(page=1){
   $('cataloguePages').classList.toggle('hidden',catalogueLastPage<=1);
   $('pageLabel').textContent=`Page ${page} / ${catalogueLastPage}`;
   $('prevPage').disabled=page<=1;$('nextPage').disabled=page>=catalogueLastPage;
-  window.__animeverseSearchResults=results;
+  window.__animeverseSearchResults=results;finishHeaderSearch();
  }catch(err){
   $('catalogueStatus').textContent='Impossible de contacter le catalogue. Vérifie ta connexion et réessaie.';
-  console.error(err);
+  console.error(err);finishHeaderSearch();
  }finally{catalogueBusy=false}
 }
 $('catalogueForm').addEventListener('submit',e=>{e.preventDefault();searchCatalogue(1)});
@@ -838,7 +858,7 @@ async function syncCollection(){
   }else if(window.__animeverse.anime.length){
    for(const a of window.__animeverse.anime)await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
   }
- }catch(err){console.warn('Sync collection:',err);window.__animeverseToast('Compte connecté, mais synchronisation à vérifier.')}
+ }catch(err){console.warn('Sync collection:',err);}
 }
 async function saveCollectionCloud(){
  if(!supabase||!currentUser)return;
