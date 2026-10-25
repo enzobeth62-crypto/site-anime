@@ -158,16 +158,6 @@
     $("#dialog-title").textContent = item.title;
     $("#dialog-alternate").textContent = item.alternate ? "Autre titre : " + item.alternate : "";
     $("#legal-search").href = makeJustWatchUrl(item.title);
-    const source = $("#source-page");
-    source.hidden = true;
-    // Only accept a source URL on the official Anime-Sama host; never embed remote media.
-    try {
-      const url = new URL(item.link);
-      if (url.protocol === "https:" && (url.hostname === "anime-sama.org" || url.hostname.endsWith(".anime-sama.org") || url.hostname === "anime-sama.tv" || url.hostname === "anime-sama.eu")) {
-        source.href = url.href;
-        source.hidden = false;
-      }
-    } catch (_) {}
     const seasonList = $("#season-list");
     seasonList.replaceChildren();
     const loading = document.createElement("p");
