@@ -942,7 +942,7 @@ async function loadChatAdminPanel(){
   const nameFor=id=>chatCache.find(m=>m.user_id===id)?.display_name||('Compte '+String(id||'').slice(0,8));
   el('chatBansList').innerHTML=bans.length?bans.map(b=>{
    const expired=b.expires_at&&new Date(b.expires_at).getTime()<=Date.now();
-   return `<div class="chat-admin-row"><div><strong>${escapeText(nameFor(b.user_id))}${expired?' · expiré':''}</strong><small>${escapeText(b.reason)} · ${b.expires_at?'Jusqu’au '+chatLogDate(b.expires_at):'Permanent'}</small></div><button class="btn" type="button" data-chat-unban="${escapeText(b.user_id)}">Réactiver</button></div>`;
+   return `<div class="chat-admin-row"><div><strong>${escapeText(nameFor(b.user_id))}${expired?' · expiré':''}</strong><small>${escapeText(b.reason)} · ${b.expires_at?'Jusqu’au '+chatLogDate(b.expires_at):'Permanent'}</small></div><button class="btn" type="button" data-chat-unban="${escapeText(b.user_id)}">Débannir</button></div>`;
   }).join(''):'<div class="chat-admin-empty">Aucun compte banni.</div>';
   const actionNames={delete_message:'Message supprimé',ban_user:'Compte banni',unban_user:'Compte réactivé',update_ban:'Bannissement modifié',retention_purge:'Purge automatique'};
   el('chatAdminLogs').innerHTML=logs.length?logs.map(item=>{
@@ -970,7 +970,7 @@ async function moderateChatBan(userId,name){
  el('chatBanReason').value='';await loadChatAdminPanel();
 }
 async function moderateChatUnban(userId){
- if(!isChatAdmin||!confirm('Réactiver ce compte dans le chat ?'))return;
+ if(!isChatAdmin||!confirm('Débannir ce compte et lui rendre l’accès au chat ?'))return;
  const {error}=await supabase.from('chat_bans').delete().eq('user_id',userId);
  if(error){el('chatNotice').textContent='Réactivation refusée : '+error.message;return}
  await loadChatAdminPanel();
