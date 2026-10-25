@@ -34,7 +34,7 @@ function safeMedia(m) {
 }
 async function fetchAniList(query, variables) {
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(),9000);
+  const timeout = setTimeout(()=>controller.abort(),6500);
   try {
     const response = await fetch(ANILIST,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query,variables}),signal:controller.signal});
     if(!response.ok) throw new Error('AniList unavailable');
@@ -198,9 +198,12 @@ module.exports = async function assistant(req,res) {
     if(Number(usage)>=31) return sendJson(res,429,{error:'Tu as atteint les 30 messages quotidiens de l’assistant. Réessaie demain.'});
   } catch(_) { return sendJson(res,503,{error:'L’assistant est momentanément indisponible.'}); }
   let conversation=messages.slice(),actions=[],recommendations=[];
+  const deadline=Date.now()+27000;
   try {
     for(let iteration=0;iteration<6;iteration++) {
-      const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),18000);
+      const remaining=deadline-Date.now();
+      if(remaining<750) return sendJson(res,503,{error:'L’assistant met trop de temps à répondre. Réessaie avec une demande plus courte.'});
+      const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),Math.min(10000,remaining-250));
       let response;
       try {
         response=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':anthropicKey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:MODEL,max_tokens:800,system:SYSTEM,messages:conversation,tools:TOOLS}),signal:controller.signal});
