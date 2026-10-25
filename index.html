@@ -1655,7 +1655,7 @@ const install=$('installAppButton');let deferred=null;function toast(msg){let t=
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.warn('Service worker',e)));
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(install)install.hidden=false});
 window.addEventListener('appinstalled',()=>{deferred=null;if(install)install.hidden=true;if(/Android/i.test(navigator.userAgent)&&/Chrome/i.test(navigator.userAgent))toast('Animeverse est installée sur cet appareil.')});
-install?.addEventListener('click',async()=>{if(!deferred)return;deferred.prompt();let r=await deferred.userChoice;deferred=null;install.hidden=true;if(r.outcome==='accepted')toast('Installation lancée.')});
+const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;if(install&&!standalone())install.hidden=false;install?.addEventListener('click',async()=>{if(deferred){deferred.prompt();const choice=await deferred.userChoice;deferred=null;if(choice.outcome==='accepted'){install.hidden=true;toast('Installation lancée.')}return}if(standalone()){toast('Animeverse est déjà installée sur cet appareil.');install.hidden=true;return}if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){toast('Pour installer : touche Partager dans Safari, puis « Sur l’écran d’accueil ».');return}toast('Ouvre le menu de ton navigateur et choisis « Installer l’application » ou « Ajouter à l’écran d’accueil ».');});
 if(/Android/i.test(navigator.userAgent)&&/Chrome/i.test(navigator.userAgent)&&matchMedia('(display-mode: standalone)').matches)toast('Animeverse est déjà installée.');
 })();
 </script>
