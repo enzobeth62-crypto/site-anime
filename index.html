@@ -895,6 +895,26 @@ html{scroll-behavior:smooth}
 @media(max-width:767px){#avLeftSidebar{display:none!important}.wrap{padding-left:12px!important;padding-right:12px!important;padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}.top{padding-top:6px}.menu-toggle{display:none!important}#avSideMobileBar{position:fixed;z-index:1500;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:7px;border:1px solid #ffffff1b;border-radius:22px;background:rgba(10,12,22,.84);backdrop-filter:blur(20px);box-shadow:0 12px 36px #0008}#avSideMobileBar button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;min-height:54px;padding:5px 2px;border:1px solid transparent;border-radius:15px;background:transparent;color:#aab6ca;font-size:10px;font-weight:650}#avSideMobileBar button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none}#avSideMobileBar button[aria-current="page"]{background:linear-gradient(135deg,#8b5cf62e,#f472b626);border-color:#c4b5fd3b;color:white}#avSideMobileBar button:focus-visible{outline:2px solid #67e8f9;outline-offset:2px}#avSideMobileDrawer{position:fixed;z-index:1499;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));display:none;max-height:min(58dvh,480px);overflow:auto;padding:12px;border:1px solid #ffffff1c;border-radius:20px;background:rgba(10,12,22,.96);backdrop-filter:blur(20px);box-shadow:0 18px 42px #0009}#avSideMobileDrawer.open{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}#avSideMobileDrawer button{display:flex;align-items:center;gap:10px;min-height:48px;padding:10px;border:1px solid #ffffff12;border-radius:13px;background:#ffffff06;color:#f0f4ff;text-align:left}#avSideMobileDrawer button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none}#avSideAccountMenu{position:fixed;left:12px;right:12px;bottom:calc(82px + env(safe-area-inset-bottom));width:auto}#avSideAssistant,#aiAssistantButton{bottom:calc(105px + env(safe-area-inset-bottom))!important}}
 @media(prefers-reduced-motion:reduce){#avLeftSidebar *,#avSideMobileBar *,#avSideMobileDrawer *,#avLeftSidebar:before,#avLeftSidebar:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
+
+<style id="animeverse-sidebar-layout-fix">
+#avLeftSidebar.av-expanded{width:248px!important}
+#avLeftSidebar:not(.av-expanded){width:76px!important}
+@media(min-width:1101px){#avLeftSidebar:not(.av-expanded){width:76px!important}#avLeftSidebar.av-expanded{width:248px!important}}
+@media(min-width:768px) and (max-width:1100px){
+ #avLeftSidebar.av-expanded{width:248px!important;padding-left:13px!important;padding-right:13px!important}
+ #avLeftSidebar.av-expanded .brand{justify-content:flex-start!important;padding:2px 5px!important}
+ #avLeftSidebar.av-expanded .brand>div:last-child{display:block!important}
+ #avLeftSidebar.av-expanded .brand h1{font-size:14px;letter-spacing:.14em}
+ #avLeftSidebar.av-expanded .brand small{font-size:10px}
+ #avLeftSidebar.av-expanded .av-side-group-title{display:block;margin:10px 10px 3px;color:#6e7d98;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+ #avLeftSidebar.av-expanded .btn,#avLeftSidebar.av-expanded .av-side-link{flex-direction:row!important;justify-content:flex-start!important;gap:13px!important;min-height:46px!important;padding:9px 12px!important;text-align:left!important}
+ #avLeftSidebar.av-expanded .av-side-text{font-size:14px!important;white-space:nowrap!important}
+ #avLeftSidebar.av-expanded .av-account-card{justify-content:flex-start;padding:8px}
+ #avLeftSidebar.av-expanded .av-account-copy{display:block}
+ #avLeftSidebar.av-expanded .av-side-badge{top:10px;right:13px}
+}
+@media(max-width:767px){#avLeftSidebar,#avSideToggle{display:none!important}}
+</style>
 </head>
 <body>
 <div class="wrap">
