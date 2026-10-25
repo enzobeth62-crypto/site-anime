@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#11111b">
+<title>Animeverse — Ma bibliothèque</title>
+<style>
+:root{--bg:#0c0d14;--panel:#151723;--panel2:#1b1e2e;--line:#2b2e42;--text:#f6f6fb;--muted:#a5a8bd;--accent:#a78bfa;--accent2:#f472b6;--good:#86efac;--warn:#fcd34d;--danger:#fda4af}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#252044 0,transparent 35%),radial-gradient(ellipse at 100% 10%,#321b36 0,transparent 25%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:24px 18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:23px;box-shadow:0 8px 28px #a78bfa30}.brand h1{font-size:20px;line-height:1.1;margin:0;letter-spacing:.06em}.brand small{color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:12px;font-weight:650;transition:.15s}.btn:hover{transform:translateY(-1px);border-color:var(--accent)}.btn.primary{background:linear-gradient(135deg,#8b5cf6,#c026d3);border:0}.btn.danger{color:var(--danger)}.hero{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-bottom:20px}.hero-main,.hero-side,.toolbar,.empty,.card,.modal-card{background:#151723eF;border:1px solid var(--line);border-radius:22px}.hero-main{padding:26px;position:relative;overflow:hidden}.eyebrow{color:#c4b5fd;text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800}.hero h2{font-size:clamp(27px,4vw,43px);line-height:1.05;margin:10px 0}.hero p{color:var(--muted);max-width:560px;margin:0 0 20px}.hero-side{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:center}.stat{background:var(--panel2);padding:16px;border-radius:16px;border:1px solid #292c40}.stat b{font-size:29px;display:block;line-height:1.2}.stat span{font-size:12px;color:var(--muted)}
+.toolbar{padding:14px;display:grid;grid-template-columns:1.5fr repeat(2,minmax(130px,.7fr)) auto;gap:10px;margin-bottom:18px}.field{width:100%;background:#0f1019;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 12px;outline:none}.field:focus{border-color:var(--accent);box-shadow:0 0 0 3px #a78bfa20}textarea.field{resize:vertical;min-height:80px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 13px}.section-head h3{margin:0;font-size:19px}.count{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{overflow:hidden;min-width:0;transition:transform .18s,border-color .18s}.card:hover{transform:translateY(-3px);border-color:#7164b7}.poster{height:158px;background:linear-gradient(135deg,#302b54,#612c5a 55%,#182a47);display:flex;align-items:center;justify-content:center;position:relative;padding:18px;text-align:center}.poster .poster-title{font-size:23px;font-weight:850;line-height:1.08;text-shadow:0 3px 18px #0008;overflow-wrap:anywhere}.poster img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}.poster .poster-title{position:relative;z-index:1}.poster:has(img) .poster-title{background:#0008;border-radius:8px;padding:5px}.card-body{padding:14px}.card h4{margin:0 0 5px;font-size:16px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:12px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.tag{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;color:#d8d5ed;background:#202235}.status{font-size:11px;font-weight:750;border-radius:7px;padding:4px 7px;display:inline-block}.status.vu{color:#bbf7d0;background:#14532d55}.status.encours{color:#fde68a;background:#713f1255}.status.a-voir{color:#ddd6fe;background:#4c1d9555}.status.abandonne{color:#fecdd3;background:#88133755}.rating{color:#fcd34d;font-size:13px}.card-actions{display:flex;gap:7px;margin-top:12px}.card-actions .btn{flex:1;padding:7px 9px;font-size:12px}.empty{text-align:center;padding:52px 20px;color:var(--muted)}.empty .emoji{font-size:40px}.empty h3{color:var(--text);margin:8px 0}
+footer{color:var(--muted);font-size:12px;text-align:center;margin-top:28px}
+.modal{position:fixed;inset:0;background:#05060bd9;display:none;align-items:center;justify-content:center;padding:18px;z-index:10;overflow:auto}.modal.open{display:flex}.modal-card{width:min(650px,100%);padding:22px;max-height:92vh;overflow:auto;box-shadow:0 25px 90px #0008}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.modal-head h3{margin:0;font-size:22px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-group{display:flex;flex-direction:column;gap:6px}.form-group label{font-size:12px;color:var(--muted);font-weight:700}.full{grid-column:1/-1}.form-actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.form-actions-right{display:flex;gap:8px}.hidden{display:none!important}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#26233b;border:1px solid #6d5ca6;color:white;border-radius:12px;padding:11px 16px;z-index:20;box-shadow:0 8px 30px #0008;display:none}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}}
+@media(max-width:600px){.wrap{padding:16px 12px 40px}.top{align-items:flex-start}.top .btn{padding:8px 10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.poster{height:135px}.card-body{padding:11px}.hero-main{padding:21px}.toolbar{grid-template-columns:1fr 1fr}.toolbar input{grid-column:1/-1}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.hero-side{padding:12px}.stat{padding:12px}.stat b{font-size:24px}}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.poster{height:175px}}
+
+.catalogue{margin:22px 0 28px;padding:20px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(135deg,#171827f5,#21172bf5)}
+.catalogue-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.catalogue h3{margin:3px 0 4px;font-size:22px}.catalogue p{margin:0;color:var(--muted);font-size:13px}
+.catalogue-search{display:grid;grid-template-columns:1fr auto;gap:9px;margin:16px 0}
+.api-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.api-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#10111a;min-width:0}
+.api-poster{height:190px;background:linear-gradient(145deg,#332954,#54294c);position:relative;display:grid;place-items:center;overflow:hidden}
+.api-poster img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.api-info{padding:10px}.api-info strong{font-size:13px;line-height:1.3;display:block;min-height:34px}
+.api-info small{color:var(--muted);font-size:11px;display:block;margin:5px 0 9px}
+.api-info .btn{width:100%;padding:7px 5px;font-size:11px}
+.api-status{font-size:12px;color:var(--muted);min-height:18px}
+.api-pages{display:flex;justify-content:center;gap:10px;margin-top:14px;align-items:center}
+@media(max-width:900px){.api-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){.api-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.api-poster{height:190px}.catalogue{padding:14px}.catalogue-top{display:block}.catalogue-search{grid-template-columns:1fr}.api-info{padding:9px}}
+
+
+.head-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.chat-view{margin:20px 0}.chat-shell{border:1px solid var(--line);border-radius:22px;background:#151723f2;overflow:hidden}
+.chat-title{padding:24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;align-items:center}
+.chat-title h2{font-size:28px;margin:5px 0}.chat-title p{margin:0;color:var(--muted)}
+.chat-notice{margin:16px;padding:13px 15px;border-radius:12px;background:#29213a;border:1px solid #51416f;color:#e5dcff;font-size:13px}
+.chat-messages{height:min(52vh,520px);min-height:260px;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.chat-empty{margin:auto;color:var(--muted);text-align:center;padding:25px}
+.chat-message{max-width:88%;align-self:flex-start;background:#232538;border:1px solid var(--line);padding:10px 13px;border-radius:14px 14px 14px 4px;overflow-wrap:anywhere}
+.chat-message.mine{align-self:flex-end;background:#382553;border-color:#654b87;border-radius:14px 14px 4px 14px}
+.chat-message .chat-meta{display:flex;gap:9px;align-items:center;color:#c4b5fd;font-size:11px;font-weight:750;margin-bottom:3px}
+.chat-message time{color:var(--muted);font-weight:400}.chat-message .chat-text{white-space:pre-wrap}
+.chat-compose{padding:14px;display:grid;grid-template-columns:1fr auto;gap:9px;border-top:1px solid var(--line)}
+.chat-small{font-size:11px;color:var(--muted);padding:0 16px 16px;margin:0}
+.auth-modal{position:fixed;inset:0;z-index:30;background:#05060be8;display:none;align-items:center;justify-content:center;padding:16px}
+.auth-modal.open{display:flex}.auth-card{width:min(470px,100%);padding:23px;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 25px 90px #0009}
+.auth-card h2{margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px;margin:0 0 16px}
+.auth-tabs{display:flex;gap:8px;margin-bottom:16px}.auth-tabs .btn{flex:1}.auth-fields{display:grid;gap:10px}.auth-message{margin-top:12px;font-size:13px;color:#ddd6fe;overflow-wrap:anywhere}
+.auth-foot{margin-top:13px;font-size:11px;color:var(--muted)}
+@media(max-width:650px){.head-actions{width:100%;justify-content:flex-start}.top{align-items:flex-start;flex-direction:column}.chat-title{padding:17px;display:block}.chat-title .tag{margin-top:10px;display:inline-block}.chat-message{max-width:96%}.chat-compose{grid-template-columns:1fr}.chat-compose button{width:100%}}
+
+
+/* Animeverse modern refresh */
+:root{--bg:#080910;--panel:#111320;--panel2:#191c2e;--line:#2c3048;--text:#f8f7ff;--muted:#a7acc4;--accent:#9b7bff;--accent2:#e34ed8;--good:#69e5b1}
+body{background:radial-gradient(ellipse at 8% -8%,#5330a84a 0,transparent 38%),radial-gradient(ellipse at 95% 4%,#d42fba24 0,transparent 31%),linear-gradient(180deg,#090a13,#0d0d17 52%,#090910);background-attachment:fixed}
+.wrap{max-width:1240px;padding-top:22px}
+.logo{background:linear-gradient(135deg,#8b5cf6,#ec4899);box-shadow:0 0 35px #a855f74a}
+.brand h1{letter-spacing:.11em}
+.btn{border-radius:14px;min-height:42px;backdrop-filter:blur(12px)}
+.btn.primary{background:linear-gradient(115deg,#8557f6,#bf35d7 58%,#e34dba);box-shadow:0 8px 24px #a83ce52b}
+.btn.primary:hover{filter:brightness(1.1);box-shadow:0 10px 30px #a83ce54a}
+.hero-main,.hero-side,.toolbar,.empty,.card,.modal-card,.chat-shell{background:linear-gradient(145deg,#171827ed,#11121def);border-color:#34364d;box-shadow:0 16px 48px #0002}
+.hero-main:after{content:"";position:absolute;width:230px;height:230px;right:-100px;top:-120px;border-radius:50%;background:#a855f71c;filter:blur(12px);pointer-events:none}
+.stat{background:linear-gradient(145deg,#202238,#171827);border-color:#33354d}
+.field{background:#0c0d17;border-color:#30334a;border-radius:13px;min-height:46px}
+.field:focus{border-color:#a78bfa;box-shadow:0 0 0 4px #a78bfa20}
+.card{border-radius:18px}
+.card:hover{box-shadow:0 18px 38px #0004}
+.poster{background:linear-gradient(135deg,#312e81,#86198f 60%,#164e63)}
+.tag{background:#24243a;border-color:#3b3d57}
+.auth-modal{backdrop-filter:blur(10px)}
+.auth-card{background:linear-gradient(145deg,#191a2a,#11121e);border:1px solid #383952;box-shadow:0 30px 100px #0009;border-radius:26px}
+.auth-card .btn{min-height:46px}
+.chat-shell{border-radius:24px;padding:clamp(16px,3vw,28px);border:1px solid #363951}
+.chat-title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.chat-title h2{font-size:clamp(25px,4vw,36px);margin:7px 0}
+.chat-title p{color:var(--muted);margin:0;max-width:620px}
+.chat-notice{padding:11px 14px;border-radius:13px;background:#24213a;border:1px solid #40375f;color:#d9d2ff;font-size:13px;margin-bottom:14px}
+.chat-messages{height:min(58vh,620px);min-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:16px;background:radial-gradient(ellipse at 10% 0%,#2b235522,transparent 45%),#0b0c15;border:1px solid #292c40;border-radius:18px;scroll-behavior:smooth}
+.chat-message{max-width:min(82%,680px);align-self:flex-start;padding:11px 14px;border-radius:17px 17px 17px 5px;background:linear-gradient(145deg,#22253a,#191b2b);border:1px solid #343750;box-shadow:0 6px 18px #0002;overflow-wrap:anywhere;animation:chatIn .18s ease-out}
+.chat-message.mine{align-self:flex-end;background:linear-gradient(135deg,#6339b8,#9d32ae);border-color:#b26de0;border-radius:17px 17px 5px 17px}
+.chat-meta{display:flex;gap:12px;justify-content:space-between;align-items:center;color:#d9d5f6;font-size:12px;margin-bottom:5px}
+.chat-meta span{font-weight:800}
+.chat-meta time{color:#a9a9c4;font-size:10px;white-space:nowrap}
+.chat-text{white-space:pre-wrap;line-height:1.5}
+.chat-compose{display:flex;gap:10px;margin-top:12px;padding:8px;background:#11121e;border:1px solid #2d3046;border-radius:17px}
+.chat-compose .field{border:0;background:transparent;box-shadow:none;flex:1;min-width:0}
+.chat-compose .btn{min-width:110px}
+.chat-small{font-size:12px;color:var(--muted);margin:12px 4px 0}
+.chat-empty{margin:auto;text-align:center;color:var(--muted);padding:35px 12px}
+#authOpen{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+@keyframes chatIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.chat-title{display:block}.chat-title .tag{display:inline-block;margin-top:12px}.chat-messages{height:55vh;min-height:280px;padding:10px}.chat-message{max-width:92%}.chat-compose{gap:5px;padding:5px}.chat-compose .btn{min-width:auto;padding:9px 11px}.hero-side{grid-template-columns:1fr 1fr}}
+
+
+/* Video hub + round profile avatars */
+#navVideos.primary{background:linear-gradient(115deg,#8557f6,#bf35d7 58%,#e34dba);border-color:transparent}
+.videos-shell{margin-top:10px}
+.video-create{padding:18px;background:linear-gradient(135deg,#1c1b32,#171827);border:1px solid #373653;border-radius:19px;margin:20px 0}
+.video-create-title{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.video-create-title b{font-size:18px}
+.video-create-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#e34dba);font-size:23px}
+.video-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.video-form textarea{grid-column:1/-1;min-height:74px}
+.video-form button{justify-self:start}
+.video-notice{font-size:12px;color:var(--muted);margin:12px 0 0}
+.video-list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 13px}
+.video-list-head h3{margin:4px 0;font-size:23px}
+.video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.video-card{background:linear-gradient(145deg,#191a2b,#11121d);border:1px solid #33354d;border-radius:19px;overflow:hidden;min-width:0;transition:transform .2s,border-color .2s}
+.video-card:hover{transform:translateY(-4px);border-color:#9b7bff}
+.video-frame{aspect-ratio:16/9;background:#080910;position:relative}
+.video-frame iframe,.video-frame video{width:100%;height:100%;border:0;display:block}
+.video-frame .video-link-preview{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#fff;text-decoration:none;background:radial-gradient(circle at 25% 20%,#7643d6,#241a40 60%,#10111d)}
+.video-link-preview span{font-size:42px}
+.video-card-body{padding:14px}
+.video-card-body h4{margin:0 0 7px;font-size:16px;overflow-wrap:anywhere}
+.video-card-body p{font-size:13px;color:var(--muted);margin:0 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.video-card-meta{font-size:11px;color:#b7b4d2;display:flex;justify-content:space-between;gap:8px}
+.avatar-editor{display:flex;align-items:center;gap:15px;padding:14px;background:#11121e;border:1px solid #303249;border-radius:17px;margin:16px 0}
+.avatar-preview{width:84px;height:84px;object-fit:cover;border-radius:50%;border:3px solid #a78bfa;box-shadow:0 0 0 5px #a78bfa20}
+.avatar-edit-fields{flex:1;min-width:0;display:grid;gap:8px}
+.avatar-edit-fields small{color:var(--muted);font-size:11px}
+.avatar-edit-fields .field{padding:8px;font-size:12px}
+.account-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:5px;border:1px solid #d7b7ff}
+@media(max-width:800px){.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.video-grid,.video-form{grid-template-columns:1fr}.video-form textarea{grid-column:auto}.video-list-head h3{font-size:20px}.avatar-editor{align-items:flex-start}.avatar-preview{width:68px;height:68px}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">✦</div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div>
+    <div class="head-actions">
+      <button class="btn" id="navLibrary">📚 Bibliothèque</button>
+      <button class="btn" id="navChat">💬 Chat en direct</button>
+      <button class="btn" id="navVideos">▶️ Vidéos</button>
+      <button class="btn primary" id="authOpen">👤 Connexion</button>
+      <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
+    </div>
+  </header>
+  <div id="libraryView">\n  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">Ton univers, tes règles</div>
+      <h2>Chaque anime a<br>son histoire.</h2>
+      <p>Garde une trace de tout ce que tu as regardé : genres, notes, saisons, coups de cœur et prochaines découvertes. Avec un compte, retrouve ta collection sur tes appareils.</p>
+      <button class="btn primary" id="addHero">＋ Ajouter à ma collection</button>
+    </div>
+    <div class="hero-side">
+      <div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div>
+      <div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div>
+      <div class="stat"><b id="watchingStat">0</b><span>En cours</span></div>
+      <div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div>
+    </div>
+  </section>
+  <section class="toolbar">
+    <input class="field" id="search" placeholder="🔎 Rechercher un titre, un studio, une note…">
+    <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
+    <select class="field" id="statusFilter"><option value="">Tous les statuts</option><option>Vu</option><option>En cours</option><option>À voir</option><option>Abandonné</option></select>
+    <button class="btn" id="resetFilters">Réinitialiser</button>
+  </section>
+  <section class="catalogue">
+    <div class="catalogue-top">
+      <div><div class="eyebrow">Catalogue connecté</div><h3>Découvre des milliers d’anime</h3><p>Recherche un titre et récupère automatiquement son affiche, ses genres et ses informations.</p></div>
+      <span class="tag">Données AniList</span>
+    </div>
+    <form id="catalogueForm" class="catalogue-search">
+      <input class="field" id="catalogueQuery" minlength="2" placeholder="Ex. Re:Zero, Blue Box, Naruto…" autocomplete="off">
+      <button class="btn primary" type="submit">🔎 Rechercher</button>
+    </form>
+    <div class="api-status" id="catalogueStatus">Entre un titre pour rechercher dans le catalogue.</div>
+    <div id="catalogueResults" class="api-grid"></div>
+    <div class="api-pages hidden" id="cataloguePages"><button class="btn" id="prevPage">← Précédent</button><span id="pageLabel" class="meta"></span><button class="btn" id="nextPage">Suivant →</button></div>
+  </section>
+  <div class="section-head"><h3>Ma collection</h3><span class="count" id="resultsCount">0 anime</span></div>
+  <main id="collection" class="grid"></main>
+  <div id="empty" class="empty"><div class="emoji">📚</div><h3>Ton aventure commence ici</h3><p>Ajoute ton premier anime pour commencer ta bibliothèque.</p><button class="btn primary" id="emptyAdd">＋ Ajouter mon premier anime</button></div>
+  </div>\n
+  <section id="chatView" class="chat-view hidden">
+    <div class="chat-shell">
+      <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">Connexion requise</span></div>
+      <div id="chatNotice" class="chat-notice">Pour utiliser le chat en direct et retrouver tes messages, configure d’abord le service gratuit Supabase. Les étapes sont expliquées dans le guide fourni avec le fichier.</div>
+      <div id="chatMessages" class="chat-messages"><div class="chat-empty">Les messages apparaîtront ici après connexion.</div></div>
+      <form id="chatForm" class="chat-compose">
+        <input id="chatInput" class="field" maxlength="1000" placeholder="Écris ton message…" autocomplete="off" disabled>
+        <button class="btn primary" id="chatSend" type="submit" disabled>Envoyer ➤</button>
+      </form>
+      <p class="chat-small">Règles : reste respectueux, ne partage pas d’informations personnelles et signale les comportements abusifs aux modérateurs du site.</p>
+    </div>
+  </section>
+
+  <section id="videosView" class="hidden">
+    <div class="chat-shell videos-shell">
+      <div class="chat-title">
+        <div><div class="eyebrow">Animeverse Studio</div><h2>▶️ Le coin vidéos</h2><p>Partage tes vidéos préférées, tes AMV, tes analyses et tes découvertes avec la communauté.</p></div>
+        <span class="tag" id="videoCount">0 vidéo</span>
+      </div>
+      <div class="video-create">
+        <div class="video-create-title"><span class="video-create-icon">＋</span><div><b>Publier une vidéo</b><div class="meta">Colle un lien YouTube, Vimeo ou un fichier vidéo MP4 accessible en ligne.</div></div></div>
+        <form id="videoForm" class="video-form">
+          <input id="videoTitle" class="field" maxlength="120" required placeholder="Titre de ta vidéo">
+          <input id="videoUrl" class="field" type="url" required placeholder="Lien vidéo (YouTube, Vimeo ou MP4)">
+          <textarea id="videoDescription" class="field" maxlength="500" placeholder="Une petite description (facultatif)"></textarea>
+          <button class="btn primary" id="videoSubmit" type="submit">🚀 Publier</button>
+        </form>
+        <p class="video-notice" id="videoNotice">Connecte-toi pour publier une vidéo. Les vidéos partagées sont visibles par la communauté.</p>
+      </div>
+      <div class="video-list-head"><div><div class="eyebrow">À regarder</div><h3>Dernières publications</h3></div><button class="btn" id="videoRefresh" type="button">↻ Actualiser</button></div>
+      <div id="videoGrid" class="video-grid"><div class="chat-empty">Les vidéos apparaîtront ici.</div></div>
+    </div>
+  </section>
+  <footer>Animeverse · Ta communauté anime, tes vidéos et ta bibliothèque.</footer>
+</div>
+
+
+<div class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-card">
+    <div class="modal-head"><h2 id="authTitle">Ton compte Animeverse</h2><button class="btn" id="authClose" type="button">✕</button></div>
+    <p>Crée un compte pour retrouver ta collection sur tes différents appareils et participer au chat.</p>
+    <div class="auth-tabs"><button class="btn primary" id="loginTab" type="button">Connexion</button><button class="btn" id="signupTab" type="button">Créer un compte</button></div>
+    <form id="authForm" class="auth-fields">
+      <input id="authUsername" class="field hidden" type="text" placeholder="Pseudo (2 à 24 caractères)" minlength="2" maxlength="24" autocomplete="nickname">
+      <input id="authEmail" class="field" type="email" placeholder="Adresse e-mail" required autocomplete="email">
+      <input id="authPassword" class="field" type="password" placeholder="Mot de passe (8 caractères minimum)" minlength="8" required autocomplete="current-password">
+      <button id="authSubmit" class="btn primary" type="submit">Se connecter</button>
+    </form>
+    <div id="authMessage" class="auth-message">La connexion nécessite les identifiants du projet Supabase configurés dans le code HTML.</div>
+    <div class="auth-foot">Utilise une adresse e-mail à laquelle tu as accès. Selon les réglages du projet, une confirmation par e-mail peut être nécessaire.</div>
+  </div>
+</div>
+
+<div class="auth-modal" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+  <div class="auth-card">
+    <div class="modal-head"><h2 id="profileTitle">Mon profil Animeverse</h2><button class="btn" id="profileClose" type="button">✕</button></div>
+    <p>Gère ton pseudo, ta photo et ton compte. Ton avatar rond sera visible sur Animeverse.</p>
+    <div class="avatar-editor">
+      <img id="avatarPreview" class="avatar-preview" alt="Photo de profil" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='50' fill='%2323233a'/%3E%3Ctext x='50' y='62' font-size='44' text-anchor='middle' fill='%23c4b5fd'%3E%E2%98%85%3C/text%3E%3C/svg%3E">
+      <div class="avatar-edit-fields"><label for="avatarFile">Photo de profil</label><input id="avatarFile" class="field" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><small>Image JPG, PNG, WEBP ou GIF · 3 Mo maximum</small></div>
+    </div>
+    <form id="profileForm" class="auth-fields">
+      <label for="profileUsername">Pseudo</label>
+      <input id="profileUsername" class="field" type="text" minlength="2" maxlength="24" required autocomplete="nickname" placeholder="Ton pseudo">
+      <label for="profileEmail">Adresse e-mail</label>
+      <input id="profileEmail" class="field" type="email" readonly>
+      <button id="profileSave" class="btn primary" type="submit">Enregistrer le pseudo</button>
+      <button id="signOutBtn" class="btn" type="button">Se déconnecter</button>
+    </form>
+    <div id="profileMessage" class="auth-message"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="modalTitle">Ajouter un anime</h3><button class="btn" id="closeModal" aria-label="Fermer">✕</button></div>
+    <form id="animeForm">
+      <input type="hidden" id="animeId">
+      <div class="form-grid">
+        <div class="form-group full"><label for="title">Titre de l'anime *</label><input class="field" id="title" required maxlength="120" placeholder="Ex. Re:Zero"></div>
+        <div class="form-group"><label for="status">Statut</label><select class="field" id="status"><option>Vu</option><option>En cours</option><option>À voir</option><option>Abandonné</option></select></div>
+        <div class="form-group"><label for="rating">Ta note / 10</label><select class="field" id="rating"><option value="">Pas encore noté</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+        <div class="form-group"><label for="genres">Genres (séparés par des virgules)</label><input class="field" id="genres" placeholder="Romance, Drame, Seinen"></div>
+        <div class="form-group"><label for="seasons">Saisons</label><input class="field" id="seasons" type="number" min="0" max="99" placeholder="Ex. 2"></div>
+        <div class="form-group"><label for="episodes">Épisodes vus / total</label><input class="field" id="episodes" placeholder="Ex. 12 / 24"></div>
+        <div class="form-group"><label for="year">Année</label><input class="field" id="year" type="number" min="1900" max="2100" placeholder="Ex. 2024"></div>
+        <div class="form-group full"><label for="poster">Lien d'image de l'affiche (facultatif)</label><input class="field" id="poster" type="url" placeholder="https://…"></div>
+        <div class="form-group full"><label for="notes">Mon avis / mes notes</label><textarea class="field" id="notes" maxlength="1500" placeholder="Personnages préférés, émotions, à revoir…"></textarea></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn danger hidden" id="deleteBtn">Supprimer</button><div class="form-actions-right"><button type="button" class="btn" id="cancelBtn">Annuler</button><button class="btn primary" type="submit">Enregistrer</button></div></div>
+    </form>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<input type="file" id="importFile" accept="application/json,.json" class="hidden">
+<script>
+(() => {
+const KEY='animeverse-library-v1';
+const $=id=>document.getElementById(id);
+let anime=[];
+const genresKnown=['Action','Aventure','Comédie','Drame','Fantasy','Isekai','Mystère','Psychologique','Romance','Science-fiction','Seinen','Shōjo','Shōnen','Slice of life','Sport','Surnaturel','Thriller','Horreur','Musique','École'];
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'[]');anime=Array.isArray(d)?d:[]}catch{anime=[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify(anime));render();if(window.__animeverseCloudSave)window.__animeverseCloudSave()}
+function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2400)}
+function statusClass(s){return {'Vu':'vu','En cours':'encours','À voir':'a-voir','Abandonné':'abandonne'}[s]||'a-voir'}
+function allGenres(){return [...new Set(anime.flatMap(a=>a.genres||[]).map(g=>g.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'fr'))}
+function updateGenreOptions(){const sel=$('genreFilter'),old=sel.value;sel.innerHTML='<option value="">Tous les genres</option>'+allGenres().map(g=>`<option>${escapeHTML(g)}</option>`).join('');sel.value=old}
+function render(){
+ updateGenreOptions();
+ $('totalStat').textContent=anime.length;
+ $('watchedStat').textContent=anime.filter(a=>a.status==='Vu').length;
+ $('watchingStat').textContent=anime.filter(a=>a.status==='En cours').length;
+ const ratings=anime.map(a=>Number(a.rating)).filter(n=>n>0);
+ $('avgStat').textContent=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—';
+ const q=$('search').value.trim().toLocaleLowerCase('fr'),g=$('genreFilter').value,s=$('statusFilter').value;
+ const list=anime.filter(a=>(!q||[a.title,a.notes,a.year,...(a.genres||[])].join(' ').toLocaleLowerCase('fr').includes(q))&&(!g||(a.genres||[]).includes(g))&&(!s||a.status===s)).sort((a,b)=>a.title.localeCompare(b.title,'fr'));
+ $('resultsCount').textContent=`${list.length} anime`;
+ $('collection').innerHTML=list.map(a=>`<article class="card">
+  <div class="poster">${a.poster?`<img src="${escapeHTML(a.poster)}" alt="" onerror="this.remove()">`:''}<div class="poster-title">${escapeHTML(a.title)}</div></div>
+  <div class="card-body"><h4>${escapeHTML(a.title)}</h4><div class="meta">${a.year?escapeHTML(a.year)+' · ':''}${a.seasons?escapeHTML(a.seasons)+' saison(s) · ':''}${a.episodes?escapeHTML(a.episodes)+' épisodes':''}</div>
+  <div class="tags">${(a.genres||[]).slice(0,4).map(g=>`<span class="tag">${escapeHTML(g)}</span>`).join('')}</div>
+  <span class="status ${statusClass(a.status)}">${escapeHTML(a.status||'À voir')}</span> ${a.rating?`<span class="rating">★ ${escapeHTML(a.rating)}/10</span>`:''}
+  ${a.notes?`<p class="meta">${escapeHTML(a.notes.slice(0,115))}${a.notes.length>115?'…':''}</p>`:''}
+  <div class="card-actions"><button class="btn" data-edit="${escapeHTML(a.id)}">✎ Modifier</button><button class="btn" data-status="${escapeHTML(a.id)}">⇄ Statut</button></div></div></article>`).join('');
+ $('empty').style.display=anime.length?'none':'block';
+ $('empty').innerHTML=anime.length?'<div class="emoji">🔎</div><h3>Aucun résultat</h3><p>Essaie de modifier ta recherche ou tes filtres.</p><button class="btn" id="clearEmpty">Effacer les filtres</button>':$('empty').innerHTML;
+ $('collection').style.display=list.length?'grid':'none';
+ const clear=$('clearEmpty');if(clear)clear.onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
+}
+function openModal(item=null){
+ $('animeForm').reset();$('animeId').value=item?.id||'';
+ $('modalTitle').textContent=item?'Modifier un anime':'Ajouter un anime';
+ $('deleteBtn').classList.toggle('hidden',!item);
+ if(item){$('title').value=item.title||'';$('status').value=item.status||'Vu';$('rating').value=item.rating||'';$('genres').value=(item.genres||[]).join(', ');$('seasons').value=item.seasons||'';$('episodes').value=item.episodes||'';$('year').value=item.year||'';$('poster').value=item.poster||'';$('notes').value=item.notes||''}
+ $('modal').classList.add('open');setTimeout(()=>$('title').focus(),50)
+}
+function closeModal(){$('modal').classList.remove('open')}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+['addTop','addHero','emptyAdd'].forEach(id=>$(id).addEventListener('click',()=>openModal()));
+$('closeModal').onclick=closeModal;$('cancelBtn').onclick=closeModal;
+$('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+$('animeForm').addEventListener('submit',e=>{
+ e.preventDefault();const id=$('animeId').value||uid(),old=anime.find(a=>a.id===id);
+ const item={id,title:$('title').value.trim(),status:$('status').value,rating:$('rating').value,genres:$('genres').value.split(',').map(x=>x.trim()).filter(Boolean),seasons:$('seasons').value,episodes:$('episodes').value.trim(),year:$('year').value,poster:$('poster').value.trim(),notes:$('notes').value.trim(),createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+ if(!item.title)return;
+ const idx=anime.findIndex(a=>a.id===id);if(idx>=0)anime[idx]=item;else anime.push(item);
+ save();closeModal();toast(idx>=0?'Anime modifié !':'Anime ajouté à ta collection !')
+});
+$('deleteBtn').onclick=()=>{const id=$('animeId').value;const item=anime.find(a=>a.id===id);if(item&&confirm(`Supprimer « ${item.title} » de ta collection ?`)){anime=anime.filter(a=>a.id!==id);save();closeModal();toast('Anime supprimé.')}};
+$('collection').addEventListener('click',e=>{
+ const edit=e.target.closest('[data-edit]'),st=e.target.closest('[data-status]');
+ if(edit){openModal(anime.find(a=>a.id===edit.dataset.edit));return}
+ if(st){const a=anime.find(a=>a.id===st.dataset.status);if(a){const opts=['Vu','En cours','À voir','Abandonné'],i=opts.indexOf(a.status);a.status=opts[(i+1)%opts.length];save();toast('Statut : '+a.status)}}
+});
+['search','genreFilter','statusFilter'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
+$('resetFilters').onclick=()=>{$('search').value='';$('genreFilter').value='';$('statusFilter').value='';render()};
+function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+// Add backup tools to the header without requiring a server.
+const actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end';
+actions.innerHTML='<button class="btn" id="exportBtn">↧ Sauvegarder</button><button class="btn" id="importBtn">↥ Importer</button>';
+$('addTop').before(actions);
+$('exportBtn').onclick=()=>{download('ma-collection-animeverse.json',JSON.stringify(anime,null,2),'application/json');toast('Sauvegarde exportée !')};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data)||data.some(a=>!a.title))throw new Error();if(confirm(`Importer ${data.length} anime ? Cela remplacera la collection actuelle.`)){anime=data.map(a=>({...a,id:a.id||uid()}));save();toast('Collection importée !')}}catch{alert('Fichier invalide. Choisis une sauvegarde Animeverse (.json).')}e.target.value=''};
+
+// Catalogue public AniList : les images et les données sont récupérées au moment de la recherche.
+let cataloguePage=1, catalogueLastPage=1, catalogueQuery='', catalogueBusy=false;
+const anilistEndpoint='https://graphql.anilist.co';
+const anilistQuery=`query ($search: String, $page: Int) {
+ Page(page: $page, perPage: 10) {
+  pageInfo { currentPage lastPage hasNextPage }
+  media(search: $search, type: ANIME, sort: SEARCH_MATCH) {
+   id
+   title { romaji english native }
+   coverImage { extraLarge large medium }
+   seasonYear
+   episodes
+   format
+   status
+   genres
+   averageScore
+   siteUrl
+  }
+ }
+}`;
+function safeImageUrl(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?u.href:''}catch{return ''}}
+function animeTitle(m){return m.title?.english||m.title?.romaji||m.title?.native||'Anime sans titre'}
+async function searchCatalogue(page=1){
+ const query=$('catalogueQuery').value.trim();
+ if(query.length<2){$('catalogueStatus').textContent='Écris au moins 2 caractères pour rechercher.';return}
+ catalogueQuery=query;cataloguePage=page;catalogueBusy=true;
+ $('catalogueStatus').textContent='Recherche des anime et de leurs affiches…';
+ $('catalogueResults').innerHTML='';$('cataloguePages').classList.add('hidden');
+ try{
+  const response=await fetch(anilistEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query:anilistQuery,variables:{search:query,page}})});
+  if(!response.ok)throw new Error('Le catalogue répond temporairement indisponible ('+response.status+').');
+  const json=await response.json();const data=json?.data?.Page;
+  if(!data)throw new Error('Réponse du catalogue invalide.');
+  catalogueLastPage=data.pageInfo.lastPage||1;
+  const results=data.media||[];
+  if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';return}
+  $('catalogueStatus').textContent=`${results.length} résultats pour « ${query} » · page ${page}`;
+  $('catalogueResults').innerHTML=results.map(m=>{
+   const title=animeTitle(m),cover=safeImageUrl(m.coverImage?.extraLarge||m.coverImage?.large||m.coverImage?.medium||'');
+   const genres=(m.genres||[]).slice(0,3).join(' · ');
+   const year=m.seasonYear||'Année inconnue',eps=m.episodes?`${m.episodes} épisodes`:'Épisodes inconnus';
+   const already=anime.some(a=>a.anilistId===m.id);
+   return `<article class="api-card">
+    <div class="api-poster">${cover?`<img loading="lazy" src="${escapeHTML(cover)}" alt="${escapeHTML(title)}" onerror="this.remove()">`:''}<span class="poster-title">${escapeHTML(title)}</span></div>
+    <div class="api-info"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(String(year))} · ${escapeHTML(eps)}<br>${escapeHTML(genres||'Genres non renseignés')}</small>
+    <button class="btn ${already?'':'primary'}" data-catalog-add="${m.id}" ${already?'disabled':''}>${already?'✓ Déjà ajouté':'＋ Ajouter'}</button>
+    </div></article>`;
+  }).join('');
+  $('cataloguePages').classList.toggle('hidden',catalogueLastPage<=1);
+  $('pageLabel').textContent=`Page ${page} / ${catalogueLastPage}`;
+  $('prevPage').disabled=page<=1;$('nextPage').disabled=page>=catalogueLastPage;
+  window.__animeverseSearchResults=results;
+ }catch(err){
+  $('catalogueStatus').textContent='Impossible de contacter le catalogue. Vérifie ta connexion et réessaie.';
+  console.error(err);
+ }finally{catalogueBusy=false}
+}
+$('catalogueForm').addEventListener('submit',e=>{e.preventDefault();searchCatalogue(1)});
+$('prevPage').addEventListener('click',()=>{if(cataloguePage>1)searchCatalogue(cataloguePage-1)});
+$('nextPage').addEventListener('click',()=>{if(cataloguePage<catalogueLastPage)searchCatalogue(cataloguePage+1)});
+$('catalogueResults').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-catalog-add]');if(!btn)return;
+ const id=Number(btn.dataset.catalogAdd),m=(window.__animeverseSearchResults||[]).find(x=>x.id===id);if(!m)return;
+ if(anime.some(a=>a.anilistId===id)){toast('Cet anime est déjà dans ta collection.');return}
+ const item={id:uid(),anilistId:id,title:animeTitle(m),status:'À voir',rating:'',genres:m.genres||[],seasons:'',episodes:m.episodes?`0 / ${m.episodes}`:'',year:m.seasonYear||'',poster:safeImageUrl(m.coverImage?.extraLarge||m.coverImage?.large||m.coverImage?.medium||''),notes:'',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),sourceUrl:m.siteUrl||''};
+ anime.push(item);save();searchCatalogue(cataloguePage);toast('Anime ajouté avec son affiche !');
+});
+
+window.__animeverse={get anime(){return anime},set anime(v){anime=v;localStorage.setItem(KEY,JSON.stringify(anime));render()},render,uid};\nload();render();
+})();
+</script>
+
+<script>window.__animeverseToast=function(message){var el=document.getElementById('toast');if(!el){console.log(message);return;}el.textContent=String(message??'');el.style.display='block';window.clearTimeout(window.__animeverseToastTimer);window.__animeverseToastTimer=window.setTimeout(function(){el.style.display='none';},2400);};</script>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// 1) Remplace ces deux valeurs par celles de ton projet Supabase.
+// Ne mets JAMAIS de clé "service_role" dans un fichier public.
+const SUPABASE_URL = 'https://beuoqfqqdsegfnkgqsol.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_dgDx61Y2dbAt5DAs9OOZ3g_bH-lEVbJ';
+const configured = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('COLLE_ICI') && !SUPABASE_ANON_KEY.includes('COLLE_ICI');
+let supabase = null, currentUser = null, chatChannel = null, authMode = 'login';
+const el = id => document.getElementById(id);
+const escapeText = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function authMessage(s){el('authMessage').textContent=s}
+function showView(view){
+  el('libraryView').classList.toggle('hidden',view!=='library');
+  el('chatView').classList.toggle('hidden',view!=='chat');
+  el('videosView').classList.toggle('hidden',view!=='videos');
+  el('navLibrary').classList.toggle('primary',view==='library');
+  el('navChat').classList.toggle('primary',view==='chat');
+  el('navVideos').classList.toggle('primary',view==='videos');
+  if(view==='chat'&&currentUser)loadChat();
+  if(view==='videos')loadVideos();
+}
+function updateAccount(){
+  const avatar=currentUser?.user_metadata?.avatar_url;
+  el('authOpen').innerHTML=currentUser ? (avatar?'<img class="account-avatar" src="'+escapeText(avatar)+'" alt="">':'👤 ')+escapeText((currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'Mon compte').split('@')[0]))+' · Mon profil' : '👤 Connexion';
+  el('chatConnection').textContent=currentUser ? 'Connecté' : 'Connexion requise';
+  el('chatInput').disabled=!currentUser || !supabase;
+  el('chatSend').disabled=!currentUser || !supabase;
+}
+el('navLibrary').addEventListener('click',()=>showView('library'));
+el('navChat').addEventListener('click',()=>{showView('chat');if(currentUser)loadChat();});
+el('authOpen').addEventListener('click',()=>{
+ if(currentUser){
+   el('profileUsername').value=currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'').split('@')[0]||'';
+   el('profileEmail').value=currentUser.email||'';
+   el('avatarPreview').src=currentUser.user_metadata?.avatar_url||el('avatarPreview').src;
+   el('avatarFile').value='';
+   el('profileMessage').textContent='';
+   el('profileModal').classList.add('open');
+ } else {
+   el('authModal').classList.add('open');
+   setAuthMode('login');
+   authMessage(configured?'Connecte-toi ou crée ton compte.':'Configuration Supabase manquante.');
+ }
+});
+el('profileClose').addEventListener('click',()=>el('profileModal').classList.remove('open'));
+el('profileModal').addEventListener('click',e=>{if(e.target===el('profileModal'))el('profileModal').classList.remove('open')});
+el('profileForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!supabase||!currentUser)return;
+ const username=el('profileUsername').value.trim();if(username.length<2||username.length>24){el('profileMessage').textContent='Le pseudo doit contenir entre 2 et 24 caractères.';return}
+ el('profileSave').disabled=true;el('profileMessage').textContent='Enregistrement…';
+ try{const {data,error}=await supabase.auth.updateUser({data:{username}});if(error)throw error;currentUser=data.user;updateAccount();el('profileMessage').textContent='Pseudo enregistré !';}
+ catch(err){el('profileMessage').textContent=err.message||'Impossible de modifier le pseudo.'}
+ finally{el('profileSave').disabled=false}
+});
+el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');updateAccount();});
+el('authClose').addEventListener('click',()=>el('authModal').classList.remove('open'));
+el('authModal').addEventListener('click',e=>{if(e.target===el('authModal'))el('authModal').classList.remove('open')});
+el('loginTab').addEventListener('click',()=>setAuthMode('login'));
+el('signupTab').addEventListener('click',()=>setAuthMode('signup'));
+function setAuthMode(mode){
+ authMode=mode;
+ el('loginTab').classList.toggle('primary',mode==='login');
+ el('signupTab').classList.toggle('primary',mode==='signup');
+ el('authSubmit').textContent=mode==='login'?'Se connecter':'Créer mon compte';
+ el('authPassword').autocomplete=mode==='login'?'current-password':'new-password';
+ el('authUsername').classList.toggle('hidden',mode!=='signup');el('authUsername').required=mode==='signup';
+ authMessage(mode==='login'?'Connecte-toi avec ton adresse e-mail et ton mot de passe.':'Choisis une adresse e-mail valide et un mot de passe d’au moins 8 caractères.');
+}
+el('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!configured||!supabase){authMessage('Le site doit d’abord être relié à Supabase. Suis le guide de configuration.');return}
+ const email=el('authEmail').value.trim(),password=el('authPassword').value;
+ el('authSubmit').disabled=true;authMessage('Patiente…');
+ try{
+  const username=el('authUsername').value.trim();
+  if(authMode==='signup'&&(username.length<2||username.length>24))throw new Error('Choisis un pseudo de 2 à 24 caractères.');
+  const result=authMode==='signup'?await supabase.auth.signUp({email,password,options:{data:{username}}}):await supabase.auth.signInWithPassword({email,password});
+  if(result.error)throw result.error;
+  if(authMode==='signup'&&!result.data.session){authMessage('Compte créé ! Vérifie ta boîte e-mail pour confirmer ton adresse, puis connecte-toi.');return}
+  currentUser=result.data.user;el('authModal').classList.remove('open');updateAccount();
+  await syncCollection();await loadChat();authMessage('Connexion réussie !');
+ }catch(err){authMessage(err.message||'Connexion impossible. Vérifie tes informations.')}
+ finally{el('authSubmit').disabled=false}
+});
+async function syncCollection(){
+ if(!supabase||!currentUser)return;
+ try{
+  const {data,error}=await supabase.from('user_anime').select('anime_data').eq('user_id',currentUser.id);
+  if(error)throw error;
+  const cloud=(data||[]).map(row=>row.anime_data).filter(Boolean);
+  if(cloud.length){
+   // Cloud data is the source of truth after the first sync; merge locally added records without duplicates.
+   const cloudIds=new Set(cloud.map(a=>a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
+   const localOnly=window.__animeverse.anime.filter(a=>!cloudIds.has(a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
+   window.__animeverse.anime=[...cloud,...localOnly];localStorage.setItem('animeverse-library-v1',JSON.stringify(window.__animeverse.anime));window.__animeverse.render();
+  }else if(window.__animeverse.anime.length){
+   for(const a of window.__animeverse.anime)await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
+  }
+ }catch(err){console.warn('Sync collection:',err);window.__animeverseToast('Compte connecté, mais synchronisation à vérifier.')}
+}
+async function saveCollectionCloud(){
+ if(!supabase||!currentUser)return;
+ try{
+  for(const a of window.__animeverse.anime){
+   const {error}=await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
+   if(error)throw error;
+  }
+ }catch(err){console.warn(err);window.__animeverseToast('Sauvegarde cloud impossible : vérifie la configuration.')}
+}
+
+ // Hook collection saves without changing the original app's local-first behaviour.
+window.__animeverseCloudSave=()=>{if(supabase&&currentUser)saveCollectionCloud()};
+let chatCache=[];
+let chatPollHandle=null;
+function renderChat(messages){
+ const box=el('chatMessages');
+ const previousScroll=box.scrollTop;
+ const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<100;
+ chatCache=messages.slice().sort((a,b)=>new Date(a.created_at||0)-new Date(b.created_at||0));
+ if(!chatCache.length){box.innerHTML='<div class="chat-empty">Pas encore de message. Lance la conversation ! ✨</div>';return}
+ box.innerHTML=chatCache.map(m=>`<div class="chat-message ${m.user_id===currentUser?.id?'mine':''}" data-message-id="${escapeText(m.id??'')}"><div class="chat-meta"><span>${escapeText(m.display_name||'Fan d’anime')}</span><time>${m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant'}</time></div><div class="chat-text">${escapeText(m.content)}</div></div>`).join('');
+ box.scrollTop=wasNearBottom?box.scrollHeight:previousScroll;
+}
+function mergeChatMessage(message){
+ if(!message)return;
+ const id=String(message.id??'');
+ if(id && chatCache.some(m=>String(m.id??'')===id))return;
+ chatCache.push(message);
+ renderChat(chatCache.slice(-100));
+}
+async function loadChat(){
+ if(!supabase||!currentUser){
+  el('chatNotice').textContent='Connecte-toi pour participer au chat.';
+  return;
+ }
+ try{
+  const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+  if(error)throw error;
+  renderChat(data||[]);
+  el('chatNotice').textContent='Chat connecté · les nouveaux messages apparaissent automatiquement.';
+  if(!chatChannel){
+   chatChannel=supabase.channel('animeverse-chat-live-v2')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>mergeChatMessage(payload.new))
+    .subscribe(status=>{
+      if(status==='SUBSCRIBED')el('chatNotice').textContent='🟢 Chat en direct connecté.';
+      else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')el('chatNotice').textContent='Le direct est momentanément indisponible : actualisation automatique activée.';
+    });
+  }
+  // Fallback poll in case Supabase Realtime is not enabled or the mobile connection drops.
+  if(chatPollHandle)clearInterval(chatPollHandle);
+  chatPollHandle=setInterval(async()=>{
+   if(!supabase||!currentUser||el('chatView').classList.contains('hidden'))return;
+   try{
+    const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:true}).limit(100);
+    if(!error&&data)renderChat(data);
+   }catch(e){console.warn('Chat refresh:',e)}
+  },5000);
+ }catch(err){
+  console.error('Chargement chat échoué:',err);
+  el('chatNotice').textContent='Erreur du chat : '+(err.message||'configuration de la base à vérifier');
+ }
+}
+el('chatForm').addEventListener('submit',async e=>{
+ e.preventDefault();const content=el('chatInput').value.trim();if(!content||!currentUser||!supabase)return;
+ el('chatSend').disabled=true;
+ try{
+  const display_name=(currentUser.user_metadata?.username||(currentUser.email||'Fan').split('@')[0]).slice(0,32);
+  const {data,error}=await supabase.from('chat_messages').insert({user_id:currentUser.id,display_name,content}).select('id,user_id,display_name,content,created_at').single();
+  if(error)throw error;
+  el('chatInput').value='';
+  if(data)mergeChatMessage(data);else await loadChat();
+ }
+ catch(err){console.error('Envoi chat échoué:',err);el('chatNotice').textContent='Message non envoyé : '+(err.message||'erreur')+' — vérifie les droits SQL de chat_messages.';}
+ finally{el('chatSend').disabled=false}
+});
+
+// Video posts: users can share supported online video links; posts are stored in Supabase.
+function videoEmbed(url){
+ try{
+  const u=new URL(url);
+  if(u.hostname==='youtu.be'){const id=u.pathname.slice(1).split('/')[0];return id?{type:'iframe',src:'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)}:null}
+  if(/(^|\.)youtube\.com$/.test(u.hostname)){
+   const id=u.searchParams.get('v')||(u.pathname.match(/\/(?:embed|shorts)\/([^/?]+)/)||[])[1];
+   return id?{type:'iframe',src:'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)}:null;
+  }
+  if(/(^|\.)vimeo\.com$/.test(u.hostname)){const id=u.pathname.split('/').filter(Boolean).pop();return id&&/^\d+$/.test(id)?{type:'iframe',src:'https://player.vimeo.com/video/'+id}:null}
+  if(/\.(mp4|webm|ogg)$/i.test(u.pathname))return {type:'video',src:u.href};
+  return {type:'link',src:u.href};
+ }catch(e){return null}
+}
+function renderVideos(posts){
+ const grid=el('videoGrid');el('videoCount').textContent=posts.length+' vidéo'+(posts.length>1?'s':'');
+ if(!posts.length){grid.innerHTML='<div class="chat-empty">Aucune vidéo pour le moment. Sois le premier à publier ✨</div>';return}
+ grid.innerHTML=posts.map(p=>{
+  const embed=videoEmbed(p.video_url);let frame='';
+  if(embed?.type==='iframe')frame='<iframe src="'+escapeText(embed.src)+'" title="'+escapeText(p.title)+'" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+  else if(embed?.type==='video')frame='<video controls preload="metadata" src="'+escapeText(embed.src)+'"></video>';
+  else frame='<a class="video-link-preview" href="'+escapeText(p.video_url)+'" target="_blank" rel="noopener noreferrer"><span>▶</span><b>Ouvrir la vidéo</b></a>';
+  return '<article class="video-card"><div class="video-frame">'+frame+'</div><div class="video-card-body"><h4>'+escapeText(p.title)+'</h4><p>'+escapeText(p.description||'')+'</p><div class="video-card-meta"><span>👤 '+escapeText(p.display_name||'Fan d’anime')+'</span><span>'+escapeText(p.created_at?new Date(p.created_at).toLocaleDateString('fr-FR'):'')+'</span></div></div></article>';
+ }).join('');
+}
+async function loadVideos(){
+ if(!supabase){el('videoNotice').textContent='Le service vidéo nécessite une connexion Supabase.';return}
+ try{
+  const {data,error}=await supabase.from('video_posts').select('id,user_id,display_name,title,video_url,description,created_at').order('created_at',{ascending:false}).limit(60);
+  if(error)throw error;renderVideos(data||[]);
+  el('videoNotice').textContent=currentUser?'Tu peux publier un lien vidéo. Les publications sont partagées avec la communauté.':'Connecte-toi pour publier une vidéo.';
+ }catch(err){console.warn('Videos:',err);el('videoNotice').textContent='La catégorie vidéo doit être activée avec le script SQL fourni.'}
+}
+el('navVideos').addEventListener('click',()=>showView('videos'));
+el('videoRefresh').addEventListener('click',loadVideos);
+el('videoForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!supabase||!currentUser){el('videoNotice').textContent='Connecte-toi pour publier une vidéo.';return}
+ const title=el('videoTitle').value.trim(),video_url=el('videoUrl').value.trim(),description=el('videoDescription').value.trim();
+ const parsed=videoEmbed(video_url);
+ if(!parsed){el('videoNotice').textContent='Le lien vidéo ne semble pas valide.';return}
+ el('videoSubmit').disabled=true;el('videoNotice').textContent='Publication en cours…';
+ try{
+  const display_name=(currentUser.user_metadata?.username||(currentUser.email||'Fan').split('@')[0]).slice(0,32);
+  const {error}=await supabase.from('video_posts').insert({user_id:currentUser.id,display_name,title,video_url,description});
+  if(error)throw error;
+  el('videoForm').reset();await loadVideos();el('videoNotice').textContent='🎉 Vidéo publiée !';
+ }catch(err){console.error(err);el('videoNotice').textContent='Publication impossible : '+(err.message||'vérifie le script SQL vidéo.')}
+ finally{el('videoSubmit').disabled=false}
+});
+// Upload a round avatar to the public Supabase Storage bucket and save its URL to profile metadata.
+el('avatarFile').addEventListener('change',async()=>{
+ const file=el('avatarFile').files?.[0];if(!file)return;
+ if(!supabase||!currentUser){el('profileMessage').textContent='Connecte-toi pour changer ta photo.';return}
+ if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>3*1024*1024){el('profileMessage').textContent='Choisis une image JPG, PNG, WEBP ou GIF de 3 Mo maximum.';el('avatarFile').value='';return}
+ el('profileMessage').textContent='Envoi de la photo…';
+ try{
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path=currentUser.id+'/avatar-'+Date.now()+'.'+ext;
+  const {error:uploadError}=await supabase.storage.from('avatars').upload(path,file,{upsert:true,contentType:file.type});
+  if(uploadError)throw uploadError;
+  const {data}=supabase.storage.from('avatars').getPublicUrl(path);
+  const avatar_url=data.publicUrl;
+  const {data:userData,error}=await supabase.auth.updateUser({data:{avatar_url}});
+  if(error)throw error;
+  currentUser=userData.user;el('avatarPreview').src=avatar_url;updateAccount();el('profileMessage').textContent='Photo de profil mise à jour !';
+ }catch(err){console.error(err);el('profileMessage').textContent='Photo non envoyée : '+(err.message||'vérifie le bucket avatars dans Supabase.')}
+});
+
+async function init(){
+ if(!configured){el('chatNotice').textContent='Le chat en direct et les comptes sont prêts côté interface, mais il faut créer/configurer un projet Supabase gratuit. Consulte le guide de mise en route.';updateAccount();return}
+ try{
+  const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
+  supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;
+  supabase.auth.onAuthStateChange(async(_event,session)=>{currentUser=session?.user||null;updateAccount();if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else {if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}}});
+  updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}
+ }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
+}
+init();
+</script>
+
+</body>
+</html>
