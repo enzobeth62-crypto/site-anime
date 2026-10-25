@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const $ = (selector) => document.querySelector(selector);
-  const state = { items: [], filtered: [], page: 1, pageSize: 20, query: "", catalogLoaded: false };
+  const state = { items: [], filtered: [], page: 1, pageSize: 10, query: "", catalogLoaded: false };
   const form = $("#search-form");
   const input = $("#search-input");
   const results = $("#results");
@@ -126,7 +126,7 @@
     setStatus("Recherche de « " + q + " »…");
     $("#results-heading").textContent = "Recherche en cours";
     try {
-      const data = await api("search", { q, l: 30 });
+      const data = await api("search", { q, l: 50 });
       const items = Array.isArray(data) ? data : (Array.isArray(data.results) ? data.results : []);
       setItems(items, q);
       setStatus(items.length ? items.length + " résultat(s) trouvé(s)." : "Aucun titre correspondant trouvé.", items.length ? "success" : "");
