@@ -440,3 +440,7 @@ footer{background:rgba(3,6,11,.82)!important;border-top:1px solid rgba(70,111,14
 .catalogue-search{display:flex!important;visibility:visible!important;opacity:1!important}
 .catalogue-search input{min-width:0;flex:1}
 #catalogueStatus{margin-top:14px}
+
+
+/* No confetti overlay: keep the interface clean */
+.fx-confetti{display:none!important}
