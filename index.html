@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=19">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=20">
 
 <style id="animeverse-home-polish">
 /* Animeverse home refresh — additive overrides only */
@@ -827,6 +827,25 @@ html{scroll-behavior:smooth}
 .catalogue-search .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .catalogue-search .btn:before,#addHero:before{display:none!important}
 @media(max-width:420px){.av-hero-actions{align-items:stretch;flex-direction:column}.av-hero-actions>*{width:100%}}
+</style>
+
+
+<style id="animeverse-home-controls-style">
+.av-status-chips{grid-column:1/-1;display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:0 0 3px}
+.av-status-chip,.av-catalog-suggestions button{min-height:40px;padding:8px 13px;border:1px solid #30394d;border-radius:999px;background:#0b1220;color:#aebbd0;font-size:12px;font-weight:700;transition:background .18s,border-color .18s,color .18s}
+.av-status-chip:hover,.av-catalog-suggestions button:hover{border-color:#67e8f96b;color:#f5fbff;background:#ffffff0a}
+.av-status-chip.active{background:linear-gradient(110deg,#8b5cf6,#d946ef 65%,#f472b6);border-color:transparent;color:#fff;box-shadow:0 5px 18px #b84bd526}
+.av-catalog-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 4px}
+.av-catalog-suggestions button{min-height:34px;padding:6px 11px;font-size:11px;background:#11192a}
+.av-catalog-suggestions button:before{content:"";display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:#67e8f9;vertical-align:middle}
+.av-catalog-empty{display:flex;align-items:center;gap:12px;max-width:520px;padding:13px 0;color:#aab8cd}
+.av-catalog-empty svg{width:34px;height:34px;flex:0 0 34px;color:#67e8f9;opacity:.9}
+#catalogueStatus:has(.av-catalog-empty){padding:4px 2px 12px}
+#recentRail .rail-card img{aspect-ratio:2/3;object-fit:cover}
+#recentRail .rail-card{transition:transform .2s,border-color .2s,box-shadow .2s}
+#recentRail .rail-card:hover{transform:translateY(-4px);border-color:#67e8f96b;box-shadow:0 15px 35px #0005}
+@media(max-width:900px){.av-status-chips{gap:6px}.av-status-chip{flex:1 1 auto}}
+@media(max-width:600px){.av-status-chip{min-height:44px;padding:8px 10px;font-size:11px}.av-catalog-suggestions{gap:6px}.av-catalog-suggestions button{min-height:40px}}
 </style>
 
 </head>
