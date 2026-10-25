@@ -19,7 +19,7 @@ const SYSTEM = [
 const TOOLS = [
   {name:'search_anime',description:'Recherche des titres sur AniList; accepte un titre ou un nom de genre AniList.',input_schema:{type:'object',properties:{query:{type:'string',minLength:2,maxLength:80}},required:['query']}},
   {name:'get_library',description:'Lit les anime de la bibliothèque de l’utilisateur courant.',input_schema:{type:'object',properties:{},additionalProperties:false}},
-  {name:'upsert_anime',description:'Ajoute un anime ou met à jour les champs demandés. Ne supprime jamais. anilist_id est préférable après désambiguïsation.',input_schema:{type:'object',properties:{anilist_id:{type:'integer',minimum:1},title:{type:'string',minLength:1,maxLength:160},status:{type:'string',enum:ALLOWED_STATUS},episodes_watched:{type:'integer',minimum:1,maximum:5000},rating:{type:'number',minimum:1,maximum:10},confirmed:{type:'boolean'}},required:['status']}},
+  {name:'upsert_anime',description:'Ajoute un anime ou met à jour les champs demandés. Ne supprime jamais. anilist_id est préférable après désambiguïsation. Utilise confirmed:true uniquement après confirmation explicite de l’utilisateur.',input_schema:{type:'object',properties:{anilist_id:{type:'integer',minimum:1},title:{type:'string',minLength:1,maxLength:160},status:{type:'string',enum:ALLOWED_STATUS},episodes_watched:{type:'integer',minimum:1,maximum:5000},rating:{type:'number',minimum:1,maximum:10},confirmed:{type:'boolean'}},required:['status']}},
   {name:'get_recommendation_context',description:'Calcule les genres les mieux notés et les anime déjà présents.',input_schema:{type:'object',properties:{},additionalProperties:false}},
   {name:'recommend_anime',description:'Trouve trois anime AniList selon l’humeur, les genres aimés et les ids exclus.',input_schema:{type:'object',properties:{mood:{type:'string',minLength:2,maxLength:120}},required:['mood']}}
 ];
@@ -150,7 +150,7 @@ async function upsertAnime(client,userId,input,messages) {
 }
 async function runTool(name,input,client,userId,messages) {
   if(name==='search_anime') return {results:await searchAnime(input.query)};
-  if(name==='get_library') return {library:(await readLibrary(client,userId)).slice(0,100).map(publicAnime)};
+  if(name==='get_library') return {library:(await readLibrary(client,userId)).map(publicAnime)};
   if(name==='get_recommendation_context') {
     const lib=await readLibrary(client,userId);
     return {favorites:preferenceContext(lib),already_in_library:lib.map(a=>Number(a.anilistId)||null).filter(Boolean),library:lib.slice(0,60).map(publicAnime)};
