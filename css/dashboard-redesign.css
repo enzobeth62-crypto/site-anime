@@ -78,3 +78,18 @@ footer{color:#71717a}
 @media(max-width:1250px){.wrap{margin-right:0;padding-right:24px}#avRightSidebar{display:none}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:900px){#avLeftSidebar{width:76px;padding:16px 9px;gap:18px}#avLeftSidebar .brand{justify-content:center;padding:0}#avLeftSidebar .brand>div:last-child,#avLeftSidebar .av-nav-label,#avLeftSidebar .av-side-text{display:none}#avLeftSidebar .btn,#avLeftSidebar .av-side-link{justify-content:center;padding:10px 5px;font-size:0}#avLeftSidebar .btn svg,#avLeftSidebar .btn .av-side-icon{font-size:17px}#avLeftSidebar .btn .av-side-text{display:none}.wrap{margin-left:76px;padding:12px 16px 40px}.hero-side{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.api-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.top{gap:10px}.head-actions #addTop{font-size:0}.head-actions #addTop::after{content:"＋";font-size:18px}.head-actions #authOpen{font-size:0}.head-actions #authOpen::after{content:"👤";font-size:16px}}
 @media(max-width:600px){#avLeftSidebar{position:fixed;top:auto;bottom:0;left:0;right:0;width:auto;height:66px;padding:6px 8px;display:flex;flex-direction:row;align-items:center;justify-content:space-around;gap:4px;border-right:0;border-top:1px solid #292930;background:#17171cf5;backdrop-filter:blur(16px);overflow:visible}#avLeftSidebar .brand,#avLeftSidebar .av-nav-label,#avLeftSidebar > .av-nav-group:nth-child(3),#avLeftSidebar .av-sidebar-spacer,#avLeftSidebar .av-side-link,#avLeftSidebar > .btn{display:none}#avLeftSidebar .av-nav-group{display:flex;flex:1;justify-content:space-around;gap:3px}#avLeftSidebar .btn{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;min-height:50px;padding:5px 3px;font-size:9px;white-space:nowrap}#avLeftSidebar .btn .av-side-text{display:block;font-size:9px}#avLeftSidebar .btn.primary,#avLeftSidebar .btn[aria-current="page"]{background:#0eaa55;border-radius:10px}.wrap{margin:0;padding:10px 12px 90px}.top{position:relative;top:auto;flex-wrap:wrap;padding:10px;margin-bottom:15px}.top-search{order:2;flex-basis:100%;max-width:none}.head-actions{margin-left:auto;flex-wrap:nowrap}.head-actions #installAppButton{display:none}.hero-main{min-height:240px;padding:20px}.hero h2{font-size:34px}.hero-side{padding:0;gap:7px}.stat{padding:10px}.stat b{font-size:22px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.poster{height:145px}.card-body{padding:10px}.card h4{font-size:13px}.api-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.api-poster{height:160px}.toolbar{grid-template-columns:1fr}.toolbar input{grid-column:auto}.video-grid{grid-template-columns:1fr}.chat-title{padding:8px 0}.chat-messages{min-height:250px}.catalogue{padding:13px}.section-head h3{font-size:18px}}
+
+/* Mobile installation entry point and calmer transitions */
+@media(max-width:600px){
+  .head-actions #installAppButton{display:flex!important;font-size:11px!important;min-height:34px;padding:7px 9px;white-space:nowrap}
+  .head-actions #installAppButton::after{content:"Installer";font-size:11px}
+  .head-actions #installAppButton svg{width:14px;height:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .card,.btn,.api-card,.video-card,.top{transition:none!important;scroll-behavior:auto!important}
+  .card:hover,.video-card:hover,.api-card:hover{transform:none!important}
+}
+@media(max-width:700px){
+  .fx-page-transition{animation:none!important}
+  .top{backdrop-filter:none}
+}
