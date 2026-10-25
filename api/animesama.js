@@ -19,12 +19,7 @@ module.exports = async function handler(req, res) {
   const config = ALLOWED_ACTIONS[action];
   if (!config) return res.status(400).json({ error: "Action inconnue." });
 
-  const base = (process.env.ANIMESAMA_API_URL || "").trim().replace(/\/+$/, "");
-  if (!base) {
-    return res.status(503).json({
-      error: "Le service AnimeSamaApi n’est pas encore configuré. Consulte ANIMESAMA_SETUP.md."
-    });
-  }
+  const base = (process.env.ANIMESAMA_API_URL || "https://94.237.58.117").trim().replace(/\/+$/, "");
 
   let upstream;
   try {
