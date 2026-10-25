@@ -175,6 +175,18 @@ body{background:radial-gradient(ellipse at 50% -20%,#123344 0,transparent 44%),r
 @media(max-width:700px){.top{position:static;border-radius:15px;padding:10px}.head-actions{gap:5px}.head-actions .btn{font-size:12px;padding:8px 10px;min-height:38px}.hero{grid-template-columns:1fr}.hero-main{min-height:250px}.hero-main:after{width:170px;height:170px;right:-15px;opacity:.7}.hero-side{grid-template-columns:1fr 1fr}.card{flex-basis:min(72vw,260px)}.api-card{flex-basis:42vw}.video-card{flex-basis:78vw}}
 @media(max-width:450px){.brand h1{font-size:17px}.brand small{font-size:10px}.logo{width:42px;height:42px}.logo svg{width:28px;height:28px}.head-actions{justify-content:flex-start}.head-actions .btn{font-size:11px}.hero-main{padding:22px 19px}.hero-main:after{right:-45px;opacity:.45}.hero-side{gap:8px}.stat{padding:12px}.stat b{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.poster img,.card,.video-card{transition:none!important}.card:hover,.video-card:hover{transform:none!important}}
+
+/* Final override for the global .field:focus rules: only the search wrapper glows */
+#search.field,#search.field:focus,#search.field:focus-visible{
+  border:0!important;outline:0!important;box-shadow:none!important;
+  background:transparent!important;border-radius:999px!important;
+  -webkit-appearance:none;appearance:none;
+}
+.top-search:focus-within{
+  border:1px solid rgba(103,232,249,.48)!important;
+  outline:0!important;
+  box-shadow:0 0 0 2px rgba(103,232,249,.09)!important;
+}
 </style>
 <style id="animeverse-neotokyo-refresh">
 :root{
@@ -723,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=4">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=5">
 </head>
 <body>
 <div class="wrap">
