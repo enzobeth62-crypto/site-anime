@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=5">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=6">
 </head>
 <body>
 <div class="wrap">
@@ -1007,7 +1007,7 @@ $('importBtn').onclick=()=>$('importFile').click();
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data)||data.some(a=>!a.title))throw new Error();if(confirm(`Importer ${data.length} anime ? Cela remplacera la collection actuelle.`)){anime=data.map(a=>({...a,id:a.id||uid()}));save();toast('Collection importée !')}}catch{alert('Fichier invalide. Choisis une sauvegarde Animeverse (.json).')}e.target.value=''};
 
 // Catalogue public AniList : les images et les données sont récupérées au moment de la recherche.
-let cataloguePage=1, catalogueLastPage=1, catalogueQuery='', catalogueBusy=false;
+let cataloguePage=1, catalogueLastPage=1, catalogueHasNextPage=false, catalogueQuery='', catalogueBusy=false;
 const anilistEndpoint='https://graphql.anilist.co';
 const anilistQuery=`query ($search: String, $page: Int) {
  Page(page: $page, perPage: 10) {
@@ -1042,7 +1042,7 @@ async function searchCatalogue(page=1){
   if(!response.ok)throw new Error('Le catalogue répond temporairement indisponible ('+response.status+').');
   const json=await response.json();if(requestId!==catalogueRequestId)return;const data=json?.data?.Page;
   if(!data)throw new Error('Réponse du catalogue invalide.');
-  catalogueLastPage=data.pageInfo.lastPage||1;
+  catalogueLastPage=data.pageInfo.lastPage||1;\n  catalogueHasNextPage=Boolean(data.pageInfo.hasNextPage);
   const results=data.media||[];
   if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';finishHeaderSearch();return}
   $('catalogueStatus').textContent=`${results.length} résultats pour « ${query} » · page ${page}`;
