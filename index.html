@@ -1090,7 +1090,7 @@ window.__animeverseAssistantBridge={
  isConnected:()=>Boolean(supabase&&currentUser),
  getToken:async()=>{if(!supabase||!currentUser)return null;const {data,error}=await supabase.auth.getSession();if(error)return null;return data.session?.access_token||null},
  refresh:async()=>{if(supabase&&currentUser)await syncCollection()},
- apply:items=>{const current=window.__animeverse?.anime||[];const next=current.slice();for(const item of items||[]){const i=next.findIndex(a=>Number(a.anilistId)===Number(item.anilistId));const mapped={...item,id:(i>=0&&next[i].id)||'ai-'+item.anilistId,createdAt:(i>=0&&next[i].createdAt)||new Date().toISOString(),updatedAt:new Date().toISOString()};if(i>=0)next[i]=mapped;else next.push(mapped)}if(window.__animeverse)window.__animeverse.anime=next}
+ apply:items=>{const current=window.__animeverse?.anime||[];const next=current.slice();for(const item of items||[]){const i=next.findIndex(a=>Number(a.anilistId)===Number(item.anilistId));const mapped={...(i>=0?next[i]:{}),...item,id:(i>=0&&next[i].id)||'ai-'+item.anilistId,createdAt:(i>=0&&next[i].createdAt)||new Date().toISOString(),updatedAt:new Date().toISOString()};if(i>=0)next[i]=mapped;else next.push(mapped)}if(window.__animeverse)window.__animeverse.anime=next}
 };
 window.dispatchEvent(new Event('animeverse-assistant-auth'));
 const chatEmojiChoices=['✨','🌸','💖','🔥','😂','😭','👀','🎬','🍜','🥹','🎉','🤍','👏','😎','⚡','💜','🫶','🌙'];
