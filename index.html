@@ -651,12 +651,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:600px){.av-ai-launch{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:56px;height:56px}.av-ai-panel{inset:0;width:100%;height:100dvh;height:100svh;max-height:none;border-radius:0;border-left:0;border-right:0;padding-bottom:env(safe-area-inset-bottom)}.av-ai-compose{padding-bottom:calc(12px + env(safe-area-inset-bottom))}.av-ai-head{padding-top:calc(14px + env(safe-area-inset-top))}}
 @media(prefers-reduced-motion:reduce){.av-ai-launch,.av-ai-toolbar,.av-ai-thinking i{transition:none!important;animation:none!important}}
 </style>
+<style id="animeverse-community-styles">
+.av-community-tabs{display:flex;align-items:center;gap:8px;margin:0 0 14px;padding:6px;width:max-content;max-width:100%;border:1px solid #302d43;border-radius:999px;background:#10111bdc;backdrop-filter:blur(14px)}
+.av-community-tabs.hidden{display:none}
+.av-community-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 17px;border:1px solid transparent;border-radius:999px;background:transparent;color:#c5c1d7;font-weight:600;cursor:pointer}
+.av-community-tabs button:hover{color:#fff;border-color:#a78bfa66}
+.av-community-tabs button.active{color:#fff;border-color:transparent;background:linear-gradient(115deg,#8557f6,#bf35d7 58%,#e34dba);box-shadow:0 7px 22px #a78bfa38}
+.av-community-tabs button:focus-visible{outline:3px solid #72e5f5;outline-offset:3px}
+#navChat svg{width:18px;height:18px;flex:0 0 auto}
+.av-forum-phase-placeholder{padding:clamp(24px,6vw,54px);text-align:center;border:1px solid #37334f;border-radius:26px;background:radial-gradient(ellipse at 50% 0%,#a78bfa20,transparent 58%),linear-gradient(145deg,#151624,#11121d);box-shadow:0 20px 55px #0004}
+.av-forum-phase-placeholder svg{width:44px;height:44px;color:#72e5f5}
+.av-forum-phase-placeholder h2{margin:12px 0 6px;font:600 clamp(21px,3vw,30px) Sora,sans-serif}
+.av-forum-phase-placeholder p{margin:0 auto;max-width:560px;color:#b8b5c9}
+@media(max-width:430px){.av-community-tabs{width:100%;display:grid;grid-template-columns:1fr 1fr;border-radius:18px}.av-community-tabs button{min-width:0;padding:9px 10px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.av-community-tabs button{scroll-behavior:auto}}
+</style>
 </head>
 <body>
 <div class="wrap">
   <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Recherche AniList + bibliothèque : Re:Zero, Naruto…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
-      <button class="btn" id="navChat">💬 Chat en direct</button>
+      <button class="btn" id="navChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg> Communauté</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button><button class="btn" id="navCalendar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg> Calendrier</button><button class="btn" id="installAppButton" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/></svg> Installer l’appli</button>
       <button class="btn primary" id="authOpen">👤 Connexion</button>
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
@@ -687,7 +702,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   <div id="empty" class="empty"><div class="emoji">📚</div><h3>Ton aventure commence ici</h3><p>Ajoute ton premier anime pour commencer ta bibliothèque.</p><button class="btn primary" id="emptyAdd">＋ Ajouter mon premier anime</button></div>
   </div>
 
-  <section id="chatView" class="chat-view hidden">
+  <div id="communityTabs" class="av-community-tabs hidden" role="tablist" aria-label="Espaces de la communauté">
+  <button id="communityChatTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="chatView">Chat en direct</button>
+  <button id="communityForumTab" type="button" role="tab" aria-selected="false" aria-controls="forumView">Forum</button>
+</div>
+<section id="chatView" class="chat-view hidden">
     <div class="chat-shell">
       <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">🔒 Connexion requise</span></div>
       <div id="chatNotice" class="chat-notice">Pour utiliser le chat en direct et retrouver tes messages, configure d’abord le service gratuit Supabase. Les étapes sont expliquées dans le guide fourni avec le fichier.</div>
@@ -716,7 +735,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
   </section>
 
-  <section id="calendarView" class="hidden"><div class="av-calendar-shell"><div class="av-calendar-head"><div><div class="eyebrow">Animeverse · À suivre</div><h2>Calendrier des sorties</h2><p class="meta">Les prochains épisodes de ta collection.</p></div><div class="av-calendar-countdown"><small>Épisode le plus proche</small><strong id="avCountdownText">Chargement…</strong></div></div><div id="avCalendarContent" aria-live="polite"></div></div></section>
+  <section id="forumView" class="chat-view hidden" aria-labelledby="forumPhaseTitle"><div class="chat-shell"><div class="av-forum-phase-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg><h2 id="forumPhaseTitle">Le forum Animeverse</h2><p>Un espace pour partager tes recommandations, théories, fan arts et questions. Le forum sera activé dans la phase suivante.</p></div></div></section>
+<section id="calendarView" class="hidden"><div class="av-calendar-shell"><div class="av-calendar-head"><div><div class="eyebrow">Animeverse · À suivre</div><h2>Calendrier des sorties</h2><p class="meta">Les prochains épisodes de ta collection.</p></div><div class="av-calendar-countdown"><small>Épisode le plus proche</small><strong id="avCountdownText">Chargement…</strong></div></div><div id="avCalendarContent" aria-live="polite"></div></div></section>
 <section id="videosView" class="hidden">
     <div class="chat-shell videos-shell">
       <div class="chat-title">
@@ -983,11 +1003,17 @@ function authMessage(s){el('authMessage').textContent=s}
 function showView(view){
   el('libraryView').classList.toggle('hidden',view!=='library');
   el('chatView').classList.toggle('hidden',view!=='chat');
+  el('forumView')?.classList.toggle('hidden',view!=='forum');
+  el('communityTabs')?.classList.toggle('hidden',view!=='chat'&&view!=='forum');
+  el('communityChatTab')?.classList.toggle('active',view==='chat');
+  el('communityChatTab')?.setAttribute('aria-selected',String(view==='chat'));
+  el('communityForumTab')?.classList.toggle('active',view==='forum');
+  el('communityForumTab')?.setAttribute('aria-selected',String(view==='forum'));
   el('videosView').classList.toggle('hidden',view!=='videos');
   el('calendarView')?.classList.toggle('hidden',view!=='calendar');
   el('navCalendar')?.classList.toggle('primary',view==='calendar');
   el('navLibrary').classList.toggle('primary',view==='library');
-  el('navChat').classList.toggle('primary',view==='chat');
+  el('navChat').classList.toggle('primary',view==='chat'||view==='forum');
   el('navVideos').classList.toggle('primary',view==='videos');
   if(view==='chat'&&currentUser)loadChat();
   if(view==='videos')loadVideos();
@@ -1003,6 +1029,7 @@ function updateAccount(){
 el('navLibrary').addEventListener('click',()=>showView('library'));
 el('navCalendar').addEventListener('click',()=>showView('calendar'));
 el('navChat').addEventListener('click',()=>{showView('chat');if(currentUser)loadChat();});
+document.addEventListener('animeverse:show-view',event=>{if(['chat','forum'].includes(event.detail))showView(event.detail)});
 el('authOpen').addEventListener('click',()=>{
  if(currentUser){
    el('profileUsername').value=currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'').split('@')[0]||'';
@@ -1555,5 +1582,6 @@ async function submit(text){const message=String(text??'').trim();if(!message||b
 form.addEventListener('submit',e=>{e.preventDefault();submit(input.value)});input.addEventListener('input',resize);input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();form.requestSubmit()}});launcher.addEventListener('click',()=>{const open=panel.hidden;panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));if(open){updateAuth();setTimeout(()=>input.focus(),50)}else launcher.focus()});$('assistantClose').addEventListener('click',()=>{panel.hidden=true;launcher.setAttribute('aria-expanded','false');launcher.focus()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){panel.hidden=true;launcher.setAttribute('aria-expanded','false');launcher.focus()}});window.addEventListener('animeverse-assistant-auth',updateAuth);let attempts=0;const waitBridge=setInterval(()=>{attempts++;if((window.__animeverseAssistantBridge&&window.__animeverseAssistantBridge.ready())||attempts>40){clearInterval(waitBridge);updateAuth()}},250);
 })();
 </script>
+<script id="animeverse-community-navigation">(function(){'use strict';const tabs=document.getElementById('communityTabs');if(!tabs)return;tabs.addEventListener('click',event=>{const button=event.target.closest('[role="tab"]');if(!button)return;event.preventDefault();document.dispatchEvent(new CustomEvent('animeverse:show-view',{detail:button.id==='communityForumTab'?'forum':'chat'}))})})();</script>
 </body>
 </html>
