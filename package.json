@@ -1,0 +1,10 @@
+{
+  "name": "animeverse-site",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4"
+  }
+}
