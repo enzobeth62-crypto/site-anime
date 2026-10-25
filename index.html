@@ -735,7 +735,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:600px){.top{top:4px}.fx-progress{height:2px}}
 @media(prefers-reduced-motion:reduce){#animeverseUniverse,.fx-cursor,.fx-confetti{display:none!important}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=7">
+  <link rel="stylesheet" href="/css/dashboard-redesign.css?v=8">
 </head>
 <body>
 <div class="wrap">
@@ -1042,7 +1042,8 @@ async function searchCatalogue(page=1){
   if(!response.ok)throw new Error('Le catalogue répond temporairement indisponible ('+response.status+').');
   const json=await response.json();if(requestId!==catalogueRequestId)return;const data=json?.data?.Page;
   if(!data)throw new Error('Réponse du catalogue invalide.');
-  catalogueLastPage=data.pageInfo.lastPage||1;\n  catalogueHasNextPage=Boolean(data.pageInfo.hasNextPage);
+  catalogueLastPage=data.pageInfo.lastPage||1;
+  catalogueHasNextPage=Boolean(data.pageInfo.hasNextPage);
   const results=data.media||[];
   if(!results.length){$('catalogueStatus').textContent='Aucun résultat. Essaie le titre japonais ou anglais.';finishHeaderSearch();return}
   $('catalogueStatus').textContent=`${results.length} résultats pour « ${query} » · page ${page}`;
