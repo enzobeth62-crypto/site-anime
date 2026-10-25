@@ -473,7 +473,8 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
       <button class="btn primary" id="authOpen">👤 Connexion</button>
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
     </div></header>
-  <div id="libraryView">\n  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
+  <div id="libraryView">
+  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
 <section class="toolbar">
     
     <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
@@ -496,7 +497,8 @@ body.nav-open .menu-toggle span:first-child{transform:translateY(7px) rotate(45d
   <section class="home-rail" id="recentSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">RÉCEMMENT AJOUTÉS</div><h3>Les dernières entrées</h3></div><span class="count" id="recentCount"></span></div><div class="media-rail" id="recentRail"></div></section><div class="section-head"><h3>Ma collection</h3><span class="count" id="resultsCount">0 anime</span></div>
   <main id="collection" class="grid"></main>
   <div id="empty" class="empty"><div class="emoji">📚</div><h3>Ton aventure commence ici</h3><p>Ajoute ton premier anime pour commencer ta bibliothèque.</p><button class="btn primary" id="emptyAdd">＋ Ajouter mon premier anime</button></div>
-  </div>\n
+  </div>
+
   <section id="chatView" class="chat-view hidden">
     <div class="chat-shell">
       <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">Connexion requise</span></div>
@@ -754,7 +756,8 @@ $('catalogueResults').addEventListener('click',e=>{
  anime.push(item);save();searchCatalogue(cataloguePage);toast('Anime ajouté avec son affiche !');
 });
 
-window.__animeverse={get anime(){return anime},set anime(v){anime=v;localStorage.setItem(KEY,JSON.stringify(anime));render()},render,uid};\nload();render();
+window.__animeverse={get anime(){return anime},set anime(v){anime=v;localStorage.setItem(KEY,JSON.stringify(anime));render()},render,uid};
+load();render();
 })();
 </script>
 
