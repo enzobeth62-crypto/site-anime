@@ -76,13 +76,14 @@ function preferenceContext(library) {
 }
 function recommendationGenres(mood, favorites) {
   const m=clean(mood,120).toLowerCase();
+  const aliases={'aventure':'Adventure','comédie':'Comedy','comedie':'Comedy','drame':'Drama','fantaisie':'Fantasy','science-fiction':'Sci-Fi','slice of life':'Slice of Life','mystère':'Mystery','mystere':'Mystery','sport':'Sports','surnaturel':'Supernatural','horreur':'Horror','musique':'Music','psychologique':'Psychological'};
   let selected=[];
   if(/action|adr[eé]naline|combat|intense/.test(m)) selected=['Action','Adventure'];
-  else if(/blues?|triste|d[eé]prim|r[eé]confort|r[eé]confortant|coup de blues/.test(m)) selected=['Comedy','Slice of Life','Adventure'];
+  else if(/blues?|triste|d[eé]prim|r[eé]confort|coup de blues/.test(m)) selected=['Comedy','Slice of Life','Adventure'];
   else if(/dr[oô]le|com[eé]die|rigol|l[eé]ger|fun/.test(m)) selected=['Comedy','Slice of Life'];
   else if(/romance|amour|love/.test(m)) selected=['Romance','Comedy'];
   else if(/myst[eè]re|thriller|suspense/.test(m)) selected=['Mystery','Thriller'];
-  for(const f of favorites) if(GENRES.some(g=>g.toLowerCase()===f.genre.toLowerCase())&&!selected.some(x=>x.toLowerCase()===f.genre.toLowerCase())) selected.push(GENRES.find(g=>g.toLowerCase()===f.genre.toLowerCase()));
+  for(const f of favorites) {const raw=clean(f.genre,40).toLowerCase(),mapped=aliases[raw]||GENRES.find(g=>g.toLowerCase()===raw);if(mapped&&!selected.includes(mapped))selected.push(mapped)}
   if(!selected.length) selected=['Fantasy','Adventure'];
   return selected.slice(0,5);
 }
@@ -132,7 +133,11 @@ async function upsertAnime(client,userId,input,messages) {
   const reducesProgress=input.episodes_watched!==undefined&&!!current&&oldProgress.watched>0&&input.episodes_watched<oldProgress.watched;
   const needsConfirm=changesStatus||changesRating||reducesProgress;
   if(needsConfirm && !(input.confirmed===true && affirmingPreviousConfirmation(messages,media.title))) {
-    let change=changesStatus?'le statut (« '+oldStatus+' » → « '+input.status+' »)':changesRating?'la note ('+oldRating+'/10 → '+Number(input.rating)+'/10)':'la progression ('+oldProgress.watched+' → '+input.episodes_watched+' épisodes)';
+    const changes=[];
+    if(changesStatus) changes.push('statut (« '+oldStatus+' » → « '+input.status+' »)');
+    if(changesRating) changes.push('note ('+oldRating+'/10 → '+Number(input.rating)+'/10)');
+    if(reducesProgress) changes.push('progression ('+oldProgress.watched+' → '+input.episodes_watched+' épisodes)');
+    const change=changes.join(' et ');
     return {confirmation_required:true,title:media.title,change:change,message:'Confirmer la modification de '+media.title+' : '+change+' ? Aucun changement n’a encore été effectué.'};
   }
   const now=new Date().toISOString(), episodes=input.episodes_watched!==undefined?input.episodes_watched:(input.status==='Vu'&&media.episodes?media.episodes:oldProgress.watched);
@@ -151,11 +156,11 @@ async function runTool(name,input,client,userId,messages) {
     return {favorites:preferenceContext(lib),already_in_library:lib.map(a=>Number(a.anilistId)||null).filter(Boolean),library:lib.slice(0,60).map(publicAnime)};
   }
   if(name==='recommend_anime') {
-    const lib=await readLibrary(client,userId), excluded=new Set(lib.map(a=>Number(a.anilistId)).filter(Boolean)), favorites=preferenceContext(lib), genres=recommendationGenres(input.mood,favorites);
+    const lib=await readLibrary(client,userId), excluded=new Set(lib.map(a=>Number(a.anilistId)).filter(Boolean)), existingTitles=new Set(lib.map(a=>clean(a.title,160).toLocaleLowerCase('fr'))), favorites=preferenceContext(lib), genres=recommendationGenres(input.mood,favorites);
     const short=/court|rapide|petit/.test(clean(input.mood,120).toLowerCase());
     const gql='query($genres:[String],$episodes:Int){Page(perPage:30){media(type:ANIME,isAdult:false,sort:SCORE_DESC,genre_in:$genres,episodes_lesser:$episodes){'+MEDIA_FIELDS+'}}}';
     const data=await fetchAniList(gql,{genres,episodes:short?13:null});
-    const picks=((data.Page&&data.Page.media)||[]).filter(m=>m&&!excluded.has(Number(m.id))).slice(0,3).map(safeMedia);
+    const picks=((data.Page&&data.Page.media)||[]).filter(m=>m&&!excluded.has(Number(m.id))&&!existingTitles.has(clean((m.title&&(m.title.english||m.title.romaji||m.title.native))||'',160).toLocaleLowerCase('fr'))).slice(0,3).map(safeMedia);
     return {recommendations:picks.map(m=>({...m,reason:recommendationReason(input.mood,m.genres)}))};
   }
   if(name==='upsert_anime') return upsertAnime(client,userId,input,messages);
@@ -170,11 +175,11 @@ function sendJson(res,status,body) {
 module.exports = async function assistant(req,res) {
   if(req.method==='OPTIONS'){res.statusCode=204;return res.end();}
   if(req.method!=='POST') return sendJson(res,405,{error:'Méthode non prise en charge.'});
+  const auth=String(req.headers.authorization||'');
+  const token=auth.match(/^Bearer\\s+(.+)$/i)?.[1];
+  if(!token) return sendJson(res,401,{error:'Connecte-toi pour utiliser l’assistant.'});
   const url=process.env.SUPABASE_URL, anon=process.env.SUPABASE_ANON_KEY, anthropicKey=process.env.ANTHROPIC_API_KEY;
   if(!url||!anon||!anthropicKey) return sendJson(res,503,{error:'L’assistant est momentanément indisponible.'});
-  const auth=String(req.headers.authorization||'');
-  const token=auth.match(/^Bearer\s+(.+)$/i)?.[1];
-  if(!token) return sendJson(res,401,{error:'Connecte-toi pour utiliser l’assistant.'});
   let body=req.body;
   if(typeof body==='string'){try{body=JSON.parse(body)}catch{return sendJson(res,400,{error:'Message invalide.'})}}
   if(!body||!Array.isArray(body.messages)) return sendJson(res,400,{error:'Message invalide.'});
