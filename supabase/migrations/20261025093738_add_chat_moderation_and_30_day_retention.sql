@@ -1,17 +1,6 @@
 -- Animeverse chat moderation and 30-day message retention.
--- The moderator row is seeded only from the verified account named in the approved setup.
-create extension if not exists pg_cron;
-
-create table if not exists public.chat_moderators (
-  user_id uuid primary key references auth.users(id) on delete cascade,
-  created_at timestamptz not null default now()
-);
-
-insert into public.chat_moderators (user_id)
-select id from auth.users
-where lower(email) = lower('bhadenzo28@gmail.com')
-  and email_confirmed_at is not null
-on conflict (user_id) do nothing;
+-- Seed the first moderator separately with that account's verified auth.users UUID.
+-- The production moderator was provisioned in Supabase; account identifiers stay out of this public repository.
 
 create table if not exists public.chat_bans (
   user_id uuid primary key references auth.users(id) on delete cascade,
