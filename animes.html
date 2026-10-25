@@ -81,9 +81,25 @@
     <div class="dialog-actions">
       <a id="legal-search" class="primary-link" target="_blank" rel="noopener noreferrer">Trouver où regarder légalement ↗</a>
     </div>
-    <h3>Saisons détectées</h3>
+    <h3>Saisons et langue</h3>
+    <div class="watch-controls">
+      <label for="season-select">Saison
+        <select id="season-select" disabled><option value="">Chargement des saisons…</option></select>
+      </label>
+      <label for="language-select">Version
+        <select id="language-select">
+          <option value="vostfr">🇯🇵 VOSTFR</option>
+          <option value="vf">🇫🇷 VF</option>
+        </select>
+      </label>
+    </div>
     <div id="season-list" class="season-list"></div>
-    <p class="dialog-footnote">La disponibilité varie selon le pays et peut changer. Vérifie les offres et les langues directement sur la plateforme.</p>
+    <div id="episode-panel" class="episode-panel" hidden>
+      <h3>Épisodes</h3>
+      <p id="episode-status" class="alternate-title"></p>
+      <div id="episode-list" class="episode-list"></div>
+    </div>
+    <p class="dialog-footnote">Les saisons et versions affichées dépendent des données disponibles. Le visionnage intégré nécessite une source vidéo autorisée ; utilise le bouton ci-dessus pour vérifier les plateformes légales.</p>
   </dialog>
 </body>
 </html>
