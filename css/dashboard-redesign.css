@@ -597,3 +597,5 @@ html{scroll-behavior:smooth}body{background:radial-gradient(ellipse at 12% 0%,rg
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 .av-native-select{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.av-status-choices{display:flex}.av-advanced{grid-column:1/-1;border:1px solid #ffffff16;border-radius:14px;padding:12px;background:#ffffff04}.av-advanced summary{cursor:pointer;color:#aeb9d2;font-weight:600}.av-poster-preview img[hidden]{display:none}.av-poster-preview:not(.has-poster){opacity:.78}.av-anime-search.is-collapsed .av-anime-suggestions{display:none}.av-suggestion-state{padding:14px;color:#aeb4c8}.av-chip-list{display:contents}
+
+html,body{overflow-x:clip!important}
