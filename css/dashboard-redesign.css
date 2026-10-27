@@ -849,16 +849,16 @@ html,body{overflow-x:clip!important}
   white-space:nowrap;
   content:"0 / 10";
 }
-.form-group:has(#rating option[value="1"]:checked) .av-star-choices .av-star-choice:nth-child(1){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="2"]:checked) .av-star-choices .av-star-choice:nth-child(2){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="3"]:checked) .av-star-choices .av-star-choice:nth-child(3){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="4"]:checked) .av-star-choices .av-star-choice:nth-child(4){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="5"]:checked) .av-star-choices .av-star-choice:nth-child(5){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="6"]:checked) .av-star-choices .av-star-choice:nth-child(6){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="7"]:checked) .av-star-choices .av-star-choice:nth-child(7){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="8"]:checked) .av-star-choices .av-star-choice:nth-child(8){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="9"]:checked) .av-star-choices .av-star-choice:nth-child(9){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
-.form-group:has(#rating option[value="10"]:checked) .av-star-choices .av-star-choice:nth-child(10){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(2):checked) .av-star-choices .av-star-choice:nth-child(1){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(3):checked) .av-star-choices .av-star-choice:nth-child(2){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(4):checked) .av-star-choices .av-star-choice:nth-child(3){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(5):checked) .av-star-choices .av-star-choice:nth-child(4){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(6):checked) .av-star-choices .av-star-choice:nth-child(5){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(7):checked) .av-star-choices .av-star-choice:nth-child(6){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(8):checked) .av-star-choices .av-star-choice:nth-child(7){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(9):checked) .av-star-choices .av-star-choice:nth-child(8){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(10):checked) .av-star-choices .av-star-choice:nth-child(9){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
+.form-group:has(#rating option:nth-child(11):checked) .av-star-choices .av-star-choice:nth-child(10){color:#ffd45e;text-shadow:0 0 14px #ffc94388}
 #animeForm .av-chip-box{
   display:flex;
   flex-wrap:wrap;
