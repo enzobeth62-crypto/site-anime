@@ -25,10 +25,10 @@ create policy "Users can add own reactions unless banned" on public.chat_reactio
 );
 drop policy if exists "Users can remove own reactions" on public.chat_reactions;
 create policy "Users can remove own reactions" on public.chat_reactions for delete to authenticated using (user_id = (select auth.uid()));
-do $$
+do $20261025130000_add_chat_reactions_01$
 begin
   if exists(select 1 from pg_publication where pubname='supabase_realtime')
      and not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='chat_reactions') then
     execute 'alter publication supabase_realtime add table public.chat_reactions';
   end if;
-end $$;
+end $20261025130000_add_chat_reactions_01$;
