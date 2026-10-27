@@ -1546,7 +1546,26 @@ async function init(){
   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;authUserId=currentUser?.id||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
-  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
+  supabase.auth.onAuthStateChange((_event,session)=>{
+   const nextUser=session?.user||null,nextId=nextUser?.id||null;
+   if(nextId===authUserId)return;
+   authUserId=nextId;currentUser=nextUser;
+   if(chatChannel){const oldChannel=chatChannel;chatChannel=null;chatChannelUserId=null;void supabase.removeChannel(oldChannel).catch(()=>{})}
+   chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;
+   el('chatAdminPanel').classList.add('hidden');updateAccount();
+   window.dispatchEvent(new Event('animeverse-assistant-auth'));
+   // Supabase Auth holds an internal lock while this callback runs. Defer database
+   // work until it returns so the initial sync cannot deadlock on its own session.
+   queueMicrotask(()=>{
+    if(currentUser?.id!==nextId)return;
+    if(currentUser){
+     syncCollection().then(()=>{if(currentUser?.id===nextId&&!el('chatView').classList.contains('hidden'))return loadChat()}).catch(err=>console.warn('Post-auth collection sync:',err));
+    }else{
+     if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}
+     renderChat([]);
+    }
+   });
+  });
   updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}else setChatNotice('Connecte-toi pour participer au chat.');
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
