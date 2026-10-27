@@ -1,0 +1,39 @@
+/* Animeverse chat administration and profile panel */
+.av-chat-profile-backdrop{position:fixed;inset:0;z-index:1200;background:rgba(3,5,13,.66);backdrop-filter:blur(8px);display:grid;place-items:center;padding:20px}
+.av-chat-profile-backdrop[hidden]{display:none}
+.av-chat-profile{width:min(720px,100%);max-height:min(86vh,900px);overflow:auto;background:linear-gradient(145deg,rgba(21,22,42,.98),rgba(9,12,24,.98));border:1px solid rgba(173,140,255,.3);border-radius:26px;box-shadow:0 25px 90px #03040a; color:#f5f2ff}
+.av-chat-profile-head{display:flex;align-items:center;gap:14px;padding:22px;border-bottom:1px solid #ffffff18;position:sticky;top:0;background:rgba(17,18,35,.94);backdrop-filter:blur(14px);z-index:2}
+.av-chat-profile-head img,.av-chat-profile-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#ad8cff,#f56bc8);display:grid;place-items:center;font-weight:800}
+.av-chat-profile-head h3{margin:0;font:700 18px Sora, sans-serif}.av-chat-profile-head small{color:#aeb4c8}
+.av-chat-profile-close{margin-left:auto;border:1px solid #ffffff25;background:#ffffff0b;color:white;border-radius:12px;width:44px;height:44px;font:inherit;cursor:pointer}
+.av-chat-profile-tabs{display:flex;gap:8px;padding:14px 20px 0}
+.av-chat-profile-tabs button,.av-chat-admin-tab{appearance:none;font:inherit;color:#c9c8dc;background:#ffffff08;border:1px solid #ffffff18;border-radius:999px;padding:10px 16px;cursor:pointer}
+.av-chat-profile-tabs button[aria-selected=true],.av-chat-admin-tab[aria-selected=true]{background:linear-gradient(110deg,#714ce0,#a242b5);color:white;border-color:#c0a7ff}
+.av-chat-profile-content{padding:18px 22px 24px}
+.av-chat-profile-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.av-chat-profile-actions button,.av-chat-admin-card button{font:inherit}
+.av-chat-panel-row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff12}
+.av-chat-panel-row small{color:#aeb4c8}.av-chat-mod-manager{margin-top:18px;padding:18px;border-radius:20px;border:1px solid #8f7de844;background:linear-gradient(140deg,#1a1934,#0e1423)}
+.av-chat-mod-manager h4{font:700 17px Sora,sans-serif;margin:0 0 14px}
+.av-chat-mod-search{display:flex;gap:8px}.av-chat-mod-search input,.av-chat-profile-content input,.av-chat-profile-content select{min-width:0;flex:1;border:1px solid #ffffff24;border-radius:12px;background:#0b0d18;color:#f8f6ff;padding:11px 13px;font:inherit}
+.av-chat-permission-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.av-chat-permission-grid label{display:flex;gap:8px;align-items:center;color:#d6d4e5;font-size:13px}
+.av-chat-role-badge{display:inline-flex;vertical-align:middle;margin-left:6px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.05em;background:#8e5eff30;color:#c5a8ff;border:1px solid #aa8aff55}
+.av-chat-role-badge.super{color:#80e8f4;background:#30cfdd20;border-color:#70e5f555}
+.chat-meta [data-chat-open-profile]{cursor:pointer}
+.av-chat-reply-composer{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;margin:0 4px 8px;border:1px solid #9f84ef55;border-radius:12px;background:#211d3c;color:#dfd7ff}
+.av-chat-reply-composer[hidden]{display:none}.av-chat-reply-composer button{border:0;color:white;background:transparent;font:inherit;cursor:pointer}
+.av-chat-typing{min-height:20px;color:#9fe5ef;font-size:12px;padding:0 10px}
+.chat-message .av-chat-more{margin-left:auto;border:1px solid #ffffff20;background:#ffffff0a;color:inherit;border-radius:9px;padding:5px 8px;min-width:36px;min-height:32px;cursor:pointer}
+.av-chat-more-menu{position:absolute;z-index:8;right:5px;top:36px;display:grid;min-width:145px;padding:6px;border:1px solid #aa8aff55;background:#141629;border-radius:13px;box-shadow:0 12px 32px #0009}
+.av-chat-more-menu[hidden]{display:none}.av-chat-more-menu button{background:transparent;border:0;color:#eee9ff;text-align:left;padding:9px;border-radius:8px;font:inherit;cursor:pointer}.av-chat-more-menu button:hover{background:#ffffff12}
+.av-chat-message-tools{position:relative;display:flex;justify-content:flex-end;gap:5px}
+.av-chat-warning{margin:12px 0;padding:12px 15px;background:#c58a2620;border:1px solid #ffc76a55;border-radius:14px;color:#ffdfa5}
+#chatMessages{scroll-behavior:smooth}.chat-message .chat-meta [data-chat-open-profile]:hover{color:#9cecf5}
+@media(max-width:600px){.av-chat-profile-backdrop{padding:0;align-items:end}.av-chat-profile{width:100%;max-height:92dvh;border-radius:24px 24px 0 0;padding-bottom:env(safe-area-inset-bottom)}.av-chat-profile-head{padding:16px}.av-chat-profile-content{padding:14px 16px 24px}.av-chat-permission-grid{grid-template-columns:1fr}.av-chat-mod-search{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.av-chat-profile-backdrop,.av-chat-profile{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.chat-online-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#74e7a4;box-shadow:0 0 10px #74e7a4;vertical-align:middle;margin-right:6px}.chat-message .chat-meta{gap:7px}.chat-message .chat-text{line-height:1.55;overflow-wrap:anywhere}.chat-message.mine{background:linear-gradient(135deg,rgba(126,83,235,.42),rgba(193,65,178,.28));border:1px solid rgba(173,140,255,.3)}.chat-message:not(.mine){background:rgba(19,23,39,.76);border:1px solid rgba(255,255,255,.09)}.av-chat-profile-content [data-profile-delete-all]{margin:12px 0}
+
+.chat-log-filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin:10px 0}.chat-log-filters input,.chat-log-filters select{min-width:0;width:100%;background:#0c0e1b;color:#ebe9f8;border:1px solid #ffffff20;border-radius:10px;padding:8px;font:inherit}@media(max-width:600px){.chat-log-filters{grid-template-columns:1fr}}
+.chat-title{flex-wrap:wrap;gap:12px}
