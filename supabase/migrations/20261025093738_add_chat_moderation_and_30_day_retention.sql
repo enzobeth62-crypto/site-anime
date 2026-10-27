@@ -108,7 +108,7 @@ returns trigger
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $20261025093738_add_chat_moderation_and_30_day_retention_01$
 declare actor_id uuid := auth.uid();
 begin
   if actor_id is null then
@@ -122,14 +122,14 @@ begin
           jsonb_build_object('message_created_at', old.created_at));
   return old;
 end;
-$$;
+$20261025093738_add_chat_moderation_and_30_day_retention_01$;
 
 create or replace function private.log_chat_ban_change()
 returns trigger
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $20261025093738_add_chat_moderation_and_30_day_retention_02$
 declare actor_id uuid := auth.uid();
 begin
   if actor_id is null then
@@ -155,7 +155,7 @@ begin
     return old;
   end if;
 end;
-$$;
+$20261025093738_add_chat_moderation_and_30_day_retention_02$;
 
 drop trigger if exists chat_message_deletion_audit on public.chat_messages;
 create trigger chat_message_deletion_audit
