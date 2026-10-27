@@ -758,7 +758,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:899px){.top-search{grid-column:1/-1;grid-row:2;max-width:none;width:100%;border-radius:16px}.top-search-dropdown{left:0;right:0}}
 @media(prefers-reduced-motion:reduce){.top-search,.top-search-dropdown,.av-search-option,.av-search-skeleton{transition:none!important;animation:none!important}}
 </style>
-  <link rel="stylesheet" href="/css/chat-admin-panel.css?v=1">\n</head>
+  <link rel="stylesheet" href="/css/chat-admin-panel.css?v=1">\n  <link rel="stylesheet" href="/css/forum.css?v=1">\n</head>
 <body>
 <div class="wrap">
   <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search" autocomplete="off" data-lpignore="true" data-1p-ignore="true"><svg class="top-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input class="field" type="search" name="anime-search" id="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" inputmode="search" aria-label="Rechercher un anime" aria-controls="animeSearchDropdown" aria-expanded="false" placeholder="Rechercher un anime…"><button class="top-search-clear" type="button" aria-label="Effacer la recherche" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><kbd class="top-search-shortcut" aria-hidden="true">/</kbd><div class="top-search-dropdown" id="animeSearchDropdown" role="listbox" aria-label="Résultats de recherche" hidden></div></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
@@ -827,7 +827,54 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
     </div>
   </section>
 
-  <section id="forumView" class="chat-view hidden" aria-labelledby="forumPhaseTitle"><div class="chat-shell"><div class="av-forum-phase-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg><h2 id="forumPhaseTitle">Le forum Animeverse</h2><p>Un espace pour partager tes recommandations, théories, fan arts et questions. Le forum sera activé dans la phase suivante.</p></div></div></section>
+  <section id="forumView" class="chat-view hidden" aria-labelledby="forumPhaseTitle">
+  <div class="chat-shell forum-shell">
+    <header class="forum-header">
+      <div><div class="eyebrow">COMMUNAUTÉ ANIMEVERSE</div><h2 id="forumPhaseTitle">Le forum Animeverse</h2><p>Échange tes recommandations, théories et découvertes.</p></div>
+      <button id="forumNewThread" class="btn primary forum-new-thread" type="button">＋ Nouveau sujet</button>
+    </header>
+    <div id="forumNotice" class="forum-notice" role="status" aria-live="polite" hidden></div>
+    <div id="forumAuthPrompt" class="forum-auth-prompt hidden"><span>Connecte-toi pour publier, répondre ou aimer un sujet.</span><button id="forumLogin" class="btn primary" type="button">Connexion</button></div>
+    <section id="forumHome">
+      <div class="forum-toolbar">
+        <div id="forumCategoryFilters" class="forum-category-filters" role="group" aria-label="Filtrer par catégorie"></div>
+        <div class="forum-list-controls"><label class="forum-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg><input id="forumSearch" type="search" placeholder="Rechercher dans les sujets" autocomplete="off"></label><select id="forumSort" aria-label="Trier les sujets"><option value="recent">Plus récents</option><option value="popular">Plus populaires</option></select></div>
+      </div>
+      <div id="forumNotifications" class="forum-notifications hidden" aria-live="polite"></div>
+      <div id="forumThreadList" class="forum-thread-list"><div class="forum-empty">Chargement des sujets…</div></div>
+    </section>
+    <section id="forumThreadDetail" class="forum-thread-detail hidden" aria-live="polite">
+      <div class="forum-detail-toolbar"><button id="forumBack" class="btn" type="button">← Tous les sujets</button><div id="forumModerationTools" class="forum-moderation-tools"></div></div>
+      <article id="forumThreadContent"></article>
+      <div id="forumPosts" class="forum-posts"></div>
+      <form id="forumReplyForm" class="forum-reply-form">
+        <div id="forumQuoteBanner" class="forum-quote-banner hidden"><span id="forumQuoteLabel"></span><button id="forumCancelQuote" type="button" aria-label="Annuler la citation">×</button></div>
+        <label for="forumReplyText">Ta réponse</label><textarea id="forumReplyText" maxlength="6000" rows="4" placeholder="Partage ton point de vue…"></textarea>
+        <div class="forum-composer-tools"><button class="btn forum-attach-image" type="button" data-forum-image-trigger>＋ Image</button><button class="btn" type="button" data-forum-video-trigger>＋ YouTube / Vimeo</button><button class="btn" type="button" data-forum-anime-trigger>＋ Fiche anime</button><span id="forumReplyAttachmentPreview" class="forum-attachment-preview"></span><button id="forumReplySubmit" class="btn primary" type="submit">Répondre</button></div>
+      </form>
+    </section>
+  </div>
+  <input id="forumImageInput" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+  <dialog id="forumComposerDialog" class="forum-dialog">
+    <form id="forumThreadForm" class="forum-composer">
+      <header><div><div class="eyebrow">NOUVEAU SUJET</div><h3>Ouvrir une discussion</h3></div><button id="forumComposerClose" type="button" class="forum-close" aria-label="Fermer">×</button></header>
+      <label for="forumTitle">Titre</label><input id="forumTitle" maxlength="160" minlength="5" required placeholder="De quoi veux-tu parler ?">
+      <label for="forumCategory">Catégorie</label><select id="forumCategory" required></select>
+      <label for="forumTags">Tags <small>Sépare-les par des virgules (8 maximum)</small></label><input id="forumTags" maxlength="200" placeholder="ex. one-piece, saison, manga">
+      <label for="forumThreadText">Contenu</label><textarea id="forumThreadText" maxlength="6000" minlength="1" rows="7" required placeholder="Écris ton message…"></textarea>
+      <div class="forum-composer-tools"><button class="btn forum-attach-image" type="button" data-forum-image-trigger>＋ Image</button><button class="btn" type="button" data-forum-video-trigger>＋ YouTube / Vimeo</button><button class="btn" type="button" data-forum-anime-trigger>＋ Fiche anime</button></div>
+      <div id="forumComposerAttachments" class="forum-attachment-preview"></div>
+      <div class="forum-dialog-actions"><button id="forumComposerCancel" type="button" class="btn">Annuler</button><button id="forumThreadSubmit" class="btn primary" type="submit">Publier le sujet</button></div>
+
+    </form>
+  </dialog>
+  <dialog id="forumVideoDialog" class="forum-dialog forum-video-dialog"><section class="forum-composer"><header><div><div class="eyebrow">VIDÉO</div><h3>Ajouter un lien vidéo</h3></div><button id="forumVideoClose" type="button" class="forum-close" aria-label="Fermer">×</button></header><label for="forumVideoUrl">Lien YouTube ou Vimeo</label><input id="forumVideoUrl" type="url" placeholder="https://youtu.be/…" autocomplete="url"><div class="forum-dialog-actions"><button id="forumVideoCancel" type="button" class="btn">Annuler</button><button id="forumVideoAdd" type="button" class="btn primary">Ajouter la vidéo</button></div></section></dialog>
+  <dialog id="forumAnimeDialog" class="forum-dialog forum-anime-dialog">
+    <section class="forum-composer"><header><div><div class="eyebrow">ANILIST</div><h3>Partager un anime</h3></div><button id="forumAnimeClose" type="button" class="forum-close" aria-label="Fermer">×</button></header><input id="forumAnimeSearch" type="search" placeholder="Rechercher un anime…" autocomplete="off"><div id="forumAnimeResults"></div></section>
+  </dialog>
+  <template id="forumImageLightboxTemplate"><dialog class="forum-image-dialog"><button type="button" class="forum-close" aria-label="Fermer">×</button><img alt=""></dialog></template>
+</section>
+
 <section id="calendarView" class="hidden"><div class="av-calendar-shell"><div class="av-calendar-head"><div><div class="eyebrow">Animeverse · À suivre</div><h2>Calendrier des sorties</h2><p class="meta">Les prochains épisodes de ta collection.</p></div><div class="av-calendar-countdown"><small>Épisode le plus proche</small><strong id="avCountdownText">Chargement…</strong></div></div><div id="avCalendarContent" aria-live="polite"></div></div></section>
 <section id="videosView" class="hidden">
     <div class="chat-shell videos-shell">
@@ -1833,5 +1880,5 @@ const modal=$('#modal');if(modal)new MutationObserver(()=>{if(modal.classList.co
 form.addEventListener('reset',()=>setTimeout(()=>{hidden.value='';syncDecorations()},0));
 })();
 </script>
-  <script src="/js/chat-admin-panel.js?v=1" defer></script>\n</body>
+  <script src="/js/chat-admin-panel.js?v=1" defer></script>\n  <script src="/js/forum.js?v=1" defer></script>\n</body>
 </html>
