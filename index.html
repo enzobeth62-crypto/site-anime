@@ -1243,7 +1243,7 @@ el('profileForm').addEventListener('submit',async e=>{
  catch(err){el('profileMessage').textContent=err.message||'Impossible de modifier le pseudo.'}
  finally{el('profileSave').disabled=false}
 });
-el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}updateChatPresence();el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();});
+el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}updateChatPresence();el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');isChatAdmin=false;chatPermissions={};adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();});
 el('authClose').addEventListener('click',()=>el('authModal').classList.remove('open'));
 el('authModal').addEventListener('click',e=>{if(e.target===el('authModal'))el('authModal').classList.remove('open')});
 el('loginTab').addEventListener('click',()=>setAuthMode('login'));
@@ -1337,6 +1337,8 @@ document.addEventListener('click',event=>{
 let chatCache=[];
 let chatPollHandle=null;
 let isChatAdmin=false;
+let chatPermissions={};
+const canChatPermission=permission=>Boolean(currentUser&&((String(currentUser.email||'').toLowerCase()==='bhadenzo28@gmail.com'&&currentUser.email_confirmed_at)||chatPermissions?.[permission]===true));
 let adminCheckedForUserId=null;
 async function checkChatAdmin(){
  if(!supabase||!currentUser)return false;
@@ -1345,14 +1347,15 @@ async function checkChatAdmin(){
  adminCheckedForUserId=userId;
  const panel=el('chatAdminPanel');if(panel)panel.classList.add('hidden');
  const isSuperAdmin=String(currentUser.email||'').toLowerCase()==='bhadenzo28@gmail.com'&&Boolean(currentUser.email_confirmed_at);
+ chatPermissions=isSuperAdmin?{delete_messages:true,warn:true,mute:true,ban:true,view_history:true,manage_forum:true,view_logs:true,publish_video:true,manage_reports:true}:{};
  isChatAdmin=isSuperAdmin;
  try{
   const {data,error}=await supabase.rpc('chat_my_permissions');
   if(!error&&data){
-   isChatAdmin=isSuperAdmin||data.role==='super_admin'||data.role==='moderator';
+   chatPermissions={...(data.permissions||{}),...(isSuperAdmin?chatPermissions:{})};isChatAdmin=isSuperAdmin||data.role==='super_admin'||(data.role==='moderator'&&Object.values(chatPermissions).some(Boolean));
   }else{
    const result=await supabase.from('chat_moderators').select('user_id').eq('user_id',userId).maybeSingle();
-   if(!result.error)isChatAdmin=isSuperAdmin||Boolean(result.data);
+   if(!result.error){isChatAdmin=isSuperAdmin||Boolean(result.data);if(result.data&&!isSuperAdmin)chatPermissions={delete_messages:true,warn:true,mute:true,ban:true,view_history:true,view_logs:true,manage_forum:true,publish_video:true,manage_reports:true}}
   }
  }catch(error){
   console.warn('Vérification des rôles du chat indisponible:',error);
@@ -1428,13 +1431,13 @@ async function loadChatAdminPanel(){
  }catch(error){console.warn('Journal de modération indisponible:',error);setChatHtmlIfChanged(el('chatAdminLogs'),'<div class="chat-admin-empty">Impossible de charger le journal pour le moment.</div>')}
 }
 async function moderateChatMessageDelete(id){
- if(!isChatAdmin||!confirm('Supprimer ce message du chat ?'))return;
+ if(!canChatPermission('delete_messages')||!confirm('Supprimer ce message du chat ?'))return;
  const {error}=await supabase.from('chat_messages').delete().eq('id',id);
  if(error){el('chatNotice').textContent='Suppression refusée : '+error.message;return}
  chatCache=chatCache.filter(m=>String(m.id)!==String(id));renderChat(chatCache);await loadChatAdminPanel();
 }
 async function moderateChatBan(userId,name){
- if(!isChatAdmin||!userId||userId===currentUser?.id)return;
+ if(!canChatPermission('ban')||!userId||userId===currentUser?.id)return;
  const durations={ '1h':3600000,'24h':86400000,'7d':604800000 };
  const choice=el('chatBanDuration').value;
  const expires_at=choice==='permanent'?null:new Date(Date.now()+durations[choice]).toISOString();
@@ -1466,7 +1469,7 @@ function renderChat(messages){
  sorted.forEach(m=>{
   const id=String(m.id??''); if(!id)return; keep.add(id);
   const mine=m.user_id===currentUser?.id;
-  const actions=isChatAdmin?'<div class="chat-mod-actions"><button class="btn danger" type="button" data-chat-delete="'+escapeText(id)+'">Supprimer</button>'+(mine?'':'<button class="btn" type="button" data-chat-ban="'+escapeText(m.user_id??'')+'" data-chat-name="'+escapeText(m.display_name||'Fan d’anime')+'">Bannir</button>')+'</div>':'';
+  const canDelete=canChatPermission('delete_messages'),canBan=canChatPermission('ban');const actions=(canDelete||canBan)?'<div class="chat-mod-actions">'+(canDelete?'<button class="btn danger" type="button" data-chat-delete="'+escapeText(id)+'">Supprimer</button>':'')+(canBan&&!mine?'<button class="btn" type="button" data-chat-ban="'+escapeText(m.user_id??'')+'" data-chat-name="'+escapeText(m.display_name||'Fan d’anime')+'">Bannir</button>':'')+'</div>':'';
   const signature=JSON.stringify([m.user_id,m.display_name,m.content,m.created_at,mine,isChatAdmin]);
   let row=[...box.querySelectorAll('[data-message-id]')].find(n=>n.dataset.messageId===id);
   if(row&&row.dataset.chatSignature===signature)return;
@@ -1636,7 +1639,7 @@ async function init(){
   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;authUserId=currentUser?.id||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
-  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}updateChatPresence();chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
+  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}updateChatPresence();chatCache=[];pendingChatMessages.clear();isChatAdmin=false;chatPermissions={};adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
   updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}else setChatNotice('Connecte-toi pour participer au chat.');
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
