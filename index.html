@@ -758,6 +758,70 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:899px){.top-search{grid-column:1/-1;grid-row:2;max-width:none;width:100%;border-radius:16px}.top-search-dropdown{left:0;right:0}}
 @media(prefers-reduced-motion:reduce){.top-search,.top-search-dropdown,.av-search-option,.av-search-skeleton{transition:none!important;animation:none!important}}
 </style>
+<style id="animeverse-chat-mobile-fixes">
+.chat-title{padding:14px 18px;gap:12px}
+.chat-title h2{font-size:clamp(21px,4vw,28px);margin:2px 0 4px}
+.chat-title p{font-size:13px;max-width:620px}
+.chat-status-group{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:0 0 auto}
+.chat-online-count{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid #54e6a54a;border-radius:999px;background:#0d281f;color:#c6ffe0;font-size:12px;white-space:nowrap}
+.chat-online-count i{width:8px;height:8px;border-radius:50%;background:#54e6a5;box-shadow:0 0 12px #54e6a5;animation:chat-online-pulse 1.8s ease-in-out infinite}
+@keyframes chat-online-pulse{50%{opacity:.55;transform:scale(.82)}}
+.chat-notice{margin:8px 16px;padding:9px 12px}
+.chat-notice.hidden{display:none!important}
+.chat-messages{height:min(58vh,620px);min-height:260px;overflow-x:hidden;overscroll-behavior:contain;gap:9px;padding:14px}
+.chat-message{width:fit-content;max-width:min(85%,680px);min-width:72px;padding:10px 12px;overflow:visible;isolation:isolate}
+.chat-message .chat-meta{max-width:100%;min-width:0}
+.chat-message .chat-meta>span:not(.chat-avatar){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-message .chat-meta time{white-space:nowrap;font-variant-numeric:tabular-nums}
+.chat-text{word-break:break-word}
+.chat-message.av-grouped .chat-meta .chat-avatar,.chat-message.av-grouped .chat-meta>span:not(.chat-avatar){visibility:hidden;width:0;flex-basis:0;overflow:hidden;margin:0;gap:0}
+.chat-day-separator{align-self:center;position:sticky;top:5px;z-index:1;padding:4px 11px;border:1px solid #ffffff17;border-radius:999px;background:#12131eeF;color:#aaaec2;font-size:11px}
+.chat-compose{position:sticky!important;bottom:max(4px,env(safe-area-inset-bottom))!important;z-index:12!important}
+.chat-shell{overflow:visible}
+.chat-shell:before{pointer-events:none}
+.chat-quote-preview{display:grid;width:100%;max-width:100%;gap:2px;text-align:left;margin:0 0 7px;padding:6px 9px;border:0;border-left:2px solid #72e5f5;border-radius:0 8px 8px 0;background:#080b13aa;color:#e7e4f7;cursor:pointer}
+.chat-quote-preview span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b5b8cb;font-size:11px}
+.chat-menu-trigger{position:absolute;right:7px;top:7px;z-index:2;width:34px;height:34px;display:grid;place-items:center;border:1px solid #ffffff21;border-radius:11px;background:#11131eea;color:#e8e6f3;opacity:0;transform:scale(.96);transition:opacity .16s,transform .16s}
+.chat-message:hover .chat-menu-trigger,.chat-message:focus-within .chat-menu-trigger,.chat-message.av-reaction-tools-open .chat-menu-trigger{opacity:1;transform:none}
+.chat-overlay-root{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
+.chat-overlay-panel{position:fixed;z-index:1;pointer-events:auto;max-width:calc(100vw - 16px);border:1px solid #77639c88;border-radius:16px;background:rgba(17,16,29,.98);color:#f6f3ff;box-shadow:0 18px 55px #000c,0 0 24px #a78bfa20;padding:7px;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .13s ease,transform .13s ease,visibility .13s}
+.chat-overlay-panel.open{opacity:1;visibility:visible;transform:none}
+.chat-overlay-menu{display:grid;min-width:172px;gap:3px}
+.chat-overlay-menu button,.chat-overlay-menu .chat-mod-actions button{min-height:42px;width:100%;padding:8px 11px;border:0;border-radius:10px;background:transparent;color:#f3f0ff;text-align:left}
+.chat-overlay-menu button:hover,.chat-overlay-menu button:focus-visible{background:#a78bfa2d;outline:1px solid #a78bfa}
+.chat-overlay-menu .chat-mod-actions{display:grid;gap:3px;margin:0}
+.chat-overlay-menu .chat-mod-actions .btn{font-size:13px}
+.chat-overlay-reactions{display:flex;align-items:center;gap:4px;padding:6px}
+.chat-overlay-reactions button{width:38px;height:38px;border:1px solid #ffffff20;border-radius:50%;background:#ffffff0d;color:#fff;font-size:19px}
+.chat-overlay-reactions button:hover,.chat-overlay-reactions button:focus-visible{border-color:#ad8cff;background:#ad8cff35;transform:scale(1.06);outline:2px solid #72e5f5}
+.av-reaction-wrap{position:static!important;margin-top:7px}
+.av-reaction-toolbar{position:fixed!important;left:auto;bottom:auto;z-index:2;opacity:0;visibility:hidden;pointer-events:none;background:#11101df7;backdrop-filter:none}
+.av-reaction-toolbar.open{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.av-reaction-pills{position:relative;z-index:0}
+@media(max-width:700px){
+ .chat-title{padding:12px 14px;align-items:flex-start}
+ .chat-title p{display:none}
+ .chat-title>div{min-width:0}
+ .chat-status-group{gap:5px}
+ .chat-title .tag,.chat-online-count{padding:6px 8px;font-size:11px}
+ .chat-messages{height:min(56dvh,600px);min-height:220px;padding:11px;gap:7px}
+ .chat-message{max-width:85%;padding:9px 10px}
+ .chat-menu-trigger{opacity:1;transform:none;width:32px;height:32px}
+ .chat-compose{bottom:calc(64px + env(safe-area-inset-bottom))!important}
+}
+@media(max-width:420px){
+ .chat-title{gap:8px}
+ .chat-title h2{font-size:20px}
+ .chat-title .tag,.chat-online-count{font-size:10px;padding:5px 7px}
+ .chat-online-count{gap:5px}
+ .chat-messages{min-height:205px}
+ .chat-composer-row{gap:5px}
+ .chat-composer-row .btn{min-width:84px!important;padding:10px 8px}
+ .chat-emoji-toggle{width:38px;height:38px;flex-basis:38px}
+ .chat-menu-trigger{width:30px;height:30px}
+}
+@media(prefers-reduced-motion:reduce){.chat-online-count i{animation:none}.chat-menu-trigger,.chat-overlay-panel{transition:none}.chat-overlay-panel{transform:none}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -800,7 +864,7 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 </div>
 <section id="chatView" class="chat-view hidden">
     <div class="chat-shell">
-      <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><span class="tag" id="chatConnection">🔒 Connexion requise</span></div>
+      <div class="chat-title"><div><div class="eyebrow">Communauté Animeverse</div><h2>💬 Chat en direct</h2><p>Discute avec les autres fans d’anime, partage tes découvertes et tes coups de cœur.</p></div><div class="chat-status-group"><span class="tag" id="chatConnection">🔒 Connexion requise</span><span class="chat-online-count" id="chatOnlineCount" aria-live="polite"><i></i><span>0 en ligne</span></span></div></div>
       <div id="chatNotice" class="chat-notice">Pour utiliser le chat en direct et retrouver tes messages, configure d’abord le service gratuit Supabase. Les étapes sont expliquées dans le guide fourni avec le fichier.</div>
       <section id="chatBanScreen" class="chat-ban-screen hidden" role="status" aria-live="polite"><div class="chat-ban-icon">⛔</div><div class="chat-ban-content"><span class="chat-ban-eyebrow">ACCÈS AU CHAT SUSPENDU</span><h3>Tu ne peux plus envoyer de messages</h3><p id="chatBanReasonDisplay" class="chat-ban-reason"></p><div class="chat-ban-details"><div><small>Durée</small><strong id="chatBanDurationDisplay"></strong></div><div><small>Fin du ban</small><strong id="chatBanUntilDisplay"></strong></div><div><small>Temps restant</small><strong id="chatBanRemainingDisplay"></strong></div></div></div></section>
       <div id="chatMessages" class="chat-messages"><div class="chat-empty"><span>🌙</span><strong>Le salon attend ses premiers messages</strong><small>Connecte-toi et lance la conversation ✨</small></div></div>
@@ -1111,7 +1175,8 @@ const SUPABASE_ANON_KEY = 'sb_publishable_dgDx61Y2dbAt5DAs9OOZ3g_bH-lEVbJ';
 const configured = SUPABASE_URL.startsWith('https://') && !SUPABASE_URL.includes('COLLE_ICI') && !SUPABASE_ANON_KEY.includes('COLLE_ICI');
 let supabase = null, currentUser = null, chatChannel = null, authMode = 'login';
 let chatChannelUserId=null,chatLoadPromise=null,chatEventTimer=null,chatAdminTimer=null,chatReactionTimer=null,pendingChatMessages=new Map(),authUserId=null;
-function setChatNotice(value){const n=document.getElementById('chatNotice');if(n&&n.textContent!==value)n.textContent=value}
+function setChatNotice(value){const n=document.getElementById('chatNotice');if(!n)return;if(n.textContent!==value)n.textContent=value;const connectPrompt=/connecte-toi/i.test(String(value||''));n.classList.toggle('hidden',Boolean(currentUser&&(connectPrompt||/^🟢 Chat (en direct connecté|prêt)/i.test(String(value||'')))));if(!currentUser&&connectPrompt)n.classList.remove('hidden')}
+function updateChatPresence(){const node=document.getElementById('chatOnlineCount');if(!node)return;const label=node.querySelector('span');let count=0;if(chatChannel){try{const seen=new Set();Object.values(chatChannel.presenceState()||{}).flat().forEach(p=>{const id=p?.user_id||p?.presence_ref;if(id)seen.add(String(id))});count=seen.size}catch{}}if(currentUser)count=Math.max(1,count);if(label)label.textContent=count+' en ligne';node.setAttribute('aria-label',count+' utilisateur'+(count===1?'':'s')+' en ligne')}
 function setChatHtmlIfChanged(node,value){if(node&&node.innerHTML!==value)node.innerHTML=value}
 function queueChatMessage(message){if(!message?.id)return;pendingChatMessages.set(String(message.id),message);if(chatEventTimer)clearTimeout(chatEventTimer);chatEventTimer=setTimeout(()=>{const batch=[...pendingChatMessages.values()];pendingChatMessages.clear();batch.forEach(mergeChatMessage)},150)}
 function removeChatMessage(id){if(!id)return;pendingChatMessages.delete(String(id));chatCache=chatCache.filter(m=>String(m.id)!==String(id));const node=[...el('chatMessages').querySelectorAll('[data-message-id]')].find(n=>n.dataset.messageId===String(id));node?.remove();if(!chatCache.length)renderChat([]);if(isChatAdmin)scheduleChatAdminPanel()}
@@ -1178,7 +1243,7 @@ el('profileForm').addEventListener('submit',async e=>{
  catch(err){el('profileMessage').textContent=err.message||'Impossible de modifier le pseudo.'}
  finally{el('profileSave').disabled=false}
 });
-el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();});
+el('signOutBtn').addEventListener('click',async()=>{if(!supabase)return;const {error}=await supabase.auth.signOut();if(error){el('profileMessage').textContent=error.message;return}currentUser=null;if(chatChannel){supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null;}if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null;}updateChatPresence();el('profileModal').classList.remove('open');el('authModal').classList.add('open');setAuthMode('login');isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();});
 el('authClose').addEventListener('click',()=>el('authModal').classList.remove('open'));
 el('authModal').addEventListener('click',e=>{if(e.target===el('authModal'))el('authModal').classList.remove('open')});
 el('loginTab').addEventListener('click',()=>setAuthMode('login'));
@@ -1278,13 +1343,21 @@ async function checkChatAdmin(){
  const userId=currentUser.id;
  if(adminCheckedForUserId===userId)return isChatAdmin;
  adminCheckedForUserId=userId;
- isChatAdmin=false;
  const panel=el('chatAdminPanel');if(panel)panel.classList.add('hidden');
+ const isSuperAdmin=String(currentUser.email||'').toLowerCase()==='bhadenzo28@gmail.com'&&Boolean(currentUser.email_confirmed_at);
+ isChatAdmin=isSuperAdmin;
  try{
-  const {data,error}=await supabase.from('chat_moderators').select('user_id').eq('user_id',userId).maybeSingle();
-  if(error)throw error;
-  isChatAdmin=Boolean(data);
- }catch(error){console.warn('Vérification admin du chat indisponible:',error);adminCheckedForUserId=null}
+  const {data,error}=await supabase.rpc('chat_my_permissions');
+  if(!error&&data){
+   isChatAdmin=isSuperAdmin||data.role==='super_admin'||data.role==='moderator';
+  }else{
+   const result=await supabase.from('chat_moderators').select('user_id').eq('user_id',userId).maybeSingle();
+   if(!result.error)isChatAdmin=isSuperAdmin||Boolean(result.data);
+  }
+ }catch(error){
+  console.warn('Vérification des rôles du chat indisponible:',error);
+  if(!isSuperAdmin)adminCheckedForUserId=null;
+ }
  if(panel)panel.classList.toggle('hidden',!isChatAdmin);
  return isChatAdmin;
 }
@@ -1298,11 +1371,19 @@ function formatChatBanDuration(start,end){
 }
 async function refreshChatBanState(){
  const input=el('chatInput'),send=el('chatSend'),screen=el('chatBanScreen');
- if(!supabase||!currentUser){screen.classList.add('hidden');return false;}
- const {data,error}=await supabase.from('chat_bans').select('created_at,expires_at,reason').eq('user_id',currentUser.id).maybeSingle();
- if(error)throw error;
- const end=data?.expires_at?new Date(data.expires_at).getTime():null;
- const active=Boolean(data&&(!end||end>Date.now()));
+ if(!supabase||!currentUser){screen.classList.add('hidden');el('chatMessages').classList.remove('hidden');el('chatForm').classList.remove('hidden');setChatNotice('Connecte-toi pour participer et signaler un message.');return false;}
+ let data=null,kind='ban';
+ const banResult=await supabase.from('chat_bans').select('created_at,expires_at,reason').eq('user_id',currentUser.id).maybeSingle();
+ if(banResult.error)throw banResult.error;
+ data=banResult.data;
+ let end=data?.expires_at?new Date(data.expires_at).getTime():null;
+ let active=Boolean(data&&(!end||end>Date.now()));
+ if(!active){
+  try{
+   const muteResult=await supabase.from('chat_mutes').select('created_at,expires_at,reason').eq('user_id',currentUser.id).maybeSingle();
+   if(!muteResult.error&&muteResult.data){const muteEnd=new Date(muteResult.data.expires_at).getTime();if(muteEnd>Date.now()){data=muteResult.data;end=muteEnd;active=true;kind='mute'}}
+  }catch{}
+ }
  input.disabled=active;send.disabled=active;el('chatEmojiToggle').disabled=active;
  screen.classList.toggle('hidden',!active);
  el('chatMessages').classList.toggle('hidden',active);
@@ -1310,13 +1391,14 @@ async function refreshChatBanState(){
  document.querySelector('.chat-small')?.classList.toggle('hidden',active);
  if(active){
   const start=data.created_at?new Date(data.created_at).getTime():Date.now();
+  screen.querySelector('h3').textContent=kind==='mute'?'Tu es temporairement empêché d’envoyer des messages':'Tu ne peux plus envoyer de messages';
   el('chatBanReasonDisplay').textContent=data.reason||'Aucun motif communiqué.';
   el('chatBanDurationDisplay').textContent=formatChatBanDuration(start,end);
   el('chatBanUntilDisplay').textContent=end?new Date(end).toLocaleString('fr-FR'):'Jusqu’à nouvel ordre';
   el('chatBanRemainingDisplay').textContent=end?formatChatBanDuration(Date.now(),end):'Indéterminé';
   el('chatNotice').classList.add('hidden');
  }else{
-  el('chatNotice').classList.remove('hidden');
+  setChatNotice(currentUser?'🟢 Chat prêt · envoi sécurisé par le compte connecté.':'Connecte-toi pour participer et signaler un message.');
  }
  return active;
 }
@@ -1389,7 +1471,7 @@ function renderChat(messages){
   let row=[...box.querySelectorAll('[data-message-id]')].find(n=>n.dataset.messageId===id);
   if(row&&row.dataset.chatSignature===signature)return;
   const holder=document.createElement('div');
-  holder.innerHTML='<div class="chat-message '+(mine?'mine':'')+'" data-message-id="'+escapeText(id)+'"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">'+escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())+'</span><span>'+escapeText(m.display_name||'Fan d’anime')+'</span><time datetime="'+escapeText(m.created_at||'')+'">'+escapeText(m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant')+'</time></div><div class="chat-text">'+escapeText(m.content)+'</div>'+actions+'</div>';
+  holder.innerHTML='<div class="chat-message '+(mine?'mine':'')+'" data-message-id="'+escapeText(id)+'" data-user-id="'+escapeText(m.user_id||'')+'"><div class="chat-meta"><span class="chat-avatar" aria-hidden="true">'+escapeText((m.display_name||'A').trim().charAt(0).toUpperCase())+'</span><span>'+escapeText(m.display_name||'Fan d’anime')+'</span><time datetime="'+escapeText(m.created_at||'')+'">'+escapeText(m.created_at?new Date(m.created_at).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'}):'À l’instant')+'</time></div>'+(m.reply_to_id&&chatCache.find(q=>String(q.id)===String(m.reply_to_id))?'<button class="chat-quote-preview" type="button" data-chat-quote-target="'+escapeText(m.reply_to_id)+'"><strong>'+escapeText(chatCache.find(q=>String(q.id)===String(m.reply_to_id))?.display_name||'Réponse à')+'</strong><span>'+escapeText((chatCache.find(q=>String(q.id)===String(m.reply_to_id))?.content||'').slice(0,110))+'</span></button>':'')+'<div class="chat-text">'+escapeText(m.content)+'</div>'+actions+'</div>';
   const next=holder.firstElementChild; next.dataset.chatSignature=signature; next.classList.add('fx-chat-enter');
   if(row){next.classList.remove('fx-chat-enter');row.replaceWith(next);return;}
   const later=[...box.querySelectorAll('[data-message-id]')].find(n=>new Date(n.querySelector('time')?.dateTime||0)>new Date(m.created_at||0));
@@ -1417,7 +1499,7 @@ async function loadChat(){
   try{
    if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}
    await checkChatAdmin();
-   const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at').order('created_at',{ascending:false}).limit(100);
+   const {data,error}=await supabase.from('chat_messages').select('id,user_id,display_name,content,created_at,reply_to_id').order('created_at',{ascending:false}).limit(100);
    if(error)throw error;
    if(currentUser?.id!==requestedUserId)return;
    renderChat(data||[]);
@@ -1426,7 +1508,10 @@ async function loadChat(){
    if(!banned&&el('chatNotice').textContent!=='🟢 Chat en direct connecté.')el('chatNotice').textContent='🟢 Chat en direct · messages conservés 30 jours.';
    if(isChatAdmin)await loadChatAdminPanel();
    chatChannelUserId=requestedUserId;
-   chatChannel=supabase.channel('animeverse-chat-live-v2-'+requestedUserId)
+   chatChannel=supabase.channel('animeverse-chat-live-v3',{config:{presence:{key:requestedUserId}}})
+    .on('presence',{event:'sync'},updateChatPresence)
+    .on('presence',{event:'join'},updateChatPresence)
+    .on('presence',{event:'leave'},updateChatPresence)
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>queueChatMessage(payload.new))
     .on('postgres_changes',{event:'UPDATE',schema:'public',table:'chat_messages'},payload=>queueChatMessage(payload.new))
     .on('postgres_changes',{event:'*',schema:'public',table:'chat_reactions'},()=>scheduleChatReactions())
@@ -1437,7 +1522,10 @@ async function loadChat(){
       if(isChatAdmin)scheduleChatAdminPanel();
     })
     .subscribe(status=>{
-      if(status==='SUBSCRIBED')setChatNotice('🟢 Chat en direct connecté.');
+      if(status==='SUBSCRIBED'){
+       chatChannel.track({user_id:requestedUserId,display_name:String(currentUser?.user_metadata?.username||'Membre').slice(0,32)}).then(updateChatPresence).catch(error=>console.warn('Présence chat indisponible:',error));
+       updateChatPresence();setChatNotice('🟢 Chat en direct connecté.');
+      }
       else if(status==='CHANNEL_ERROR'||status==='TIMED_OUT'){setChatNotice('Le direct est momentanément indisponible. Réessaie en rouvrant le chat.');chatChannelUserId=null;}
     });
   }catch(err){console.error('Chargement chat échoué:',err);setChatNotice('Erreur du chat : '+(err.message||'configuration de la base à vérifier'))}
@@ -1450,6 +1538,7 @@ el('chatMessages').addEventListener('click',async event=>{
  if(ban){await moderateChatBan(ban.dataset.chatBan,ban.dataset.chatName);return}
  if(unban)await moderateChatUnban(unban.dataset.chatUnban);
 });
+document.addEventListener('click',async event=>{const del=event.target.closest('[data-chat-delete]'),ban=event.target.closest('[data-chat-ban]');if(!del&&!ban)return;if(el('chatMessages').contains(event.target))return;if(del){await moderateChatMessageDelete(del.dataset.chatDelete);return}if(ban)await moderateChatBan(ban.dataset.chatBan,ban.dataset.chatName)});
 el('chatBansList').addEventListener('click',async event=>{
  const button=event.target.closest('[data-chat-unban]');if(button)await moderateChatUnban(button.dataset.chatUnban);
 });
@@ -1459,12 +1548,13 @@ el('chatForm').addEventListener('submit',async e=>{
  try{
   const isBanned=await refreshChatBanState();if(isBanned)return;
   const display_name=(currentUser.user_metadata?.username||(currentUser.email||'Fan').split('@')[0]).slice(0,32);
-  const {data,error}=await supabase.from('chat_messages').insert({user_id:currentUser.id,display_name,content}).select('id,user_id,display_name,content,created_at').single();
+  const replyId=el('chatForm').dataset.replyToId||null;
+  const {data,error}=await supabase.from('chat_messages').insert({user_id:currentUser.id,display_name,content,...(replyId?{reply_to_id:Number(replyId)}:{})}).select('id,user_id,display_name,content,created_at,reply_to_id').single();
   if(error)throw error;
-  el('chatInput').value='';
+  el('chatInput').value='';el('chatForm').dataset.replyToId='';document.querySelector('.chat-reply-preview')?.remove();
   if(data)mergeChatMessage(data);else await loadChat();
  }
- catch(err){console.error('Envoi chat échoué:',err);el('chatNotice').textContent='Message non envoyé : '+(err.message||'erreur')+' — vérifie les droits SQL de chat_messages.';}
+ catch(err){console.error('Envoi chat échoué:',err);setChatNotice(/ban|mute|suspend|42501|row-level|permission/i.test(err.message||'')?'Envoi refusé : vérifie la connexion, l’état du compte et les règles du chat.':'Impossible d’envoyer le message pour le moment. Réessaie dans un instant.');}
  finally{try{await refreshChatBanState()}catch{el('chatInput').disabled=true}el('chatSend').disabled=el('chatInput').disabled}
 });
 
@@ -1546,7 +1636,7 @@ async function init(){
   const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2');
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;authUserId=currentUser?.id||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
-  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
+  supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}updateChatPresence();chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
   updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}else setChatNotice('Connecte-toi pour participer au chat.');
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
@@ -1691,7 +1781,7 @@ document.addEventListener('animeverse:chat-reactions',e=>{rows=e.detail?.items||
 function draw(){queued=false;let box=$('chatMessages');if(!box)return;box.querySelectorAll('.chat-message[data-message-id]').forEach(m=>{let id=m.dataset.messageId;if(!id)return;let w=m.querySelector('.av-reaction-wrap');if(!w){w=document.createElement('div');w.className='av-reaction-wrap';m.append(w)}if(!w.querySelector('.av-reaction-toolbar')){let t=document.createElement('div');t.className='av-reaction-toolbar';t.setAttribute('role','group');t.setAttribute('aria-label','Ajouter une réaction');t.innerHTML=['👍','❤️','😂','😮','😢','🔥'].map(e=>'<button type="button" data-av-react="'+esc(e)+'" aria-label="Réagir '+esc(e)+'">'+e+'</button>').join('');w.append(t)}let counts=new Map();rows.filter(r=>String(r.message_id)===id).forEach(r=>{let c=counts.get(r.emoji)||{n:0,mine:false};c.n++;c.mine=c.mine||r.user_id===uid;counts.set(r.emoji,c)});let sig=JSON.stringify([...counts]);if(w.dataset.sig!==sig){w.dataset.sig=sig;let p=w.querySelector('.av-reaction-pills');if(!p){p=document.createElement('div');p.className='av-reaction-pills';w.append(p)}p.innerHTML=[...counts].map(([e,c])=>'<button type="button" class="'+(c.mine?'mine ':'')+'av-reaction-pop" data-av-react="'+esc(e)+'">'+esc(e)+' '+c.n+'</button>').join('')}})}
 let box=$('chatMessages');if(box)new MutationObserver(()=>{if(!queued){queued=true;queueMicrotask(draw)}}).observe(box,{childList:true});draw();
 let lp;document.addEventListener('pointerdown',e=>{let m=e.target.closest('#chatMessages .chat-message');if(m&&e.pointerType==='touch')lp=setTimeout(()=>m.classList.add('av-reaction-tools-open'),450)});['pointerup','pointercancel','pointerleave'].forEach(x=>document.addEventListener(x,()=>{clearTimeout(lp);lp=null}));document.addEventListener('contextmenu',e=>{if(e.target.closest('#chatMessages .chat-message'))e.preventDefault()});
-document.addEventListener('click',async e=>{let b=e.target.closest('[data-av-react]');if(!b)return;let m=b.closest('.chat-message');b.disabled=true;try{await window.__animeverseToggleChatReaction?.(m?.dataset.messageId,b.dataset.avReact)}catch(x){console.warn('Réaction indisponible',x)}finally{b.disabled=false;m?.classList.remove('av-reaction-tools-open')}});
+document.addEventListener('click',async e=>{let b=e.target.closest('[data-av-react]');if(!b)return;let m=b.closest('.chat-message');const messageId=b.dataset.messageId||m?.dataset.messageId;b.disabled=true;try{await window.__animeverseToggleChatReaction?.(messageId,b.dataset.avReact)}catch(x){console.warn('Réaction indisponible',x)}finally{b.disabled=false;m?.classList.remove('av-reaction-tools-open')}});
 const install=$('installAppButton');let deferred=null;function toast(msg){let t=$('avInstallToast');if(!t){t=document.createElement('div');t.id='avInstallToast';t.className='av-install-toast';t.setAttribute('role','status');document.body.append(t)}t.textContent=msg;t.hidden=false;setTimeout(()=>t.hidden=true,3600)}
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(e=>console.warn('Service worker',e)));
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(install)install.hidden=false});
@@ -1842,6 +1932,93 @@ const notes=$('#notes');if(notes){const count=el('small','av-notes-count');notes
 function syncStatus(){window.__avSyncStatus?.()}function syncRating(){window.__avSyncRating?.()}function syncEpisodes(){window.__avSyncEpisodes?.()}function syncPoster(){window.__avSyncPoster?.()}function syncGenreChips(){window.__avSyncGenreChips?.()}function syncDecorations(){syncStatus();syncRating();syncEpisodes();syncPoster();syncGenreChips();window.__avSyncNotes?.()}
 const modal=$('#modal');if(modal)new MutationObserver(()=>{if(modal.classList.contains('open')){query.value='';query.disabled=false;finder.classList.remove('is-collapsed');result.hidden=true;hidden.value=$('#animeId').value?hidden.value:'';syncDecorations()}}).observe(modal,{attributes:true,attributeFilter:['class']});
 form.addEventListener('reset',()=>setTimeout(()=>{hidden.value='';syncDecorations()},0));
+})();
+</script>
+<script id="animeverse-chat-overlay-fixes">
+(function(){
+ 'use strict';
+ const box=document.getElementById('chatMessages'),form=document.getElementById('chatForm'),input=document.getElementById('chatInput');
+ if(!box)return;
+ const root=document.createElement('div');root.className='chat-overlay-root';root.setAttribute('aria-live','polite');document.body.append(root);
+ const menu=document.createElement('div');menu.className='chat-overlay-panel chat-overlay-menu';menu.setAttribute('role','menu');root.append(menu);
+ const reactions=document.createElement('div');reactions.className='chat-overlay-panel chat-overlay-reactions av-reaction-toolbar';reactions.setAttribute('role','group');reactions.setAttribute('aria-label','Réactions rapides');root.append(reactions);
+ reactions.innerHTML=['👍','❤️','😂','😮','😢','🔥'].map(e=>'<button type="button" data-av-react="'+e+'" aria-label="Réagir '+e+'">'+e+'</button>').join('');
+ let activeMessage=null,hideTimer=0,didLongPress=false;
+ function place(panel,anchor,above){
+  const r=anchor.getBoundingClientRect(),w=panel.offsetWidth||230,h=panel.offsetHeight||48,pad=8;
+  let left=Math.min(Math.max(pad,r.left),innerWidth-w-pad);
+  let top=above?r.top-h-8:r.bottom+8;
+  if(top<pad)top=Math.min(innerHeight-h-pad,r.bottom+8);
+  if(top+h>innerHeight-pad)top=Math.max(pad,r.top-h-8);
+  panel.style.left=Math.round(left)+'px';panel.style.top=Math.round(top)+'px';
+ }
+ function show(panel,anchor,above){
+  clearTimeout(hideTimer);activeMessage=anchor.closest('.chat-message');if(!activeMessage)return;
+  const id=activeMessage.dataset.messageId;
+  if(panel===reactions){const floating=[...root.querySelectorAll('.chat-overlay-reactions')].find(x=>x.dataset.messageId===id)||reactions;floating.dataset.messageId=id;floating.querySelectorAll('[data-av-react]').forEach(b=>b.dataset.messageId=id);if(floating!==reactions){reactions.classList.remove('open');floating.classList.add('open');requestAnimationFrame(()=>place(floating,anchor,above));return}}
+  if(panel===menu){
+   menu.dataset.messageId=id;
+   const text=activeMessage.querySelector('.chat-text')?.textContent||'';
+   const mods=activeMessage.querySelector('.chat-mod-actions')?.cloneNode(true);
+   menu.innerHTML='<button type="button" role="menuitem" data-chat-reply="'+id+'">Répondre</button><button type="button" role="menuitem" data-chat-copy="'+id+'">Copier</button><button type="button" role="menuitem" data-chat-report="'+id+'">Signaler</button>';
+   menu.querySelectorAll('button').forEach(b=>{b.dataset.messageId=id});
+   if(mods){mods.classList.remove('chat-mod-actions');mods.hidden=false;menu.append(mods)}
+   menu.dataset.messageText=text;
+  }
+  panel.classList.add('open');requestAnimationFrame(()=>place(panel,anchor,above));
+ }
+ function close(panel){panel.classList.remove('open');if(panel===menu)menu.replaceChildren();if(panel===reactions)delete reactions.dataset.messageId}
+ function closeAll(){close(menu);root.querySelectorAll('.chat-overlay-reactions').forEach(close);activeMessage=null}
+ function prepareMessage(m){
+  const id=m.dataset.messageId;if(!id)return;
+  let trigger=m.querySelector('.chat-menu-trigger');
+  if(!trigger){trigger=document.createElement('button');trigger.type='button';trigger.className='chat-menu-trigger';trigger.setAttribute('aria-label','Options du message');trigger.setAttribute('aria-haspopup','menu');trigger.textContent='…';m.append(trigger)}
+  const toolbar=m.querySelector('.av-reaction-toolbar');
+  if(toolbar&&!toolbar.dataset.portaled){toolbar.dataset.portaled='true';toolbar.style.display='none';const existing=[...root.querySelectorAll('.chat-overlay-reactions')].find(x=>x.dataset.messageId===id);if(!existing){const floating=toolbar.cloneNode(true);floating.classList.add('chat-overlay-panel','chat-overlay-reactions');floating.dataset.messageId=id;floating.querySelectorAll('[data-av-react]').forEach(b=>b.dataset.messageId=id);root.append(floating)}toolbar.dataset.portalId=id}
+ }
+ function dayLabel(date){
+  const now=new Date(),d=new Date(date),today=new Date(now.getFullYear(),now.getMonth(),now.getDate()),target=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const diff=Math.round((today-target)/86400000);return diff===0?'Aujourd’hui':diff===1?'Hier':d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+ }
+ function decorate(){
+  const rows=[...box.querySelectorAll('.chat-message[data-message-id]')];let prior=null,priorDay='';
+  rows.forEach((m,index)=>{
+   prepareMessage(m);
+   const time=m.querySelector('time'),stamp=time?.dateTime;if(stamp){const date=new Date(stamp),now=new Date();time.textContent=date.toDateString()===now.toDateString()?date.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):date.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})+' '+date.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+   const day=new Date(stamp||Date.now()).toDateString();
+   
+   const author=m.querySelector('.chat-meta>span:not(.chat-avatar)')?.textContent||'';
+   const uid=m.dataset.userId||m.querySelector('[data-chat-ban]')?.dataset.chatBan||author;
+   const prevUid=prior?.dataset.userId||prior?.querySelector('[data-chat-ban]')?.dataset.chatBan||prior?.querySelector('.chat-meta>span:not(.chat-avatar)')?.textContent||'';
+   const prevTime=prior?new Date(prior.querySelector('time')?.dateTime||0).getTime():0;
+   m.classList.toggle('av-grouped',Boolean(prior&&prevUid===uid&&day===priorDay&&new Date(stamp||0).getTime()-prevTime<5*60*1000));
+   if(day!==priorDay){
+    let sep=m.previousElementSibling;
+    if(!sep?.classList.contains('chat-day-separator')||sep.dataset.day!==day){sep=document.createElement('div');sep.className='chat-day-separator';sep.dataset.day=day;sep.textContent=dayLabel(stamp||Date.now());box.insertBefore(sep,m)}
+   }
+   prior=m;priorDay=day;
+  });
+ }
+ decorate();
+ new MutationObserver(()=>queueMicrotask(decorate)).observe(box,{childList:true,subtree:true});
+ let touchTimer=0;
+ box.addEventListener('pointerover',e=>{const m=e.target.closest('.chat-message');if(m&&e.pointerType!=='touch'){const id=m.dataset.messageId;const floating=[...root.querySelectorAll('.chat-overlay-reactions')].find(x=>x.dataset.messageId===id);if(floating)show(floating,m,true)}});
+ box.addEventListener('pointerout',e=>{const m=e.target.closest('.chat-message');if(m&&e.pointerType!=='touch'&&!m.contains(e.relatedTarget)){const floating=[...root.querySelectorAll('.chat-overlay-reactions')].find(x=>x.dataset.messageId===m.dataset.messageId);if(floating&&!floating.contains(e.relatedTarget))hideTimer=setTimeout(()=>close(floating),170)}});
+ box.addEventListener('pointerdown',e=>{const m=e.target.closest('.chat-message');if(m&&e.pointerType==='touch'){didLongPress=false;clearTimeout(touchTimer);touchTimer=setTimeout(()=>{didLongPress=true;m.classList.add('av-reaction-tools-open');const floating=[...root.querySelectorAll('.chat-overlay-reactions')].find(x=>x.dataset.messageId===m.dataset.messageId);if(floating)show(floating,m,true)},420)}});
+ ['pointerup','pointercancel'].forEach(name=>document.addEventListener(name,()=>clearTimeout(touchTimer),{passive:true}));
+ box.addEventListener('click',async e=>{
+  const quote=e.target.closest('[data-chat-quote-target]');if(quote){const target=box.querySelector('[data-message-id="'+CSS.escape(quote.dataset.chatQuoteTarget)+'"]');target?.scrollIntoView({behavior:'smooth',block:'center'});target?.classList.add('chat-quote-flash');setTimeout(()=>target?.classList.remove('chat-quote-flash'),900);return}
+  const trigger=e.target.closest('.chat-menu-trigger');if(trigger){e.stopPropagation();show(menu,trigger,false);return}
+  const b=e.target.closest('[data-chat-reply]');if(b){const m=box.querySelector('[data-message-id="'+CSS.escape(b.dataset.messageId)+'"]'),text=m?.querySelector('.chat-text')?.textContent||'',name=m?.querySelector('.chat-meta>span:not(.chat-avatar)')?.textContent||'Membre';form.dataset.replyToId=b.dataset.messageId;let preview=form.querySelector('.chat-reply-preview');if(!preview){preview=document.createElement('div');preview.className='chat-reply-preview';form.prepend(preview)}preview.innerHTML='<span>Réponse à <b>'+name.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))+'</b> · '+text.slice(0,100).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))+'</span><button type="button" aria-label="Annuler la réponse">×</button>';menu.classList.remove('open');input?.focus();return}
+  if(e.target.closest('.chat-reply-preview button')){form.dataset.replyToId='';form.querySelector('.chat-reply-preview')?.remove();return}
+  const copy=e.target.closest('[data-chat-copy]');if(copy){const m=box.querySelector('[data-message-id="'+CSS.escape(copy.dataset.messageId)+'"]');try{await navigator.clipboard.writeText(m?.querySelector('.chat-text')?.textContent||'')}catch{}closeAll();return}
+  const report=e.target.closest('[data-chat-report]');if(report){closeAll();const m=box.querySelector('[data-message-id="'+CSS.escape(report.dataset.messageId)+'"]');const userId=m?.dataset.userId||m?.querySelector('[data-chat-ban]')?.dataset.chatBan;if(!userId){alert('Impossible d’identifier ce message.');return}const reason=prompt('Pourquoi signaler ce message ?');if(!reason?.trim())return;try{const bridge=window.__animeverseAssistantBridge;const client=bridge?.getClient?.();const user=bridge?.getUser?.();if(!client||!user){alert('Connecte-toi pour signaler un message.');return}const {error}=await client.rpc('chat_report_message',{p_message_id:Number(report.dataset.messageId),p_reason:reason.trim()});if(error)throw error;alert('Signalement transmis aux modérateurs.')}catch(err){console.warn('Signalement chat indisponible',err);alert('Le signalement est indisponible. La configuration SQL des rôles doit être installée.')}return}
+ });
+ root.addEventListener('click',e=>{const b=e.target.closest('[data-av-react]');if(!b)return;const pane=b.closest('.chat-overlay-reactions');setTimeout(()=>{pane?.classList.remove('open');activeMessage=null},120)});
+ document.addEventListener('click',e=>{if(!e.target.closest('.chat-overlay-panel,.chat-menu-trigger'))closeAll()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+ document.addEventListener('animeverse:chat-reactions',()=>decorate());
+ window.addEventListener('resize',()=>{if(menu.classList.contains('open')&&activeMessage)place(menu,activeMessage,false);if(reactions.classList.contains('open')&&activeMessage)place(reactions,activeMessage,true);root.querySelectorAll('.chat-overlay-reactions.open').forEach(panel=>{const m=box.querySelector('[data-message-id="'+CSS.escape(panel.dataset.messageId)+'"]');if(m)place(panel,m,true)})},{passive:true});
 })();
 </script>
 </body>
