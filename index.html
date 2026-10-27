@@ -758,18 +758,20 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 @media(max-width:899px){.top-search{grid-column:1/-1;grid-row:2;max-width:none;width:100%;border-radius:16px}.top-search-dropdown{left:0;right:0}}
 @media(prefers-reduced-motion:reduce){.top-search,.top-search-dropdown,.av-search-option,.av-search-skeleton{transition:none!important;animation:none!important}}
 </style>
-  <link rel="stylesheet" href="/css/chat-admin-panel.css?v=1">\n  <link rel="stylesheet" href="/css/forum.css?v=1">\n</head>
+  <link rel="stylesheet" href="/css/chat-admin-panel.css?v=1">\n  <link rel="stylesheet" href="/css/forum.css?v=1">\n<link rel="stylesheet" href="/css/cineverse.css?v=1">
+</head>
 <body>
 <div class="wrap">
   <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search" autocomplete="off" data-lpignore="true" data-1p-ignore="true"><svg class="top-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input class="field" type="search" name="anime-search" id="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" inputmode="search" aria-label="Rechercher un anime" aria-controls="animeSearchDropdown" aria-expanded="false" placeholder="Rechercher un anime…"><button class="top-search-clear" type="button" aria-label="Effacer la recherche" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><kbd class="top-search-shortcut" aria-hidden="true">/</kbd><div class="top-search-dropdown" id="animeSearchDropdown" role="listbox" aria-label="Résultats de recherche" hidden></div></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg> Communauté</button>
+      <button class="btn" id="navCineVerse" type="button" aria-controls="cineverseView"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></svg> CinéVerse</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button><button class="btn" id="navCalendar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg> Calendrier</button><button class="btn" id="installAppButton" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/></svg> Installer l’appli</button>
       <button class="btn primary" id="authOpen">👤 Connexion</button>
       <button class="btn primary" id="addTop">＋ Ajouter un anime</button>
     </div></header>
   <div id="libraryView">
-  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section>
+  <section class="hero"><div class="hero-main"><img class="spotlight-poster hidden" id="spotlightPoster" alt="" aria-hidden="true"><div class="spotlight-copy"><div class="eyebrow" id="spotlightKicker">ANIMEVERSE · À LA UNE</div><h2 id="spotlightTitle">Chaque anime a son histoire.</h2><div class="spotlight-meta"><span class="tag" id="spotlightStatus">Ta bibliothèque personnelle</span></div><p id="spotlightDescription">Retrouve tes découvertes, suis ton visionnage et garde tes coups de cœur à portée de main.</p><button class="btn primary" id="addHero">🔎 Chercher un anime à ajouter</button></div></div><div class="hero-side"><div class="stat"><b id="totalStat">0</b><span>Anime dans ma collection</span></div><div class="stat"><b id="watchedStat">0</b><span>Terminés / vus</span></div><div class="stat"><b id="watchingStat">0</b><span>En cours</span></div><div class="stat"><b id="avgStat">—</b><span>Note moyenne / 10</span></div></div></section><section class="home-rail" id="resumeSection" style="display:none"><div class="home-rail-head"><div><div class="eyebrow">REPRENDRE</div><h3>Ton visionnage en cours</h3></div><span class="count" id="resumeCount"></span></div><div class="media-rail" id="resumeRail"></div></section><section id="cvContinueHome" class="cv-home-continue hidden" aria-label="Continuer à regarder"><div class="cv-home-head"><div><div class="eyebrow">CINÉVERSE</div><h3>Continuer à regarder</h3></div><button class="btn" type="button" data-cv-open="catalog">Tout voir</button></div><div class="cv-home-rail" id="cvContinueRail"></div></section>
 <section class="toolbar">
     
     <select class="field" id="genreFilter"><option value="">Tous les genres</option></select>
@@ -876,7 +878,8 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 </section>
 
 <section id="calendarView" class="hidden"><div class="av-calendar-shell"><div class="av-calendar-head"><div><div class="eyebrow">Animeverse · À suivre</div><h2>Calendrier des sorties</h2><p class="meta">Les prochains épisodes de ta collection.</p></div><div class="av-calendar-countdown"><small>Épisode le plus proche</small><strong id="avCountdownText">Chargement…</strong></div></div><div id="avCalendarContent" aria-live="polite"></div></div></section>
-<section id="videosView" class="hidden">
+<section id="cineverseView" class="hidden" aria-label="CinéVerse"><div id="cvApp" class="cv-shell"><div class="cv-loading">Chargement de CinéVerse…</div></div></section>
+  <section id="videosView" class="hidden">
     <div class="chat-shell videos-shell">
       <div class="chat-title">
         <div><div class="eyebrow">Animeverse Studio</div><h2>▶️ Le coin vidéos</h2><p>Partage tes vidéos préférées, tes AMV, tes analyses et tes découvertes avec la communauté.</p></div>
@@ -1177,6 +1180,8 @@ function showView(view){
   el('communityForumTab')?.classList.toggle('active',view==='forum');
   el('communityForumTab')?.setAttribute('aria-selected',String(view==='forum'));
   el('videosView').classList.toggle('hidden',view!=='videos');
+  el('cineverseView')?.classList.toggle('hidden',view!=='cineverse');
+  el('navCineVerse')?.classList.toggle('primary',view==='cineverse');
   el('calendarView')?.classList.toggle('hidden',view!=='calendar');
   el('navCalendar')?.classList.toggle('primary',view==='calendar');
   el('navLibrary').classList.toggle('primary',view==='library');
@@ -1184,6 +1189,7 @@ function showView(view){
   el('navVideos').classList.toggle('primary',view==='videos');
   if(view==='chat'&&currentUser)loadChat();
   if(view==='videos')loadVideos();
+  if(view==='cineverse')window.CineVerse?.onShow?.();
 }
 function updateAccount(){
   const avatar=currentUser?.user_metadata?.avatar_url;
@@ -1200,7 +1206,7 @@ function updateAccount(){
 el('navLibrary').addEventListener('click',()=>showView('library'));
 el('navCalendar').addEventListener('click',()=>showView('calendar'));
 el('navChat').addEventListener('click',()=>showView('chat'));
-document.addEventListener('animeverse:show-view',event=>{if(['chat','forum'].includes(event.detail))showView(event.detail)});
+document.addEventListener('animeverse:show-view',event=>{if(['chat','forum','cineverse'].includes(event.detail))showView(event.detail)});
 el('authOpen').addEventListener('click',()=>{
  if(currentUser){
    el('profileUsername').value=currentUser.user_metadata?.username||currentUser.user_metadata?.pseudo||(currentUser.email||'').split('@')[0]||'';
@@ -1540,7 +1546,8 @@ async function loadVideos(){
   el('videoNotice').textContent=currentUser?'Tu peux publier un lien vidéo. Les publications sont partagées avec la communauté.':'Connecte-toi pour publier une vidéo.';
  }catch(err){console.error('Video listing failed:',err);el('videoNotice').textContent='Impossible de charger les vidéos, réessaie dans un instant.'}
 }
-const menuToggle=el('menuToggle'),menuActions=el('headActions');function closeAnimeverseMenu(){document.body.classList.remove('nav-open');menuToggle?.setAttribute('aria-expanded','false')}menuToggle?.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');menuToggle.setAttribute('aria-expanded',String(open))});menuActions?.addEventListener('click',e=>{if(e.target.closest('button'))closeAnimeverseMenu()});document.addEventListener('click',e=>{if(document.body.classList.contains('nav-open')&&!e.target.closest('.top'))closeAnimeverseMenu()});el('navVideos').addEventListener('click',()=>showView('videos'));
+const menuToggle=el('menuToggle'),menuActions=el('headActions');function closeAnimeverseMenu(){document.body.classList.remove('nav-open');menuToggle?.setAttribute('aria-expanded','false')}menuToggle?.addEventListener('click',()=>{const open=document.body.classList.toggle('nav-open');menuToggle.setAttribute('aria-expanded',String(open))});menuActions?.addEventListener('click',e=>{if(e.target.closest('button'))closeAnimeverseMenu()});document.addEventListener('click',e=>{if(document.body.classList.contains('nav-open')&&!e.target.closest('.top'))closeAnimeverseMenu()});el('navCineVerse')?.addEventListener('click',()=>showView('cineverse'));
+el('navVideos').addEventListener('click',()=>showView('videos'));
 el('videoRefresh').addEventListener('click',loadVideos);
 el('videoForm').addEventListener('submit',async e=>{
  e.preventDefault();
@@ -1880,5 +1887,8 @@ const modal=$('#modal');if(modal)new MutationObserver(()=>{if(modal.classList.co
 form.addEventListener('reset',()=>setTimeout(()=>{hidden.value='';syncDecorations()},0));
 })();
 </script>
-  <script src="/js/chat-admin-panel.js?v=1" defer></script>\n  <script src="/js/forum.js?v=1" defer></script>\n</body>
+  <script src="/js/chat-admin-panel.js?v=1" defer></script>
+  <script src="/js/forum.js?v=1" defer></script>
+  <script src="/js/cineverse.js?v=1" defer></script>
+</body>
 </html>
