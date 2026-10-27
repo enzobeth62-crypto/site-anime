@@ -183,7 +183,7 @@
       }
       seasons.forEach((season, index) => {
         const name = safeText(season.Saison || season.season || season.title || ("Saison " + (index + 1)));
-        const value = safeText(season.season_key || season.slug || (season.url ? season.url.replace(/\\/+$/, "").split("/").pop() : "") || ("saison" + (index + 1))).toLowerCase().replace(/\\s+/g, "");
+        const value = safeText(season.season_key || season.slug || (season.url ? season.url.replace(/\/+$/, "").split("/").pop() : "") || ("saison" + (index + 1))).toLowerCase().replace(/\s+/g, "");
         seasonSelect.add(new Option(name, value));
       });
       seasonSelect.disabled = false;
