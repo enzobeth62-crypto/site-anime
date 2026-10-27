@@ -17,7 +17,7 @@ returns integer
 language plpgsql
 security definer
 set search_path = ''
-as $$
+as $20261025140000_add_assistant_usage_quota_01$
 declare
   v_user uuid := auth.uid();
   v_day date := (now() at time zone 'utc')::date;
@@ -37,6 +37,6 @@ begin
   end if;
   return v_count;
 end;
-$$;
+$20261025140000_add_assistant_usage_quota_01$;
 revoke all on function public.consume_assistant_message() from public, anon;
 grant execute on function public.consume_assistant_message() to authenticated;
