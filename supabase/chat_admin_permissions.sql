@@ -13,14 +13,14 @@ alter table public.chat_moderators
   add column if not exists appointed_by uuid,
   add column if not exists appointed_at timestamptz not null default now();
 
-do $$ begin
+do $chat_admin_permissions_01$ begin
   if not exists (select 1 from pg_constraint where conrelid='public.chat_moderators'::regclass and conname='chat_moderators_role_check') then
     alter table public.chat_moderators add constraint chat_moderators_role_check check (role in ('moderator'));
   end if;
   if not exists (select 1 from pg_constraint where conrelid='public.chat_moderators'::regclass and conname='chat_moderators_max_ban_check') then
     alter table public.chat_moderators add constraint chat_moderators_max_ban_check check (max_ban_minutes between 0 and 43200);
   end if;
-end $$;
+end $chat_admin_permissions_01$;
 
 create table if not exists public.chat_warnings (
   id uuid primary key default gen_random_uuid(),
@@ -77,36 +77,36 @@ on conflict (user_id) do update set
 
 create or replace function private.chat_is_super_admin(p_uid uuid default auth.uid())
 returns boolean language sql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_02$
   select p_uid is not null and exists(
     select 1 from auth.users u
     where u.id=p_uid and lower(u.email)='bhadenzo28@gmail.com'
       and u.email_confirmed_at is not null
   );
-$$;
+$chat_admin_permissions_02$;
 create or replace function private.chat_has_permission(p_permission text, p_uid uuid default auth.uid())
 returns boolean language sql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_03$
  select coalesce(private.chat_is_super_admin(p_uid),false) or exists(
    select 1 from public.chat_moderators m
    where m.user_id=p_uid and m.role='moderator'
      and coalesce((m.permissions->>p_permission)::boolean,false)
  );
-$$;
+$chat_admin_permissions_03$;
 create or replace function private.chat_can_moderate(p_permission text, p_target uuid default null)
 returns boolean language sql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_04$
  select auth.uid() is not null
    and (p_target is null or not private.chat_is_super_admin(p_target))
    and (private.chat_is_super_admin(auth.uid()) or p_target is null or p_target=auth.uid() or not exists(select 1 from public.chat_moderators m where m.user_id=p_target))
    and private.chat_has_permission(p_permission,auth.uid());
-$$;
+$chat_admin_permissions_04$;
 create or replace function private.chat_cannot_send(p_uid uuid default auth.uid())
 returns boolean language sql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_05$
  select exists(select 1 from public.chat_bans b where b.user_id=p_uid and (b.expires_at is null or b.expires_at>now()))
     or exists(select 1 from public.chat_mutes m where m.user_id=p_uid and m.expires_at>now());
-$$;
+$chat_admin_permissions_05$;
 grant usage on schema private to authenticated;
 grant execute on function private.chat_is_super_admin(uuid), private.chat_has_permission(text,uuid), private.chat_can_moderate(text,uuid), private.chat_cannot_send(uuid) to authenticated;
 
@@ -125,7 +125,7 @@ create trigger animeverse_video_post_audit after insert on public.video_posts fo
 -- Role/permission data safe for the signed-in caller.
 create or replace function public.chat_my_permissions()
 returns jsonb language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_06$
 declare v_uid uuid:=auth.uid(); v_row public.chat_moderators%rowtype;
 begin
  if v_uid is null then raise exception 'Authentication required' using errcode='42501'; end if;
@@ -135,13 +135,13 @@ begin
  select * into v_row from public.chat_moderators where user_id=v_uid and role='moderator';
  if not found then return jsonb_build_object('role','member','permissions','{}'::jsonb,'max_ban_minutes',0,'can_permanent_ban',false); end if;
  return jsonb_build_object('role','moderator','permissions',v_row.permissions,'max_ban_minutes',v_row.max_ban_minutes,'can_permanent_ban',v_row.can_permanent_ban);
-end $$;
+end $chat_admin_permissions_06$;
 
 create or replace function public.chat_role_badges(p_users uuid[]) returns table(user_id uuid,role text) language sql stable security definer set search_path='' as $role$ select u.id,case when private.chat_is_super_admin(u.id) then 'super_admin' when m.user_id is not null then 'moderator' else 'member' end from auth.users u left join public.chat_moderators m on m.user_id=u.id where u.id=any(coalesce(p_users,'{}'::uuid[])); $role$;
 create or replace function public.chat_admin_search_users(p_query text)
 returns table(user_id uuid, display_name text, email text, created_at timestamptz, role text)
 language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_07$
 begin
  if not private.chat_is_super_admin(auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  if char_length(trim(coalesce(p_query,'')))<2 then return; end if;
@@ -151,22 +151,22 @@ begin
  from auth.users u left join public.chat_moderators m on m.user_id=u.id
  where (u.email ilike '%'||trim(p_query)||'%' or coalesce(u.raw_user_meta_data->>'display_name',u.raw_user_meta_data->>'name','') ilike '%'||trim(p_query)||'%')
  order by u.created_at desc limit 20;
-end $$;
+end $chat_admin_permissions_07$;
 
 create or replace function public.chat_admin_list_moderators()
 returns table(user_id uuid, display_name text, email text, appointed_at timestamptz, permissions jsonb, max_ban_minutes integer, can_permanent_ban boolean)
 language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_08$
 begin
  if not private.chat_is_super_admin(auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  return query select m.user_id,coalesce(u.raw_user_meta_data->>'display_name',u.raw_user_meta_data->>'name','Membre'),u.email,m.appointed_at,m.permissions,m.max_ban_minutes,m.can_permanent_ban
  from public.chat_moderators m join auth.users u on u.id=m.user_id
  where not private.chat_is_super_admin(m.user_id) order by m.appointed_at desc;
-end $$;
+end $chat_admin_permissions_08$;
 
 create or replace function public.chat_admin_set_moderator(p_email text,p_is_moderator boolean,p_permissions jsonb default '{}'::jsonb,p_max_ban_minutes integer default 10080,p_can_permanent_ban boolean default false)
 returns void language plpgsql security definer set search_path=''
-as $$
+as $chat_admin_permissions_09$
 declare v_target uuid; v_actor uuid:=auth.uid(); v_caps constant text[]:=array['delete_messages','warn','mute','ban','view_history','manage_forum','view_logs','publish_video','manage_reports'];
 begin
  if not private.chat_is_super_admin(v_actor) then raise exception 'Forbidden' using errcode='42501'; end if;
@@ -184,11 +184,11 @@ begin
    delete from public.chat_moderators where user_id=v_target and not private.chat_is_super_admin(user_id);
    insert into public.chat_moderation_logs(action,actor_user_id,target_user_id,details) values('remove_moderator',v_actor,v_target,'{}'::jsonb);
  end if;
-end $$;
+end $chat_admin_permissions_09$;
 
 create or replace function public.chat_admin_user_panel(p_target uuid)
 returns jsonb language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_10$
 declare u auth.users%rowtype; v_role text;
 begin
  if not private.chat_has_permission('view_history',auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
@@ -203,33 +203,33 @@ begin
  'message_count',(select count(*) from public.chat_messages where user_id=p_target),
  'warning_count',(select count(*) from public.chat_warnings where user_id=p_target),
  'ban_count',(select count(*) from public.chat_moderation_logs where target_user_id=p_target and action in ('ban_user','update_ban')));
-end $$;
+end $chat_admin_permissions_10$;
 
 create or replace function public.chat_admin_user_messages(p_target uuid,p_query text default null)
 returns table(id bigint,content text,created_at timestamptz,display_name text,reply_to_id bigint)
 language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_11$
 begin
  if not private.chat_has_permission('view_history',auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  return query select m.id,m.content,m.created_at,m.display_name,m.reply_to_id from public.chat_messages m
  where m.user_id=p_target and (nullif(trim(p_query),'') is null or m.content ilike '%'||p_query||'%')
  order by m.created_at desc limit 200;
-end $$;
+end $chat_admin_permissions_11$;
 
 create or replace function public.chat_admin_user_sanctions(p_target uuid)
 returns table(action text,reason text,duration text,created_at timestamptz,actor_user_id uuid)
 language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_12$
 begin
  if not private.chat_has_permission('view_history',auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  return query
  select l.action,coalesce(l.details->>'reason',''),coalesce(l.details->>'duration',''),l.created_at,l.actor_user_id
  from public.chat_moderation_logs l where l.target_user_id=p_target order by l.created_at desc limit 200;
-end $$;
+end $chat_admin_permissions_12$;
 
 create or replace function public.chat_moderation_action(p_action text,p_target uuid,p_reason text default '',p_duration text default null,p_message_id bigint default null)
 returns jsonb language plpgsql security definer set search_path=''
-as $$
+as $chat_admin_permissions_13$
 declare v_actor uuid:=auth.uid(); v_expiry timestamptz; v_permission text;
 begin
  if v_actor is null then raise exception 'Authentication required' using errcode='42501'; end if;
@@ -277,11 +277,11 @@ begin
    insert into public.chat_moderation_logs(action,actor_user_id,target_user_id,details) values('unmute_user',v_actor,p_target,jsonb_build_object('reason',trim(p_reason)));
  end if;
  return jsonb_build_object('ok',true,'action',p_action,'warning_count',(select count(*) from public.chat_warnings where user_id=p_target),'warning_threshold',(select warning_threshold from public.chat_moderation_settings where singleton=true));
-end $$;
+end $chat_admin_permissions_13$;
 
 create or replace function public.chat_report_message(p_message_id bigint,p_reason text)
 returns void language plpgsql security definer set search_path=''
-as $$
+as $chat_admin_permissions_14$
 declare v_target uuid;
 begin
  if auth.uid() is null then raise exception 'Authentication required' using errcode='42501'; end if;
@@ -290,7 +290,7 @@ begin
  if char_length(trim(coalesce(p_reason,'')))<2 or char_length(p_reason)>1000 then raise exception 'Motif invalide'; end if;
  insert into public.chat_reports(message_id,reporter_id,target_user_id,reason) values(p_message_id,auth.uid(),v_target,trim(p_reason));
  insert into public.chat_moderation_logs(action,actor_user_id,target_user_id,message_id,details) values('report_message',auth.uid(),v_target,p_message_id,jsonb_build_object('reason',trim(p_reason)));
-end $$;
+end $chat_admin_permissions_14$;
 
 create or replace function public.chat_admin_resolve_report(p_report_id uuid,p_status text)
 returns void language plpgsql security definer set search_path=''
@@ -308,41 +308,41 @@ $resolve$;
 
 create or replace function public.chat_mark_warnings_seen()
 returns integer language plpgsql security definer set search_path=''
-as $$
+as $chat_admin_permissions_15$
 declare n integer;
 begin
  if auth.uid() is null then raise exception 'Authentication required' using errcode='42501'; end if;
  update public.chat_warnings set seen=true where user_id=auth.uid() and not seen;
  get diagnostics n=row_count; return n;
-end $$;
+end $chat_admin_permissions_15$;
 
 create or replace function public.chat_get_warning_threshold() returns integer language plpgsql stable security definer set search_path='' as $threshold$ begin if auth.uid() is null then raise exception 'Authentication required' using errcode='42501'; end if; return (select warning_threshold from public.chat_moderation_settings where singleton=true); end $threshold$;
 create or replace function public.chat_admin_update_settings(p_warning_threshold integer)
 returns void language plpgsql security definer set search_path=''
-as $$
+as $chat_admin_permissions_16$
 begin
  if not private.chat_is_super_admin(auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  if p_warning_threshold not between 1 and 20 then raise exception 'Seuil invalide'; end if;
  update public.chat_moderation_settings set warning_threshold=p_warning_threshold,updated_at=now() where singleton=true;
  insert into public.chat_moderation_logs(action,actor_user_id,details) values('update_settings',auth.uid(),jsonb_build_object('warning_threshold',p_warning_threshold));
-end $$;
+end $chat_admin_permissions_16$;
 
 create or replace function public.chat_admin_get_settings()
 returns jsonb language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_17$
 begin
  if not private.chat_is_super_admin(auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  return (select jsonb_build_object('warning_threshold',warning_threshold) from public.chat_moderation_settings where singleton=true);
-end $$;
+end $chat_admin_permissions_17$;
 
 create or replace function public.chat_admin_list_reports()
 returns table(id uuid,message_id bigint,target_user_id uuid,reason text,created_at timestamptz,status text)
 language plpgsql stable security definer set search_path=''
-as $$
+as $chat_admin_permissions_18$
 begin
  if not private.chat_has_permission('manage_reports',auth.uid()) then raise exception 'Forbidden' using errcode='42501'; end if;
  return query select r.id,r.message_id,r.target_user_id,r.reason,r.created_at,r.status from public.chat_reports r where r.status='open' order by r.created_at desc limit 100;
-end $$;
+end $chat_admin_permissions_18$;
 
 -- RLS: no direct write path for moderator records or restrictions; all changes go through checked RPCs.
 alter table public.chat_moderators enable row level security;
@@ -406,13 +406,13 @@ drop policy if exists chat_messages_delete_moderator on public.chat_messages;
 create policy chat_messages_delete_moderator on public.chat_messages for delete to authenticated using(private.chat_can_moderate('delete_messages',user_id));
 
 -- Remove any permissive legacy moderator write policies (policy OR semantics would otherwise bypass the new gates).
-do $$ declare p record; begin
+do $chat_admin_permissions_19$ declare p record; begin
  for p in select policyname from pg_policies where schemaname='public' and tablename='chat_messages' and cmd in ('INSERT','DELETE') loop
    if p.policyname not in ('chat_messages_insert_own','chat_messages_delete_moderator') then
      execute format('drop policy if exists %I on public.chat_messages',p.policyname);
    end if;
  end loop;
-end $$;
+end $chat_admin_permissions_19$;
 
 drop policy if exists chat_reactions_select_authenticated on public.chat_reactions;
 create policy chat_reactions_select_authenticated on public.chat_reactions for select to authenticated using(true);
@@ -451,4 +451,5 @@ grant select on public.chat_moderators, public.chat_warnings, public.chat_mutes,
  public.chat_moderation_settings, public.chat_bans, public.chat_moderation_logs to authenticated;
 grant update(seen) on public.chat_warnings to authenticated;
 
+notify pgrst, 'reload schema';
 commit;
