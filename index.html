@@ -1225,8 +1225,10 @@ async function syncCollection(){
   const current=window.__animeverse.anime;if(JSON.stringify(merged)!==JSON.stringify(current))window.__animeverse.anime=merged;else persistedAnimeSnapshot=JSON.parse(JSON.stringify(merged));
   if(localOnly.length)await saveCollectionCloud(localOnly,[]);
   // Move legacy title/AniList keys to the stable local id key, then remove the old row.
-  const toMigrate=rows.filter(r=>r.anime_data&&r.anime_key!==keyForAnime({...r.anime_data,id:r.anime_data.id||'cloud-'+String(r.anime_key||'').replace(/[^a-z0-9_-]/gi,'-')}));
-  for(const row of toMigrate){const stable={...row.anime_data,id:row.anime_data.id||'cloud-'+String(row.anime_key||'').replace(/[^a-z0-9_-]/gi,'-'),updatedAt:row.updated_at||row.anime_data.updatedAt||new Date().toISOString()};await retryCloud(()=>supabase.from('user_anime').upsert({user_id:userId,anime_key:keyForAnime(stable),anime_data:stable,updated_at:stable.updatedAt},{onConflict:'user_id,anime_key'}));await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key',row.anime_key))}
+  const matchedLocal=row=>!row.anime_data.id?window.__animeverse.anime.find(a=>(row.anime_data.anilistId&&String(a.anilistId)===String(row.anime_data.anilistId))||String(a.title||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('fr')===String(row.anime_data.title||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('fr')):null;
+  const migratedData=row=>({...row.anime_data,id:row.anime_data.id||matchedLocal(row)?.id||'cloud-'+String(row.anime_key||'').replace(/[^a-z0-9_-]/gi,'-')});
+  const toMigrate=rows.filter(r=>r.anime_data&&r.anime_key!==keyForAnime(migratedData(r)));
+  for(const row of toMigrate){const stable={...migratedData(row),updatedAt:row.updated_at||row.anime_data.updatedAt||new Date().toISOString()};await retryCloud(()=>supabase.from('user_anime').upsert({user_id:userId,anime_key:keyForAnime(stable),anime_data:stable,updated_at:stable.updatedAt},{onConflict:'user_id,anime_key'}));await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key',row.anime_key))}
   if(!rows.length&&local.length)await saveCollectionCloud(local,[]);
  }catch(err){console.warn('Sync collection:',err);window.__animeverseToast?.('Synchronisation impossible pour le moment.')}
 }
