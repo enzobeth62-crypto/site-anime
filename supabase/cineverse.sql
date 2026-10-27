@@ -10,7 +10,7 @@ create or replace function private.cineverse_is_admin()
 returns boolean
 language sql stable security definer
 set search_path=''
-as $$
+as $cineverse_01$
   select exists (
     select 1
     from auth.users u
@@ -18,7 +18,7 @@ as $$
       and lower(u.email) = 'bhadenzo28@gmail.com'
       and u.email_confirmed_at is not null
   );
-$$;
+$cineverse_01$;
 revoke all on function private.cineverse_is_admin() from public,anon;
 grant execute on function private.cineverse_is_admin() to authenticated;
 
@@ -26,7 +26,7 @@ create or replace function public.cineverse_is_admin()
 returns boolean
 language sql stable security definer
 set search_path=''
-as $$ select auth.uid() is not null and private.cineverse_is_admin(); $$;
+as $cineverse_02$ select auth.uid() is not null and private.cineverse_is_admin(); $cineverse_02$;
 revoke all on function public.cineverse_is_admin() from public;
 grant execute on function public.cineverse_is_admin() to anon,authenticated;
 
@@ -124,7 +124,7 @@ create index if not exists cineverse_reports_open_idx on public.cineverse_report
 
 create or replace function private.cineverse_touch_updated_at()
 returns trigger language plpgsql set search_path=''
-as $$ begin new.updated_at=now(); return new; end; $$;
+as $cineverse_03$ begin new.updated_at=now(); return new; end; $cineverse_03$;
 drop trigger if exists cineverse_animes_touch on public.cineverse_animes;
 create trigger cineverse_animes_touch before update on public.cineverse_animes for each row execute function private.cineverse_touch_updated_at();
 drop trigger if exists cineverse_seasons_touch on public.cineverse_seasons;
@@ -222,7 +222,7 @@ grant select,insert,update on public.cineverse_reports to authenticated;
 
 create or replace function private.cineverse_log_comment_moderation()
 returns trigger language plpgsql security definer set search_path=''
-as $
+as $cineverse_comment_moderation$
 begin
  if old.deleted_at is null and new.deleted_at is not null and old.user_id is distinct from (select auth.uid()) then
    if not public.cineverse_is_admin() then
@@ -233,7 +233,7 @@ begin
      jsonb_build_object('source','cineverse','comment_id',old.id,'episode_id',old.episode_id,'reason','comment_moderation'));
  end if;
  return new;
-end $;
+end $cineverse_comment_moderation$;
 drop trigger if exists cineverse_comments_moderation_log on public.cineverse_comments;
 create trigger cineverse_comments_moderation_log
 after update of deleted_at on public.cineverse_comments
