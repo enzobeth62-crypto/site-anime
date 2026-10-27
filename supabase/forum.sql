@@ -2,14 +2,14 @@
 -- Run supabase/chat_admin_permissions.sql first: forum moderation reuses its chat role permissions and safe chat_moderation_action RPC.
 begin;
 
-do $$ begin
+do $forum_01$ begin
   if to_regprocedure('private.chat_cannot_send(uuid)') is null
      or to_regprocedure('private.chat_has_permission(text,uuid)') is null
      or to_regprocedure('private.chat_can_moderate(text,uuid)') is null
      or to_regprocedure('public.chat_moderation_action(text,uuid,text,text,bigint)') is null then
     raise exception 'Run chat_admin_permissions.sql before forum.sql';
   end if;
-end $$;
+end $forum_01$;
 
 create table if not exists public.forum_categories (
   id uuid primary key default gen_random_uuid(),
@@ -64,11 +64,11 @@ create table if not exists public.forum_posts (
 );
 create index if not exists forum_posts_thread_created_idx on public.forum_posts(thread_id,created_at);
 create index if not exists forum_posts_author_created_idx on public.forum_posts(author_id,created_at desc);
-do $$ begin
+do $forum_02$ begin
  if not exists(select 1 from pg_constraint where conname='forum_threads_last_post_id_fkey' and conrelid='public.forum_threads'::regclass) then
    alter table public.forum_threads add constraint forum_threads_last_post_id_fkey foreign key(last_post_id) references public.forum_posts(id) on delete set null;
  end if;
-end $$;
+end $forum_02$;
 
 create table if not exists public.forum_likes (
   id uuid primary key default gen_random_uuid(),
@@ -97,7 +97,7 @@ create index if not exists forum_notifications_user_created_idx on public.forum_
 
 create or replace function private.forum_valid_attachments(p_attachments jsonb,p_uid uuid)
 returns boolean language plpgsql immutable security definer set search_path=''
-as $$
+as $forum_03$
 declare item jsonb; v_type text; v_path text; v_url text;
 begin
  if jsonb_typeof(p_attachments)<>'array' or jsonb_array_length(p_attachments)>4 then return false; end if;
@@ -116,11 +116,11 @@ begin
  end loop;
  return true;
 exception when others then return false;
-end $$;
+end $forum_03$;
 
 create or replace function private.forum_touch_thread()
 returns trigger language plpgsql security definer set search_path=''
-as $$
+as $forum_04$
 declare v_thread public.forum_threads%rowtype; v_quote_author uuid;
 begin
  update public.forum_threads set last_post_id=new.id,last_post_at=new.created_at,updated_at=now()
@@ -137,13 +137,13 @@ begin
    end if;
  end if;
  return new;
-end $$;
+end $forum_04$;
 drop trigger if exists forum_post_insert_touch_thread on public.forum_posts;
 create trigger forum_post_insert_touch_thread after insert on public.forum_posts for each row execute function private.forum_touch_thread();
 
 create or replace function private.forum_touch_updated_at()
 returns trigger language plpgsql set search_path=''
-as $$ begin new.updated_at=now(); if tg_table_name='forum_posts' then if old.content is distinct from new.content then new.edited_at=now(); end if; end if; return new; end $$;
+as $forum_05$ begin new.updated_at=now(); if tg_table_name='forum_posts' then if old.content is distinct from new.content then new.edited_at=now(); end if; end if; return new; end $forum_05$;
 drop trigger if exists forum_threads_updated_at on public.forum_threads;
 create trigger forum_threads_updated_at before update on public.forum_threads for each row execute function private.forum_touch_updated_at();
 drop trigger if exists forum_posts_updated_at on public.forum_posts;
@@ -200,18 +200,18 @@ end $moderate_post$;
 
 create or replace function public.forum_increment_view(p_thread_id uuid)
 returns integer language plpgsql security definer set search_path=''
-as $$
+as $forum_06$
 declare v_views integer;
 begin
  if auth.uid() is null then raise exception 'Authentication required' using errcode='42501'; end if;
  update public.forum_threads set views=views+1 where id=p_thread_id and deleted_at is null returning views into v_views;
  if v_views is null then raise exception 'Sujet introuvable'; end if;
  return v_views;
-end $$;
+end $forum_06$;
 
 create or replace function public.forum_moderate_thread(p_thread_id uuid,p_action text,p_category_id uuid default null)
 returns void language plpgsql security definer set search_path=''
-as $$
+as $forum_07$
 declare v_author uuid; v_title text; v_log_action text;
 begin
  if auth.uid() is null then raise exception 'Authentication required' using errcode='42501'; end if;
@@ -228,7 +228,7 @@ begin
  end if;
  insert into public.chat_moderation_logs(action,actor_user_id,target_user_id,details)
  values(v_log_action,auth.uid(),v_author,jsonb_build_object('thread_id',p_thread_id,'title',v_title,'category_id',p_category_id));
-end $$;
+end $forum_07$;
 
 alter table public.forum_categories enable row level security;
 alter table public.forum_threads enable row level security;
@@ -321,10 +321,10 @@ drop policy if exists forum_images_delete_own on storage.objects;
 create policy forum_images_delete_own on storage.objects for delete to authenticated using(bucket_id='forum-images' and (storage.foldername(name))[1]=auth.uid()::text);
 
 -- Turn on Supabase Realtime for replies in an open topic.
-do $$ begin
+do $forum_08$ begin
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='forum_posts') then
    alter publication supabase_realtime add table public.forum_posts;
  end if;
-end $$;
+end $forum_08$;
 
 commit;
