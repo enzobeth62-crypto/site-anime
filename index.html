@@ -727,10 +727,41 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1414388033289162"
      crossorigin="anonymous"></script>
 <style id="animeverse-chat-background-fix">.chat-messages{background:rgba(8,10,18,.96)!important}</style>
+<style id="animeverse-search-polish">
+.chat-messages{background:rgba(8,10,18,.96)!important}
+.top-search{position:relative;display:flex;align-items:center;gap:10px;min-height:48px;height:48px;width:min(560px,100%);max-width:560px;padding:0 8px 0 14px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(14,16,28,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#8b93ad;transition:box-shadow .15s,border-color .15s,background .15s}
+.top-search:focus-within{border-color:transparent;box-shadow:0 0 0 1px rgba(173,140,255,.85),0 0 0 2px rgba(114,229,245,.82),0 0 18px rgba(114,229,245,.16);background:rgba(14,16,28,.94)}
+.top-search-icon{width:20px;height:20px;flex:0 0 20px;color:#72cbdc;opacity:.82}
+.top-search #search,.top-search #search:focus{width:100%;min-width:0;height:100%;min-height:46px;padding:0;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;color:#f4f4fb;font-size:16px}
+.top-search #search::placeholder{color:#8b93ad;opacity:1}
+.top-search #search::-webkit-search-cancel-button{display:none}
+.top-search-clear,.top-search-shortcut{flex:0 0 36px;width:36px;height:36px;border:0;border-radius:11px;background:transparent;color:#a9b2ca;display:grid;place-items:center}
+.top-search-clear svg{width:17px;height:17px}.top-search-clear[hidden],.top-search-shortcut[hidden]{display:none}
+.top-search-clear:hover{background:rgba(255,255,255,.08);color:#fff}
+.top-search-shortcut{font:600 13px/1 "DM Sans",sans-serif;border:1px solid rgba(255,255,255,.12);height:25px;width:25px;flex-basis:25px;border-radius:7px}
+.top-search-dropdown{position:absolute;z-index:90;top:calc(100% + 9px);left:0;right:0;max-height:min(65vh,520px);overflow:auto;padding:8px;border:1px solid rgba(255,255,255,.11);border-radius:20px;background:rgba(11,13,23,.97);box-shadow:0 18px 50px rgba(3,4,12,.68),0 0 34px rgba(114,229,245,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#f4f4fb}
+.top-search-dropdown[hidden]{display:none}
+.av-search-option{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:11px;min-height:72px;padding:8px;border-radius:13px}
+.av-search-option[aria-selected="true"],.av-search-option:hover{background:rgba(173,140,255,.11)}
+.av-search-poster{display:block;width:40px;height:56px;aspect-ratio:5/7;object-fit:cover;border-radius:8px;background:linear-gradient(145deg,#27213e,#151b28)}
+.av-search-copy{min-width:0;display:grid;gap:3px}
+.av-search-title{font:600 14px/1.3 "Sora",sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-search-meta{font-size:12px;color:#aab1c7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.av-search-source{font-size:10px;color:#72dbe9;letter-spacing:.04em}
+.av-search-fiche{min-width:54px;min-height:44px;padding:7px 9px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.04);color:#d9d2ff;font-size:12px}
+.av-search-fiche:hover,.av-search-fiche:focus-visible{border-color:#ad8cff;background:rgba(173,140,255,.14)}
+.av-search-state{padding:13px 12px;color:#aab1c7;font-size:13px}
+.av-search-skeleton{height:13px;margin:8px 0;border-radius:99px;background:linear-gradient(90deg,#202235,#38304e,#202235);background-size:200% 100%;animation:avSearchShimmer 1.2s linear infinite}
+.av-search-skeleton:nth-child(2){width:72%}.av-search-skeleton:nth-child(3){width:48%}
+@keyframes avSearchShimmer{to{background-position:-200% 0}}
+@media(min-width:900px){.top{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(250px,560px) minmax(0,1fr) auto;align-items:center}.top>.menu-toggle{grid-column:1}.top-search{grid-column:3;justify-self:center}.top>.brand{grid-column:4;justify-self:end}.top>.head-actions{grid-column:5}}
+@media(max-width:899px){.top-search{grid-column:1/-1;grid-row:2;max-width:none;width:100%;border-radius:16px}.top-search-dropdown{left:0;right:0}}
+@media(prefers-reduced-motion:reduce){.top-search,.top-search-dropdown,.av-search-option,.av-search-skeleton{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search"><span aria-hidden="true">⌕</span><input class="field" id="search" aria-label="Rechercher dans ta bibliothèque" placeholder="🔎 Recherche AniList + bibliothèque : Re:Zero, Naruto…"></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
+  <header class="top"><button class="menu-toggle" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button><label class="top-search" autocomplete="off" data-lpignore="true" data-1p-ignore="true"><svg class="top-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input class="field" type="search" name="anime-search" id="search" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search" inputmode="search" aria-label="Rechercher un anime" aria-controls="animeSearchDropdown" aria-expanded="false" placeholder="Rechercher un anime…"><button class="top-search-clear" type="button" aria-label="Effacer la recherche" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><kbd class="top-search-shortcut" aria-hidden="true">/</kbd><div class="top-search-dropdown" id="animeSearchDropdown" role="listbox" aria-label="Résultats de recherche" hidden></div></label><div class="brand"><div class="logo" aria-label="Animeverse"><svg viewBox="0 0 48 48" role="img" aria-label="Symbole Animeverse" focusable="false"><defs><linearGradient id="avMark" x1="8" y1="8" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#f8fbff"/><stop offset=".55" stop-color="#74eaff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><path d="M8.5 36 22.2 8.5 35.4 36M14.5 24.8h15.1" stroke="url(#avMark)" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><path d="M29.2 31.6c5.2-.7 8.7-5.1 9.7-11.3 1.1 4.2 2.7 7.1 5.4 8.6-3.4 1.1-5.7 3.7-6.6 7" stroke="#54e5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.5 7.5v5.8m-2.9-2.9h5.8" stroke="#f7a6ff" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h1>ANIMEVERSE</h1><small>Ta bibliothèque personnelle</small></div></div><div class="head-actions" id="headActions">
       <button class="btn" id="navLibrary">📚 Bibliothèque</button>
       <button class="btn" id="navChat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2v-6.5A7.5 7.5 0 0 1 10.5 7H12"/><path d="M15 3h6v6M21 3l-8 8"/></svg> Communauté</button>
       <button class="btn" id="navVideos">▶️ Vidéos</button><button class="btn" id="navCalendar" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg> Calendrier</button><button class="btn" id="installAppButton" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 17v3h14v-3"/></svg> Installer l’appli</button>
@@ -1509,7 +1540,7 @@ async function init(){
   supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   const {data}=await supabase.auth.getSession();currentUser=data.session?.user||null;authUserId=currentUser?.id||null;window.dispatchEvent(new Event('animeverse-assistant-auth'));
   supabase.auth.onAuthStateChange(async(_event,session)=>{const nextUser=session?.user||null,nextId=nextUser?.id||null;if(nextId===authUserId)return;authUserId=nextId;currentUser=nextUser;if(chatChannel){await supabase.removeChannel(chatChannel);chatChannel=null;chatChannelUserId=null}chatCache=[];pendingChatMessages.clear();isChatAdmin=false;adminCheckedForUserId=null;el('chatAdminPanel').classList.add('hidden');updateAccount();window.dispatchEvent(new Event('animeverse-assistant-auth'));if(currentUser){await syncCollection();if(!el('chatView').classList.contains('hidden'))await loadChat()}else{if(chatPollHandle){clearInterval(chatPollHandle);chatPollHandle=null}renderChat([])}});
-  updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}
+  updateAccount();await loadVideos();if(currentUser){await syncCollection();await loadChat()}else setChatNotice('Connecte-toi pour participer au chat.');
  }catch(err){console.error(err);el('chatNotice').textContent='Erreur d’initialisation du service de comptes. Vérifie l’URL et la clé publique Supabase.'}
 }
 init();
@@ -1711,5 +1742,73 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
   <script src="/js/dashboard-redesign.js?v=2" defer></script>
+<script id="animeverse-search-enhancement">
+(function(){
+'use strict';
+function boot(){
+ const input=document.getElementById('search'),wrap=input&&input.closest('.top-search'),popup=document.getElementById('animeSearchDropdown'),clear=wrap&&wrap.querySelector('.top-search-clear'),shortcut=wrap&&wrap.querySelector('.top-search-shortcut');
+ if(!input||!wrap||!popup||!clear)return;
+ const norm=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim();
+ let active=-1,renderTimer=0,emptyTimer=0;
+ function readResults(){
+  const query=norm(input.value),library=window.__animeverse&&window.__animeverse.anime||[],catalogue=window.__animeverseSearchResults||[],results=[],seen=new Set();
+  const add=(item,source)=>{
+   const title=source==='library'?(item.title||'Anime'):(item.title&& (item.title.english||item.title.romaji||item.title.native)||'Anime');
+   if(!query||!norm(title).includes(query))return;
+   const id=source==='library'?(item.anilistId||''):(item.id||''),key=id?'id:'+id:'title:'+norm(title);
+   if(seen.has(key))return;seen.add(key);
+   const cover=source==='library'?(item.poster||''):(item.coverImage&&(item.coverImage.extraLarge||item.coverImage.large||item.coverImage.medium)||'');
+   const year=source==='library'?(item.year||''):(item.seasonYear||(item.startDate&&item.startDate.year)||'');
+   results.push({title:title,id:String(id||''),cover:String(cover||''),year:String(year||''),format:String(item.format||'Anime'),source:source});
+  };
+  library.forEach(item=>add(item,'library'));catalogue.forEach(item=>add(item,'catalogue'));
+  return results.slice(0,6);
+ }
+ function updateControls(){const has=!!input.value;clear.hidden=!has;shortcut.hidden=has||matchMedia('(max-width:720px)').matches}
+ function state(text,skeleton){
+  popup.replaceChildren();const box=document.createElement('div');box.className='av-search-state';box.textContent=text;
+  if(skeleton){for(let i=0;i<3;i++){const line=document.createElement('div');line.className='av-search-skeleton';line.setAttribute('aria-hidden','true');box.append(line)}}
+  popup.append(box);popup.hidden=false;input.setAttribute('aria-expanded','true');active=-1;
+ }
+ function render(){
+  updateControls();if(!input.value.trim()){popup.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');return}
+  const results=readResults();
+  if(!results.length){state('Recherche en cours…',true);return}
+  popup.replaceChildren();
+  results.forEach((item,index)=>{
+   const option=document.createElement('div');option.className='av-search-option';option.id='av-search-option-'+index;option.setAttribute('role','option');option.setAttribute('aria-selected',String(index===active));option.dataset.index=String(index);
+   const img=document.createElement('img');img.className='av-search-poster';img.alt='';img.width=40;img.height=56;img.loading='lazy';img.decoding='async';
+   try{const u=new URL(item.cover);if(u.protocol==='https:')img.src=u.href}catch{}
+   const copy=document.createElement('span');copy.className='av-search-copy';const title=document.createElement('strong');title.className='av-search-title';title.textContent=item.title;const meta=document.createElement('span');meta.className='av-search-meta';meta.textContent=[item.year,item.format].filter(Boolean).join(' · ')||'Informations non renseignées';const source=document.createElement('span');source.className='av-search-source';source.textContent=item.source==='library'?'Dans ta bibliothèque':'Catalogue';copy.append(title,meta,source);
+   const fiche=document.createElement('button');fiche.type='button';fiche.className='av-search-fiche';fiche.textContent='Fiche';fiche.setAttribute('aria-label','Ouvrir la fiche de '+item.title);fiche.dataset.avFiche='1';fiche.dataset.avId=item.id;fiche.dataset.avTitle=item.title;
+   option.append(img,copy,fiche);popup.append(option);
+  });
+  popup.hidden=false;input.setAttribute('aria-expanded','true');if(active>=0)input.setAttribute('aria-activedescendant','av-search-option-'+active);else input.removeAttribute('aria-activedescendant');
+ }
+ function schedule(){
+  clearTimeout(renderTimer);clearTimeout(emptyTimer);active=-1;const query=norm(input.value);
+  renderTimer=setTimeout(render,250);
+  if(query.length>=2)emptyTimer=setTimeout(()=>{if(norm(input.value)===query&&!readResults().length)state('Aucun résultat. Essaie un autre titre.',false)},1800);
+  updateControls();
+ }
+ input.addEventListener('input',schedule);
+ clear.addEventListener('click',()=>{input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));input.focus()});
+ input.addEventListener('focus',()=>{if(input.value)render()});
+ document.addEventListener('click',event=>{if(!wrap.contains(event.target)){popup.hidden=true;input.setAttribute('aria-expanded','false')}});
+ input.addEventListener('keydown',event=>{
+  let options=[...popup.querySelectorAll('.av-search-option')];
+  if(event.key==='ArrowDown'&&options.length){event.preventDefault();active=(active+1)%options.length;options.forEach((node,index)=>node.setAttribute('aria-selected',String(index===active)));input.setAttribute('aria-activedescendant','av-search-option-'+active);options[active].scrollIntoView({block:'nearest'});return}
+  if(event.key==='ArrowUp'&&options.length){event.preventDefault();active=(active<=0?options.length:active)-1;options.forEach((node,index)=>node.setAttribute('aria-selected',String(index===active)));input.setAttribute('aria-activedescendant','av-search-option-'+active);options[active].scrollIntoView({block:'nearest'});return}
+  if(event.key==='Enter'&&options.length){event.preventDefault();event.stopImmediatePropagation();options[active<0?0:active].querySelector('.av-search-fiche').click();return}
+  if(event.key==='Escape'&&!popup.hidden){event.preventDefault();popup.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant')}
+ },{capture:true});
+ popup.addEventListener('mousemove',event=>{const option=event.target.closest('.av-search-option');if(!option)return;active=Number(option.dataset.index);popup.querySelectorAll('.av-search-option').forEach((node,index)=>node.setAttribute('aria-selected',String(index===active)));input.setAttribute('aria-activedescendant',option.id)});
+ const results=document.getElementById('catalogueResults');if(results)new MutationObserver(()=>{if(input.value&&!popup.hidden&&readResults().length)render()}).observe(results,{childList:true,subtree:true});
+ document.addEventListener('keydown',event=>{if(event.key==='/'&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement&&document.activeElement.tagName||'')&&!(document.activeElement&&document.activeElement.isContentEditable)){event.preventDefault();input.focus()}});
+ updateControls();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>
