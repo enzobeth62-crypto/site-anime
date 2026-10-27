@@ -102,7 +102,7 @@
     document.addEventListener("click", event => {
       if (event.target.closest("#navLibrary,#navChat,#navVideos,#navCalendar")) setTimeout(activeNav, 30);
     });
-    const views = ["#libraryView","#chatView","#videosView","#calendarView"].map($).filter(Boolean);
+    const views = ["#libraryView","#chatView","#videosView","#calendarView"].map(selector => $(selector)).filter(Boolean);
     if (views.length) new MutationObserver(activeNav).observe(wrap,{subtree:true,attributes:true,attributeFilter:["class"]});
     activeNav();
   }
