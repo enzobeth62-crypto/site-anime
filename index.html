@@ -916,10 +916,12 @@ body.fx-scrolled .top{backdrop-filter:blur(22px);background:#0b0c16b8;border-rad
 const KEY='animeverse-library-v1';
 const $=id=>document.getElementById(id);
 let anime=[];
+let persistedAnimeSnapshot=[];
+let pendingCloudSave=Promise.resolve(true);
 window.__animeverseCalendarEntries=()=>anime.filter(a=>['En cours','À voir'].includes(a.status||'À voir')&&a.anilistId).map(a=>({title:a.title,anilistId:a.anilistId,status:a.status,poster:a.poster}));
 const genresKnown=['Action','Aventure','Comédie','Drame','Fantasy','Isekai','Mystère','Psychologique','Romance','Science-fiction','Seinen','Shōjo','Shōnen','Slice of life','Sport','Surnaturel','Thriller','Horreur','Musique','École'];
-function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'[]');anime=Array.isArray(d)?d:[]}catch{anime=[]}}
-function save(){localStorage.setItem(KEY,JSON.stringify(anime));render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated'));if(window.__animeverseCloudSave)window.__animeverseCloudSave()}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'[]');anime=Array.isArray(d)?d:[]}catch{anime=[]}anime=anime.map(a=>({...a,id:a.id||uid(),updatedAt:a.updatedAt||a.createdAt||new Date().toISOString()}));persistedAnimeSnapshot=JSON.parse(JSON.stringify(anime));localStorage.setItem(KEY,JSON.stringify(anime))}
+function save(){const before=persistedAnimeSnapshot||[],after=anime.map(a=>({...a,id:a.id||uid()}));const beforeById=new Map(before.map(a=>[String(a.id),a]));const afterById=new Map(after.map(a=>[String(a.id),a]));const changed=after.filter(a=>!beforeById.has(String(a.id))||JSON.stringify({...a,updatedAt:''})!==JSON.stringify({...beforeById.get(String(a.id)),updatedAt:''}));const now=new Date().toISOString();changed.forEach(a=>a.updatedAt=now);anime=after;const deleted=before.filter(a=>!afterById.has(String(a.id)));persistedAnimeSnapshot=JSON.parse(JSON.stringify(after));localStorage.setItem(KEY,JSON.stringify(anime));render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated'));if(window.__animeverseCloudSave&&(changed.length||deleted.length)){const task=Promise.resolve(window.__animeverseCloudSave(changed,deleted));pendingCloudSave=task;task.catch(err=>console.error('Collection sync failed:',err))}return pendingCloudSave}
 function escapeHTML(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2400)}
 function statusClass(s){return {'Vu':'vu','En cours':'encours','À voir':'a-voir','Abandonné':'abandonne'}[s]||'a-voir'}
@@ -956,7 +958,7 @@ function render(){
  setTextIfChanged($('watchedStat'),anime.filter(a=>a.status==='Vu').length);
  setTextIfChanged($('watchingStat'),anime.filter(a=>a.status==='En cours').length);
  const ratings=anime.map(a=>Number(a.rating)).filter(n=>n>0);
- setTextIfChanged($('avgStat'),ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—');
+ setTextIfChanged($('avgStat'),ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'Pas encore noté');
  const q=$('search').value.trim().toLocaleLowerCase('fr'),g=$('genreFilter').value,s=$('statusFilter').value;
  const list=anime.filter(a=>(!q||[a.title,a.notes,a.year,...(a.genres||[])].join(' ').toLocaleLowerCase('fr').includes(q))&&(!g||(a.genres||[]).includes(g))&&(!s||a.status===s)).sort((a,b)=>a.title.localeCompare(b.title,'fr'));
  setTextIfChanged($('resultsCount'),`${list.length} anime`);
@@ -976,7 +978,7 @@ function render(){
 }
 function openModal(item=null){
  $('animeForm').reset();$('animeId').value=item?.id||'';
- $('modalTitle').textContent=item?'Modifier un anime':'Ajouter un anime';
+ $('modalTitle').textContent=item?'Modifier un anime':'Ajouter un anime';if($('anilistIdHidden'))$('anilistIdHidden').value=item?.anilistId||'';$('status').value='À voir';
  $('deleteBtn').classList.toggle('hidden',!item);
  if(item){$('title').value=item.title||'';$('status').value=item.status||'Vu';$('rating').value=item.rating||'';$('genres').value=(item.genres||[]).join(', ');$('seasons').value=item.seasons||'';$('episodes').value=item.episodes||'';$('year').value=item.year||'';$('poster').value=item.poster||'';$('notes').value=item.notes||''}
  $('modal').classList.add('open');setTimeout(()=>$('title').focus(),50)
@@ -990,12 +992,12 @@ $('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 $('animeForm').addEventListener('submit',e=>{
  e.preventDefault();const id=$('animeId').value||uid(),old=anime.find(a=>a.id===id);
- const item={id,title:$('title').value.trim(),status:$('status').value,rating:$('rating').value,genres:$('genres').value.split(',').map(x=>x.trim()).filter(Boolean),seasons:$('seasons').value,episodes:$('episodes').value.trim(),year:$('year').value,poster:$('poster').value.trim(),notes:$('notes').value.trim(),createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+ const item={id,anilistId:$('anilistIdHidden')?.value||old?.anilistId||'',title:$('title').value.trim(),status:$('status').value,rating:$('rating').value,genres:$('genres').value.split(',').map(x=>x.trim()).filter(Boolean),seasons:$('seasons').value,episodes:$('episodes').value.trim(),year:$('year').value,poster:$('poster').value.trim(),notes:$('notes').value.trim(),createdAt:old?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
  if(!item.title)return;
- const idx=anime.findIndex(a=>a.id===id);if(idx>=0)anime[idx]=item;else anime.push(item);
+ const idx=anime.findIndex(a=>a.id===id);item.id=id;item.updatedAt=new Date().toISOString();if(idx>=0)anime[idx]=item;else anime.push(item);
  save();closeModal();toast(idx>=0?'Anime modifié !':'Anime ajouté à ta collection !')
 });
-$('deleteBtn').onclick=()=>{const id=$('animeId').value;const item=anime.find(a=>a.id===id);if(item&&confirm(`Supprimer « ${item.title} » de ta collection ?`)){anime=anime.filter(a=>a.id!==id);save();closeModal();toast('Anime supprimé.')}};
+$('deleteBtn').onclick=()=>{const id=$('animeId').value;const item=anime.find(a=>a.id===id);if(item&&confirm(`Supprimer « ${item.title} » de ta collection ?`)){const original=anime;anime=anime.filter(a=>a.id!==id);const pending=save();closeModal();toast('Suppression…');Promise.resolve(pending).then(ok=>{if(ok===false)throw new Error('Suppression refusée');toast('Anime supprimé.')}).catch(err=>{anime=original;persistedAnimeSnapshot=JSON.parse(JSON.stringify(original));localStorage.setItem(KEY,JSON.stringify(anime));render();console.error('Suppression Supabase impossible:',err);toast('Suppression impossible. Vérifie ta connexion puis réessaie.')})}};
 $('collection').addEventListener('click',e=>{
  const edit=e.target.closest('[data-edit]'),st=e.target.closest('[data-status]');
  if(edit){openModal(anime.find(a=>a.id===edit.dataset.edit));return}
@@ -1094,7 +1096,7 @@ $('catalogueResults').addEventListener('click',e=>{
  anime.push(item);save();searchCatalogue(cataloguePage);toast('Anime ajouté avec son affiche !');
 });
 
-window.__animeverse={get anime(){return anime},set anime(v){const next=JSON.stringify(v);if(next===JSON.stringify(anime))return;anime=v;localStorage.setItem(KEY,next);render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated',{detail:{source:'sync'}}))},render,uid};
+window.__animeverse={get anime(){return anime},set anime(v){const next=JSON.stringify(v);if(next===JSON.stringify(anime))return;anime=(Array.isArray(v)?v:[]).map(a=>({...a,id:a.id||uid()}));persistedAnimeSnapshot=JSON.parse(JSON.stringify(anime));localStorage.setItem(KEY,JSON.stringify(anime));render();document.dispatchEvent(new CustomEvent('animeverse:collection-updated',{detail:{source:'sync'}}))},render,uid};
 load();render();
 })();
 </script>
@@ -1206,34 +1208,37 @@ el('authForm').addEventListener('submit',async e=>{
  }catch(err){authMessage(err.message||'Connexion impossible. Vérifie tes informations.')}
  finally{el('authSubmit').disabled=false}
 });
+let cloudWriteQueue=Promise.resolve();
+function keyForAnime(a){return a.id?'id:'+String(a.id):(a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title||'').toLocaleLowerCase('fr'))}
+async function retryCloud(fn){let error;for(let i=0;i<3;i++){const result=await fn();if(!result.error)return result;error=result.error;if(i<2)await new Promise(r=>setTimeout(r,250*(i+1)))}throw error}
 async function syncCollection(){
  if(!supabase||!currentUser)return;
  const userId=currentUser.id;
  try{
-  const {data,error}=await supabase.from('user_anime').select('anime_data').eq('user_id',userId);
-  if(error)throw error;
-  if(currentUser?.id!==userId)return;
-  const cloud=(data||[]).map(row=>row.anime_data).filter(Boolean);
-  if(cloud.length){
-   const local=window.__animeverse.anime;
-   const cloudIds=new Set(cloud.map(a=>a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
-   const localOnly=local.filter(a=>!cloudIds.has(a.anilistId?'ani:'+a.anilistId:'title:'+String(a.title).toLowerCase()));
-   const merged=[...cloud,...localOnly];
-   if(JSON.stringify(merged)!==JSON.stringify(local))window.__animeverse.anime=merged;
-  }else if(window.__animeverse.anime.length){
-   for(const a of window.__animeverse.anime)await supabase.from('user_anime').upsert({user_id:userId,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
-  }
- }catch(err){console.warn('Sync collection:',err);}
+  const {data,error}=await supabase.from('user_anime').select('anime_key,anime_data,updated_at').eq('user_id',userId);
+  if(error)throw error;if(currentUser?.id!==userId)return;
+  const local=window.__animeverse.anime.slice();const rows=(data||[]).filter(r=>r.anime_data);const byId=new Map();
+  for(const row of rows){const localMatch=!row.anime_data.id?local.find(a=>(row.anime_data.anilistId&&String(a.anilistId)===String(row.anime_data.anilistId))||String(a.title||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('fr')===String(row.anime_data.title||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('fr')):null;const value={...row.anime_data,id:row.anime_data.id||localMatch?.id||'cloud-'+String(row.anime_key||'').replace(/[^a-z0-9_-]/gi,'-'),updatedAt:row.updated_at||row.anime_data.updatedAt||row.anime_data.createdAt||''};const key=String(value.id);const prev=byId.get(key);if(!prev||String(value.updatedAt)>String(prev.updatedAt))byId.set(key,{value,keys:[row.anime_key]});else prev.keys.push(row.anime_key)}
+  const cloud=[...byId.values()].map(x=>x.value);const localMap=new Map(local.map(a=>[String(a.id),a]));const merged=[];
+  for(const c of cloud){const l=localMap.get(String(c.id));if(l&&String(l.updatedAt||'')>String(c.updatedAt||'')){merged.push(l);localMap.delete(String(l.id))}else{merged.push(c);localMap.delete(String(c.id))}}
+  const localOnly=[...localMap.values()];merged.push(...localOnly);
+  const current=window.__animeverse.anime;if(JSON.stringify(merged)!==JSON.stringify(current))window.__animeverse.anime=merged;else persistedAnimeSnapshot=JSON.parse(JSON.stringify(merged));
+  if(localOnly.length)await saveCollectionCloud(localOnly,[]);
+  // Move legacy title/AniList keys to the stable local id key, then remove the old row.
+  const toMigrate=rows.filter(r=>r.anime_data&&r.anime_key!==keyForAnime({...r.anime_data,id:r.anime_data.id||'cloud-'+String(r.anime_key||'').replace(/[^a-z0-9_-]/gi,'-')}));
+  for(const row of toMigrate){const stable={...row.anime_data,id:row.anime_data.id||'cloud-'+String(row.anime_key||'').replace(/[^a-z0-9_-]/gi,'-'),updatedAt:row.updated_at||row.anime_data.updatedAt||new Date().toISOString()};await retryCloud(()=>supabase.from('user_anime').upsert({user_id:userId,anime_key:keyForAnime(stable),anime_data:stable,updated_at:stable.updatedAt},{onConflict:'user_id,anime_key'}));await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key',row.anime_key))}
+  if(!rows.length&&local.length)await saveCollectionCloud(local,[]);
+ }catch(err){console.warn('Sync collection:',err);window.__animeverseToast?.('Synchronisation impossible pour le moment.')}
 }
-async function saveCollectionCloud(){
- if(!supabase||!currentUser)return;
- try{
-  for(const a of window.__animeverse.anime){
-   const {error}=await supabase.from('user_anime').upsert({user_id:currentUser.id,anime_key:a.anilistId?'ani:'+a.anilistId:'title:'+a.title.toLowerCase(),anime_data:a},{onConflict:'user_id,anime_key'});
-   if(error)throw error;
-  }
- }catch(err){console.warn(err);window.__animeverseToast('Sauvegarde cloud impossible : vérifie la configuration.')}
+async function saveCollectionCloud(changed=[],deleted=[]){
+ if(!supabase||!currentUser)return true;const userId=currentUser.id;
+ const run=async()=>{if(currentUser?.id!==userId)throw new Error('Session Supabase modifiée avant la sauvegarde.');
+  for(const a of changed||[]){const updatedAt=a.updatedAt||new Date().toISOString();const data={...a,updatedAt};await retryCloud(()=>supabase.from('user_anime').upsert({user_id:userId,anime_key:keyForAnime(data),anime_data:data,updated_at:updatedAt},{onConflict:'user_id,anime_key'}))}
+  for(const a of deleted||[]){const idKey=keyForAnime(a);await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key',idKey));if(a.anilistId)await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key','ani:'+a.anilistId));await retryCloud(()=>supabase.from('user_anime').delete().eq('user_id',userId).eq('anime_key','title:'+String(a.title||'').toLocaleLowerCase('fr')))}
+ };
+ const task=cloudWriteQueue.then(run,run);cloudWriteQueue=task.catch(()=>{});await task;return true
 }
+window.__animeverseCloudSave=(changed=[],deleted=[])=>saveCollectionCloud(changed,deleted);
 
  // Hook collection saves without changing the original app's local-first behaviour.
 window.__animeverseCloudSave=()=>{if(supabase&&currentUser)saveCollectionCloud()};
@@ -1808,6 +1813,33 @@ function boot(){
  updateControls();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+<script id="animeverse-form-enhancement">
+(()=>{'use strict';
+const $=s=>document.querySelector(s),api='https://graphql.anilist.co',form=$('#animeForm');if(!form)return;
+const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
+const hidden=el('input');hidden.type='hidden';hidden.id='anilistIdHidden';form.append(hidden);
+const formGrid=$('.form-grid',form),finder=el('section','av-anime-search'),finderLabel=el('label','av-anime-search-head','Cherche un anime sur AniList');
+const query=el('input');query.type='search';query.placeholder='Ex. Frieren, Re:Zero…';query.autocomplete='off';query.setAttribute('aria-label','Chercher un anime sur AniList');
+const result=el('div','av-anime-suggestions');result.hidden=true;result.setAttribute('role','listbox');
+const manual=el('button','av-anime-manual','Saisie manuelle · masquer la recherche AniList');manual.type='button';
+finderLabel.append(query);finder.append(finderLabel,result,manual);form.insertBefore(finder,formGrid);
+manual.addEventListener('click',()=>{finder.classList.toggle('is-collapsed');query.disabled=finder.classList.contains('is-collapsed');manual.textContent=query.disabled?'Rechercher sur AniList':'Saisie manuelle · masquer la recherche AniList';if(query.disabled)result.hidden=true});
+let timer=0,request=0;
+const queryAni=async(term)=>{const token=++request;result.replaceChildren();result.hidden=false;const loading=el('div','av-suggestion-state','Recherche en cours…');result.append(loading);try{const r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query:'query ($search:String){Page(page:1,perPage:6){media(search:$search,type:ANIME,sort:SEARCH_MATCH){id title{userPreferred romaji english} coverImage{medium} seasonYear episodes format status genres}}}',variables:{search:term}})});if(!r.ok)throw Error('AniList indisponible');const data=await r.json();if(token!==request)return;const hits=data?.data?.Page?.media||[];result.replaceChildren();if(!hits.length){result.append(el('div','av-suggestion-state','Aucun résultat. Essaie une autre orthographe.'));return}for(const item of hits){const row=el('button','av-anime-suggestion');row.type='button';row.setAttribute('role','option');const img=el('img');img.src=/^https:\/\//i.test(item.coverImage?.medium||'')?item.coverImage.medium:'';img.alt='';img.loading='lazy';const copy=el('span'),title=el('strong',null,item.title?.userPreferred||item.title?.english||item.title?.romaji||'Anime'),meta=el('small',null,[item.seasonYear||'Année inconnue',item.format||'Anime',item.episodes?item.episodes+' épisodes':'épisodes inconnus'].join(' · '));copy.append(title,meta);row.append(img,copy);row.addEventListener('click',()=>selectAnime(item));result.append(row)}}catch(e){if(token!==request)return;result.replaceChildren(el('div','av-suggestion-state','Recherche indisponible. Tu peux continuer en saisie manuelle.'));console.warn('AniList search:',e)}};
+query.addEventListener('input',()=>{clearTimeout(timer);const term=query.value.trim();if(term.length<2){result.hidden=true;return}result.hidden=false;result.replaceChildren(el('div','av-suggestion-state','Recherche en cours…'));timer=setTimeout(()=>queryAni(term),320)});
+document.addEventListener('click',e=>{if(!finder.contains(e.target))result.hidden=true});
+function selectAnime(a){const title=a.title?.userPreferred||a.title?.english||a.title?.romaji||'';$('#title').value=title;$('#poster').value=/^https:\/\//i.test(a.coverImage?.large||'')?a.coverImage.large:(/^https:\/\//i.test(a.coverImage?.medium||'')?a.coverImage.medium:'');$('#genres').value=(a.genres||[]).join(', ');$('#year').value=a.seasonYear||'';$('#episodes').value=a.episodes?'0 / '+a.episodes:'0';$('#seasons').value=a.format==='TV'||a.format==='TV_SHORT'?'1':'';$('#status').value=a.status==='RELEASING'?'En cours':'À voir';hidden.value=String(a.id||'');syncDecorations();result.hidden=true;query.value=title;finder.classList.add('is-collapsed');query.disabled=true;manual.textContent='Rechercher un autre anime';syncPoster();syncGenreChips();syncStatus();syncRating();syncEpisodes()}
+const genreGroup=$('#genres')?.closest('.form-group');if(genreGroup){const label=genreGroup.querySelector('label');if(label)label.textContent='Genres';const input=$('#genres');input.type='hidden';const chips=el('div','av-chip-box'),chipList=el('div','av-chip-list'),chipInput=el('input');chipInput.type='text';chipInput.placeholder='Ajouter un genre…';chipInput.setAttribute('aria-label','Ajouter un genre');chips.append(chipList,chipInput);genreGroup.append(chips);const addGenre=()=>{const v=chipInput.value.trim().replace(/,$/,'');if(!v)return;const all=input.value.split(',').map(x=>x.trim()).filter(Boolean);if(!all.some(x=>x.toLocaleLowerCase()===v.toLocaleLowerCase()))all.push(v);input.value=all.join(', ');chipInput.value='';syncGenreChips()};chipInput.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','){e.preventDefault();addGenre()}});chipInput.addEventListener('blur',addGenre);function syncGenreChips(){chipList.replaceChildren();input.value.split(',').map(x=>x.trim()).filter(Boolean).forEach(g=>{const chip=el('span','av-chip',g),remove=el('button',null,'×');remove.type='button';remove.setAttribute('aria-label','Retirer '+g);remove.addEventListener('click',()=>{input.value=input.value.split(',').map(x=>x.trim()).filter(x=>x!==g).join(', ');syncGenreChips()});chip.append(remove);chipList.append(chip)})}window.__avSyncGenreChips=syncGenreChips}
+const statusSelect=$('#status');if(statusSelect){const group=statusSelect.closest('.form-group'),choices=el('div','av-status-choices');statusSelect.classList.add('av-native-select');[['À voir','＋'],['En cours','▶'],['Vu','✓'],['Abandonné','—']].forEach(([v,ico])=>{const b=el('button','av-status-choice');b.type='button';b.innerHTML='<span aria-hidden="true">'+ico+'</span> '+v;b.addEventListener('click',()=>{statusSelect.value=v;syncStatus()});choices.append(b)});group.append(choices);window.__avSyncStatus=()=>{choices.querySelectorAll('button').forEach(b=>b.classList.toggle('is-active',b.textContent.trim().replace(/^[＋▶✓—]\s*/,'')===statusSelect.value))};statusSelect.addEventListener('change',window.__avSyncStatus)}
+const ratingSelect=$('#rating');if(ratingSelect){const group=ratingSelect.closest('.form-group'),stars=el('div','av-star-choices');ratingSelect.classList.add('av-native-select');for(let n=1;n<=10;n++){const b=el('button','av-star-choice','☆');b.type='button';b.setAttribute('aria-label','Noter '+n+' sur 10');b.addEventListener('click',()=>{ratingSelect.value=String(n);syncRating()});stars.append(b)}const clear=el('button','av-star-choice','Effacer');clear.type='button';clear.addEventListener('click',()=>{ratingSelect.value='';syncRating()});stars.append(clear);group.append(stars);window.__avSyncRating=()=>stars.querySelectorAll('.av-star-choice').forEach((b,i)=>{if(i<10){const active=i<Number(ratingSelect.value||0);b.textContent=active?'★':'☆';b.classList.toggle('is-active',active)}});ratingSelect.addEventListener('change',window.__avSyncRating)}
+const episodes=$('#episodes');if(episodes){const group=episodes.closest('.form-group'),controls=el('div','av-episode-controls'),minus=el('button',null,'−'),out=el('output',null,'0 épisode'),plus=el('button',null,'+'),all=el('button',null,'Tout marquer comme vu'),bar=el('div','av-episode-progress'),fill=el('span');minus.type=plus.type=all.type='button';bar.setAttribute('aria-hidden','true');bar.append(fill);[minus,out,plus,all].forEach(x=>controls.append(x));group.append(controls,bar);function parsed(){const m=episodes.value.match(/(\d+)\s*(?:\/\s*(\d+))?/);return{seen:m?Number(m[1]):0,total:m?.[2]?Number(m[2]):0}}function setEpisodes(seen,total=parsed().total){seen=Math.max(0,Math.floor(seen));episodes.value=total?seen+' / '+total:String(seen);out.textContent=total?seen+' / '+total+' épisodes':seen+' épisode'+(seen===1?'':'s')+' vus';fill.style.setProperty('--progress',total?Math.min(100,seen/total*100)+'%':'8%');bar.setAttribute('aria-valuenow',String(seen));bar.setAttribute('role','progressbar');bar.setAttribute('aria-label','Épisodes vus');bar.setAttribute('aria-valuemax',total?String(total):String(Math.max(seen+1,1)))}minus.addEventListener('click',()=>{const p=parsed();setEpisodes(p.seen-1)});plus.addEventListener('click',()=>{const p=parsed();setEpisodes(p.seen+1)});all.addEventListener('click',()=>{const p=parsed();if(p.total){setEpisodes(p.total,p.total);if(statusSelect)statusSelect.value='Vu';syncStatus()}});episodes.addEventListener('input',()=>{const p=parsed();setEpisodes(p.seen,p.total)});window.__avSyncEpisodes=()=>{const p=parsed();setEpisodes(p.seen,p.total)}}
+const poster=$('#poster');if(poster){const group=poster.closest('.form-group'),details=el('details','av-advanced'),summary=el('summary',null,'Avancé · modifier le lien de l’affiche');details.append(summary,group);formGrid.append(details);poster.type='url';poster.closest('.form-group').querySelector('label').textContent='URL de l’image';const preview=el('div','av-poster-preview'),img=el('img');img.alt='Aperçu de l’affiche';const change=el('button',null,'Changer l’image');change.type='button';change.addEventListener('click',()=>{details.open=true;poster.focus()});preview.append(img,change);finder.after(preview);function syncPoster(){img.src=poster.value||'';img.hidden=!poster.value;preview.classList.toggle('has-poster',!!poster.value)}poster.addEventListener('input',syncPoster);window.__avSyncPoster=syncPoster}
+const notes=$('#notes');if(notes){const count=el('small','av-notes-count');notes.after(count);const update=()=>count.textContent=(notes.value.length)+' / '+(notes.maxLength||1500);notes.addEventListener('input',update);window.__avSyncNotes=update}
+function syncStatus(){window.__avSyncStatus?.()}function syncRating(){window.__avSyncRating?.()}function syncEpisodes(){window.__avSyncEpisodes?.()}function syncPoster(){window.__avSyncPoster?.()}function syncGenreChips(){window.__avSyncGenreChips?.()}function syncDecorations(){syncStatus();syncRating();syncEpisodes();syncPoster();syncGenreChips();window.__avSyncNotes?.()}
+const modal=$('#modal');if(modal)new MutationObserver(()=>{if(modal.classList.contains('open')){query.value='';query.disabled=false;finder.classList.remove('is-collapsed');result.hidden=true;hidden.value=$('#animeId').value?hidden.value:'';syncDecorations()}}).observe(modal,{attributes:true,attributeFilter:['class']});
+form.addEventListener('reset',()=>setTimeout(()=>{hidden.value='';syncDecorations()},0));
 })();
 </script>
 </body>
