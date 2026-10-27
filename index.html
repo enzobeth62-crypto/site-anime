@@ -1243,7 +1243,7 @@ async function saveCollectionCloud(changed=[],deleted=[]){
 window.__animeverseCloudSave=(changed=[],deleted=[])=>saveCollectionCloud(changed,deleted);
 
  // Hook collection saves without changing the original app's local-first behaviour.
-window.__animeverseCloudSave=()=>{if(supabase&&currentUser)saveCollectionCloud()};
+/* Keep the collection store's targeted (changed, deleted) save arguments. */;
 window.__animeverseAssistantBridge={
  getUser:()=>currentUser,
  getClient:()=>supabase,
