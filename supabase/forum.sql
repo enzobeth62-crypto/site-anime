@@ -143,7 +143,7 @@ create trigger forum_post_insert_touch_thread after insert on public.forum_posts
 
 create or replace function private.forum_touch_updated_at()
 returns trigger language plpgsql set search_path=''
-as $ begin new.updated_at=now(); if tg_table_name='forum_posts' then if old.content is distinct from new.content then new.edited_at=now(); end if; end if; return new; end $;
+as $$ begin new.updated_at=now(); if tg_table_name='forum_posts' then if old.content is distinct from new.content then new.edited_at=now(); end if; end if; return new; end $$;
 drop trigger if exists forum_threads_updated_at on public.forum_threads;
 create trigger forum_threads_updated_at before update on public.forum_threads for each row execute function private.forum_touch_updated_at();
 drop trigger if exists forum_posts_updated_at on public.forum_posts;
